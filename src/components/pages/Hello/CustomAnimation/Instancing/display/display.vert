@@ -68,7 +68,7 @@ void main() {
     vec3 GPUPos = texture2D(posTex, nUV).xyz;
     vec3 GPUPar = texture2D(parTex, uv).xyz;
 
-    GPUPar = ballify(GPUPar, 5.0);
+    GPUPar = ballify(GPUPar, 10.0);
 
     // vec4 GPURot = texture2D(rotTex, nUV);
 

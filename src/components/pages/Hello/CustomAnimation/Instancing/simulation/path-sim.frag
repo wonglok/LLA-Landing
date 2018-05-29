@@ -180,9 +180,9 @@ void main() {
       rand(uv + .3) * 4.0
     );
 
-    float x = 95.0 * (sin(PI2 * e * k) * cos(PI2 * e * k) * 1.0);
-    float y = 95.0 * (sin(PI2 * e * k) * sin(PI2 * e * k) * 1.0 - 0.5);
-    float z = 95.0 * (e * 2.0 - 1.0);
+    float x = 160.0 * (sin(PI2 * e * k) * cos(PI2 * e * k) * 1.0);
+    float y = 160.0 * (sin(PI2 * e * k) * sin(PI2 * e * k) * 1.0 - 0.5);
+    float z = 100.0 * (e * 2.0 - 1.0);
     vec3 pt = rotateX(PI * 0.5) * vec3(x, y, z);
 
     vec3 updatedPos = vec3(pt);

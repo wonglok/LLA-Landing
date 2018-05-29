@@ -60,11 +60,10 @@ void main () {
 `
 
   var word = makeOneWord()
-  word.data.text = `Visual Effect
-Language Academy
+  word.data.text = `Visual Effect Language
+Academy
 made with 😍😎 & ☯︎☁︎
-in Hong Kong
-`
+in Hong Kong`
   word.data.width = 900
   word.data.fontSize = '70'
   word.pos = {

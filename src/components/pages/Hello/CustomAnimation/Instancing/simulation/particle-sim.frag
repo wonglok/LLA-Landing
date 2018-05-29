@@ -170,19 +170,23 @@ void main() {
   if (length(lastPos.xyz) < 0.00001) {
     nextPos = ballify(rand3, ra);
   } else {
-    // float k = 1.0 + time;
-    // k = 1.0 + mod(k, 5.0);
+    // float k = 2.5 - mouse.y * 1.5; // winder;
 
-    // float x = 0.5 - sin(e * M_PI * 2.0 * k) * sin(e * M_PI * 2.0 * k);
-    // float y = sin(e * M_PI * 2.0 * k) * cos(e * M_PI * 2.0 * k);
-    // float z = sin(i / u * M_PI * 2.0) * 2.0;
+    // vec3 startPos = vec3(
+    //   rand(uv + .1) * 4.0,
+    //   rand(uv + .2) * 4.0,
+    //   rand(uv + .3) * 4.0
+    // );
 
+    // float x = cnoise(vec2(time + startPos.xx + .1)) * rand(startPos.xx + .0) * 3.5 + 17.0 * (sin(PI2 * e * k) * cos(PI2 * e * k) * 1.0);
+    // float y = cnoise(vec2(time + startPos.yy + .2)) * rand(startPos.yy + .1) * 3.5 + 17.0 * (sin(PI2 * e * k) * sin(PI2 * e * k) * 1.0 - 0.5);
+    // float z = cnoise(vec2(time + startPos.zz + .3)) * rand(startPos.zz + .2) * 3.5 + 17.0 * (e * 2.0 - 1.0);
+    // vec3 pt = rotateX(PI * 0.5) * vec3(x, y, z);
 
-    // vec3 ball1 = ballify(vec3(x, y, z), 1.0);
+    // vec3 updatedPos = vec3(pt);
+    // nextPos = updatedPos * rotateY(time * 1.5);
 
-    // nextPos = ballify(ball1 + nextPos, 17.0);
-    // nextPos += getDiff(nextPos, mouse * 18.0) * 50.0;
-
+    // -------
 
     float ts = sin(fTime);
     float tc = cos(fTime);

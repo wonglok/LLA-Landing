@@ -31,7 +31,7 @@ export default {
     renderer: {},
     pingPongShader: {
       default () {
-        return require('./simulation/pos-sim.frag')
+        return require('./simulation/path-sim.frag')
       }
     }
   },
@@ -127,7 +127,7 @@ export default {
       }
     }
 
-    var posSim = initPingPoing({ shader: require('./simulation/pos-sim.frag') })
+    var posSim = initPingPoing({ shader: require('./simulation/path-sim.frag') })
     var parSim = initPingPoing({ shader: require('./simulation/particle-sim.frag') })
 
     // var rotsim = initPingPoing({ shader: require('./simulation/rot-sim.frag') })

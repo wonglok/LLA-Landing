@@ -9,8 +9,8 @@ varying vec2 vUv;
 void main (void) {
   vec3 nPos = position;
 
-  nPos.z += sin(time * 4.0 + nPos.x) * 0.5;
-  // nPos.z += sin(time * 4.0 + nPos.y) * 0.5;
+  nPos.z += sin(time * 4.0 + nPos.x) * 0.15;
+  nPos.z += sin(time * 4.0 + nPos.y) * 0.15;
 
   vUv = uv;
 
