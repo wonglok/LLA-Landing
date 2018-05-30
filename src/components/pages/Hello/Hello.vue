@@ -27,7 +27,7 @@
       />
     </Object3D> -->
 
-    <Object3D :px="-15.0 * 0.0">
+    <Object3D >
       <VectorField
         v-if="renderer && camera && ori"
         :orientation="ori"
@@ -35,7 +35,7 @@
         :renderer="renderer"
       />
     </Object3D>
-    <Object3D :px="15.0 * 0.0">
+    <Object3D >
       <Instancing
         v-if="renderer && camera && ori"
         :orientation="ori"
@@ -165,6 +165,8 @@ export default {
       // }
     },
     runWebGL () {
+      TWEEN.update()
+
       if (this.touchPanControl) {
         this.touchPanControl.update()
       }
@@ -174,7 +176,18 @@ export default {
       }
     },
     setup () {
-      this.camera.position.z = 40
+      this.camera.position.z = 0
+      this.camera.position.y = 300
+
+      new TWEEN.Tween(this.camera.position)
+        .to({ z: 40, x: 0, y: 0 }, 5000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(() => {
+          this.camera.lookAt(this.scene.position)
+        })
+        .delay(500)
+        .start()
+
       this.scene.background = new THREE.Color('#fdfdfd')
 
       let touchSurface = this.touchSurface = this.$refs['touch-surface']

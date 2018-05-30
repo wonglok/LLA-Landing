@@ -6,8 +6,8 @@ uniform float pointSize;
 varying vec2 vUv;
 
 uniform float time;
+uniform vec3 mouse;
 
-attribute vec2 reader;
 
 #define M_PI 3.1415926535897932384626433832795
 float atan2(in float y, in float x) {
@@ -58,15 +58,7 @@ mat3 rotateX(float rad) {
 
 void main() {
 
-    // vec2 nUV = reader / resolution;
-
-    // vec4 info = texture2D(indexerTexture, nUV);
     vec3 GPUPos = texture2D(posTex, uv).xyz;
-    // vec4 GPURot = texture2D(rotTex, nUV);
-
-    GPUPos.xyz = ballify(GPUPos.xyz, 17.0);
-
-    // GPUPos = rotateY(GPURot.y) * GPUPos;
 
     vec4 mvPosition = modelViewMatrix * vec4(GPUPos, 1.0);
     vec4 outputPos = projectionMatrix * mvPosition;
@@ -77,5 +69,5 @@ void main() {
     vUv = uv;
 
     gl_Position = outputPos;
-    gl_PointSize = pointSize;
+    gl_PointSize = pointSize + abs(mouse.y * 4.0);
 }

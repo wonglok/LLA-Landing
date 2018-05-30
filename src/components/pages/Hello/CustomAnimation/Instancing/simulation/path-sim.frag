@@ -172,7 +172,7 @@ void main() {
     nextPos = ballify(rand3, ra);
   } else {
 
-    float k = 2.5 - mouse.y * 1.5; // winder;
+    float k = 2.5 - (mouse.y + mouse.z) * 1.5; // winder;
 
     vec3 startPos = vec3(
       rand(uv + .1) * 4.0,

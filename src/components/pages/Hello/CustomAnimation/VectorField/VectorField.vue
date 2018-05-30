@@ -60,6 +60,16 @@ export default {
     var indexerTexture = gpuCompute.createTexture()
     prepIndexer(indexerTexture, SIZE)
 
+    var self = this
+    function getPos () {
+      var pos = self.tempv3.copy(self.camera.position).normalize()
+      pos.multiplyScalar(-1.0)
+      pos.x -= 2.0 * -self.orientation.yy
+      pos.y -= 2.0 * self.orientation.xx
+      pos.z = 0.0
+      return pos
+    }
+
     var initPingPoing = ({ shader }) => {
       var ticker = 0
 
@@ -67,17 +77,6 @@ export default {
       var pongTarget = gpuCompute.createRenderTarget()
 
       let pingMat, pongMat
-
-      var self = this
-
-      function getPos () {
-        var pos = self.tempv3.copy(self.camera.position).normalize()
-        pos.multiplyScalar(-1.0)
-        pos.x -= 2.0 * -self.orientation.yy
-        pos.y -= 2.0 * self.orientation.xx
-        pos.z = 0.0
-        return pos
-      }
 
       pingMat = gpuCompute.createShaderMaterial(shader, {
         lastTexture: { value: null },
@@ -128,7 +127,6 @@ export default {
     }
 
     var possim = initPingPoing({ shader: require('./simulation/pos-sim.frag') })
-    // var rotsim = initPingPoing({ shader: require('./simulation/rot-sim.frag') })
 
     // display part
     var planeGeometry = new THREE.PlaneBufferGeometry(1.0, 1.0, SIZE, SIZE)
@@ -147,11 +145,13 @@ export default {
         time: { value: 0 },
         opacity: { value: 0.75 },
         posTex: { value: null },
-        // rotTex: { value: null },
         // indexerTexture: { value: indexerTexture },
         // picture: { value: new THREE.TextureLoader().load('https://picsum.photos/256/256', (texture) => { texture.flipY = true; texture.needsUpdate = true }) },
         picture: { value: new THREE.TextureLoader().load(require('@/components/pages/Hello/Elements/Text/Images/sunset.jpg'), (texture) => { texture.flipY = true; texture.needsUpdate = true }) },
-        pointSize: { value: window.devicePixelRatio || 1.0 }
+        pointSize: { value: window.devicePixelRatio || 1.0 },
+        mouse: { get value () {
+          return getPos()
+        } }
       }
     })
 
@@ -167,11 +167,8 @@ export default {
     let rAF = () => {
       this.rAFID = window.requestAnimationFrame(rAF)
       var possimo = possim.simulation({ addon1: null })
-      // var rotsimo = rotsim.simulation({ addon1: null })
 
       material.uniforms.posTex.value = possimo.texture
-      // material.uniforms.rotTex.value = rotsimo.texture
-
       material.uniforms.time.value = window.performance.now() * 0.0001
     }
     this.rAFID = window.requestAnimationFrame(rAF)

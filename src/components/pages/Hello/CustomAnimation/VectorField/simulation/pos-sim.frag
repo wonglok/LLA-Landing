@@ -171,35 +171,30 @@ void main() {
     nextPos = ballify(rand3, ra);
   } else {
 
-    // float k = 2.5 - mouse.y * 1.5; // winder;
-
-    // vec3 startPos = vec3(
-    //   rand(uv + .1) * 4.0,
-    //   rand(uv + .2) * 4.0,
-    //   rand(uv + .3) * 4.0
-    // );
-
-    // float x = 17.0 * (sin(PI2 * e * k) * cos(PI2 * e * k) * 1.0);
-    // float y = 17.0 * (sin(PI2 * e * k) * sin(PI2 * e * k) * 1.0 - 0.5);
-    // float z = 17.0 * (e * 2.0 - 1.0);
-    // vec3 pt = rotateX(PI * 0.5) * vec3(x, y, z);
-
-    // vec3 updatedPos = vec3(pt);
-    // nextPos = updatedPos * rotateY(time * 1.5);
-
-    // -0-0--0-0-- Bally
-
     float ts = sin(fTime);
     float tc = cos(fTime);
     float tt = tan(fTime);
 
     float nps = r1 * tc * ts;
 
-    float x = 0.5 - sin(ts + nps * np.x + t) * sin(ts + nps * np.x + t);
-    float y = cos(tc + nps * np.y + t) * sin(tc + nps * np.y + t);
-    float z = cos(ts + nps * np.z + t) * sin(tc + ts + nps * np.z + t);
+    float x1 = 0.5 - sin(ts + nps * np.x + t) * sin(ts + nps * np.x + t);
+    float y1 = cos(tc + nps * np.y + t) * sin(tc + nps * np.y + t);
+    float z1 = cos(ts + nps * np.z + t) * sin(tc + ts + nps * np.z + t);
 
-    nextPos = rotateY(mouse.x * 5.0) * rotateX(-mouse.y * 5.0) * vec3(x, y, z) * ra;
+    vec3 pt1 = vec3(x1, y1, z1) * ra;
+    pt1 = ballify(pt1, ra);
+
+    // -0-0--0-0-- Bally
+
+    float t = M_PI * 2.0 * e;
+
+    float x = 0.5 - fract(i / u);
+    float y = 0.5 - e;
+    float z = 0.0;
+
+    vec3 pt2 = vec3(x * 1.3, y * -1.3, z) * ra * 1.4;
+
+    nextPos = mix(pt1, pt2, smoothstep(0.0, 1.0, abs(mouse.y) / 0.5));
 
     // nextPos += vec3(
     //   0.1, 0.1, 0.1

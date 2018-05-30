@@ -75,14 +75,13 @@ export default {
         pos.multiplyScalar(-1.0)
         pos.x -= 2.0 * -self.orientation.yy
         pos.y -= 2.0 * self.orientation.xx
-        pos.z = 0.0
+        pos.z = self.camera.position.z / 500
         return pos
       }
 
       pingMat = gpuCompute.createShaderMaterial(shader, {
         lastTexture: { value: null },
         indexerTexture: { value: indexerTexture },
-        addon1: { value: null },
         time: { value: 0 },
         mouse: { get value () {
           return getPos()
@@ -91,7 +90,6 @@ export default {
       pongMat = gpuCompute.createShaderMaterial(shader, {
         lastTexture: { value: null },
         indexerTexture: { value: indexerTexture },
-        addon1: { value: null },
         time: { value: 0 },
         mouse: { get value () {
           return getPos()
@@ -99,7 +97,7 @@ export default {
       })
 
       return {
-        simulation: ({ addon1 }) => {
+        simulation: () => {
           var output = false
 
           pingMat.uniforms.lastTexture.value = pongTarget.texture
@@ -107,9 +105,6 @@ export default {
 
           pingMat.uniforms.time.value = window.performance.now() * 0.0001
           pongMat.uniforms.time.value = window.performance.now() * 0.0001
-
-          pingMat.uniforms.addon1.value = addon1
-          pongMat.uniforms.addon1.value = addon1
 
           if (ticker % 2 === 0) {
             gpuCompute.doRenderTarget(pingMat, pingTarget)
@@ -170,7 +165,7 @@ export default {
     var makeIndexPos = (SIZE) => {
       var positions = []
       var p = 0
-      let max = SIZE * SIZE
+      let max = SIZE
       // for (var iii = 0; iii < 8; iii++) {
       for (var j = 0; j < max; j++) {
         positions[p++] = j
@@ -215,11 +210,11 @@ export default {
 
     let rAF = () => {
       this.rAFID = window.requestAnimationFrame(rAF)
-      var posSimo = posSim.simulation({ addon1: null })
-      var parSimo = parSim.simulation({ addon1: null })
+      var posSimOutput = posSim.simulation()
+      var parSimOutput = parSim.simulation()
 
-      material.uniforms.posTex.value = posSimo.texture
-      material.uniforms.parTex.value = parSimo.texture
+      material.uniforms.posTex.value = posSimOutput.texture
+      material.uniforms.parTex.value = parSimOutput.texture
 
       material.uniforms.time.value = window.performance.now() * 0.0001
     }
