@@ -185,6 +185,12 @@ export default {
         .onUpdate(() => {
           this.camera.lookAt(this.scene.position)
         })
+        .onStart(() => {
+          this.touchPanControl.enabled = false
+        })
+        .onComplete(() => {
+          this.touchPanControl.enabled = true
+        })
         .delay(500)
         .start()
 
