@@ -53,7 +53,7 @@ export default {
   mounted () {
     // var moveY = 0
     // var moveX = 0
-    let SIZE = 64 * 1.25
+    let SIZE = 128
 
     var gpuCompute = new GPUComputationRenderer(SIZE, SIZE, this.renderer)
 

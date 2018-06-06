@@ -390,6 +390,7 @@ export default {
       }, 200)
     },
     itemDragStart (evt) {
+      this.mover.state.disabled = true
       this.touchPanControl.enabled = false
       this.updatePos(evt)
     },
@@ -412,6 +413,7 @@ export default {
       this.refreshGUI()
     },
     itemDragEnd (evt) {
+      this.mover.state.disabled = false
       this.touchPanControl.enabled = true
       let obj = evt.object
       let info = obj.userData.info
