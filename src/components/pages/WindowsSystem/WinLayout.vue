@@ -33,6 +33,7 @@
                   height: eGroupItem.size.height,
                   aspect: eGroupItem.size.aspect
                 }"
+                :touchSurface="$refs['touch-surface']"
                 @texture="(v) => { eGroupItem.shader.uniforms.tDiffuse.value = v; }"
               />
             </RenderTarget>
@@ -616,12 +617,12 @@ export default {
 
           if (scroller.position.x > max) {
             let varying = { ...scroller.position }
-            varying.x -= (varying.x - max) * 0.5
+            varying.x -= (varying.x - max) * 0.35
             scroller.position.set(varying.x, varying.y, varying.z)
           }
           if (scroller.position.x < min) {
             let varying = { ...scroller.position }
-            varying.x -= (varying.x - min) * 0.5
+            varying.x -= (varying.x - min) * 0.35
             scroller.position.set(varying.x, varying.y, varying.z)
           }
         }
@@ -669,13 +670,16 @@ export default {
             var dpi = 2
 
             eg.size.vw = fs.width * sizer
+            if (fs.aspect > 1) {
+              eg.size.vw = fs.vmin
+            }
             eg.size.vh = fs.height * 1.0
             eg.size.aspect = eg.size.vw / eg.size.vh
 
             eg.size.width = 768 * eg.size.aspect * dpi
             eg.size.height = 768 * dpi
 
-            eg.element.position.x = fs.width * sizer * (key)
+            eg.element.position.x = eg.size.vw * sizer * (key)
           })
 
           this.viewCheck()

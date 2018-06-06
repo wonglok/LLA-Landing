@@ -36,14 +36,14 @@
       />
     </Object3D>
 
-    <!-- <Object3D >
+    <Object3D >
       <Instancing
         v-if="renderer && camera && ori"
         :orientation="ori"
         :camera="camera"
         :renderer="renderer"
       />
-    </Object3D> -->
+    </Object3D>
 
   </Scene>
 
@@ -92,6 +92,7 @@ export default {
     VectorField
   },
   props: {
+    touchSurface: {},
     renderer: {},
     size: {},
     skip: {}
@@ -104,7 +105,7 @@ export default {
 
       // text outlet
       MS,
-      touchSurface: false,
+      // touchSurface: false,
       mode: 'SceneEdit',
       dragGroup: [],
       current: {
@@ -182,26 +183,26 @@ export default {
     },
     setup () {
       this.camera.position.z = 35
-      // this.camera.position.z = 0
-      // this.camera.position.y = 300
-      // new TWEEN.Tween(this.camera.position)
-      //   .to({ z: 40, x: 0, y: 0 }, 5000)
-      //   .easing(TWEEN.Easing.Quadratic.Out)
-      //   .onUpdate(() => {
-      //     this.camera.lookAt(this.scene.position)
-      //   })
-      //   .onStart(() => {
-      //     this.touchPanControl.enabled = false
-      //   })
-      //   .onComplete(() => {
-      //     this.touchPanControl.enabled = true
-      //   })
-      //   .delay(500)
-      //   .start()
+      this.camera.position.z = 0
+      this.camera.position.y = 300
+      new TWEEN.Tween(this.camera.position)
+        .to({ z: 40, x: 0, y: 0 }, 5000)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(() => {
+          this.camera.lookAt(this.scene.position)
+        })
+        .onStart(() => {
+          // this.touchPanControl.enabled = false
+        })
+        .onComplete(() => {
+          // this.touchPanControl.enabled = true
+        })
+        .delay(500)
+        .start()
 
       this.scene.background = new THREE.Color('#fdfdfd')
 
-      // let touchSurface = this.touchSurface = this.$refs['touch-surface']
+      // let touchSurface = this.touchSurface// = this.$refs['touch-surface']
       // let camera = this.camera
 
       // let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
