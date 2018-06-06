@@ -14,9 +14,9 @@
 
   <Scene @scene="(v) => { $emit('scene', v); scene = v }">
     <!-- Text Outlet -->
-    <Object3D :pz="0.0">
+    <!-- <Object3D :pz="0.0">
       <TextOutlet ref="text-outlet" v-if="root" :root="root" :group="dragGroup" />
-    </Object3D>
+    </Object3D> -->
 
     <!-- <Object3D :pz="-8">
       <ParticleFormula

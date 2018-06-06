@@ -2,11 +2,22 @@
 <div class="full">
   <div class="full toucher" ref="touch-surface"></div>
 
+  <div v-if="current.data && mode === 'SceneEdit'" class="full closer" @click="current.data = false; current.mesh = false;"></div>
+
+  <div class="editor">
+    <div v-if="current.data && mode === 'SceneEdit'" >
+      <TextEdit v-if="current.data && current.data.arr === 'words'" :info="current.data" :current="current" :root="root" />
+    </div>
+    <!-- <pre>{{JSON.stringify(nowPos, null, '  ').replace(/"/g, '')}}</pre> -->
+  </div>
+
   <Scene @scene="(v) => { $emit('scene', v); scene = v }">
 
     <Object3D @element="(v) => {
       scroller = v
-    }">
+    }"
+    :pz="-5">
+
       <Object3D
         :key="egIDX"
         v-for="(eGroupItem, egIDX) in eGroup"
@@ -14,7 +25,7 @@
       >
         <Mesh
           :position="eGroupItem.pos"
-          @attach="(v) => { eGroupItem.element = v; v.userData.info = eGroupItem; dragGroup.push(v); }"
+          @attach="(v) => { eGroupItem.element = v; v.userData.info = eGroupItem; }"
         >
           <PlaneBufferGeometry :width="eGroupItem.size.vw" :height="eGroupItem.size.vh" :nx="64" :ny="64"></PlaneBufferGeometry>
           <ShaderMaterial :vs="eGroupItem.shader.vs" :fs="eGroupItem.shader.fs" :uniforms="eGroupItem.shader.uniforms">
@@ -42,6 +53,10 @@
       </Object3D>
     </Object3D>
 
+    <Object3D :pz="0.0">
+      <TextOutlet ref="text-outlet" v-if="root" :root="root" :group="dragGroup" />
+    </Object3D>
+
   </Scene>
 
 
@@ -62,7 +77,8 @@ import Bundle from '@/components/ThreeJS/Bundle.js'
 /* eslint-disable */
 import * as TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
-import { EventDispatcher } from 'three/src/core/EventDispatcher.js'
+
+import { fullScreener, DomToucher } from './Utils.js'
 
 import 'imports-loader?THREE=three!../../shared/Touch/TrackTrack.js'
 import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
@@ -76,271 +92,9 @@ import Honey from './Honey'
 import VField from './V-Field'
 import Hello from '../Hello/Hello.vue'
 
-var fullScreener = ({ planeZ, camera }) => {
-  var cameraZ = camera.position.z
-  var distance = cameraZ - planeZ
-  var aspect = window.innerWidth / window.innerHeight
-  var vFov = camera.fov * Math.PI / 180
-  var planeHeightAtDistance = 2 * Math.tan(vFov / 2) * distance
-  var planeWidthAtDistance = planeHeightAtDistance * aspect
-  /*
-  let dist = camera.position.z - mesh.position.z
-  let height = ... // desired height to fit
-  camera.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI)
-  camera.updateProjectionMatrix()
-  */
-  return {
-    aspect: planeWidthAtDistance / planeHeightAtDistance,
-    vmin: Math.min(planeWidthAtDistance, planeHeightAtDistance),
-    vmax: Math.max(planeWidthAtDistance, planeHeightAtDistance),
-    width: planeWidthAtDistance,
-    height: planeHeightAtDistance
-  }
-}
-
-function DomToucher ({ toucher }) {
-  this.toucher = toucher
-  var ui = this.state = {
-    disabled: false,
-    deltaX: -0.0,
-    deltaY: -0.0,
-    addon: 0.0016667,
-    mass: 5.0,
-    inertia: 1.0,
-    inc: 0,
-    aX: 0,
-    aY: 0,
-    inX: 0,
-    inY: 0,
-    isMD: false,
-
-    _: {
-      tsTheta: 0,
-      tsX: 0,
-      tsY: 0
-    },
-    throttleID: 0
-  }
-  var update = { type: 'update', state: this.state }
-  var end = { type: 'end', state: this.state }
-  var click = { type: 'click', state: this.state }
-  var throttledSim = { type: 'throttledSim', state: this.state }
-  var loop = { type: 'loop', state: this.state }
-  this.onWHL = (evt) => {
-    if (ui.disabled) { return }
-    evt.preventDefault()
-
-    ui.deltaX = -event.deltaX * 0.02
-    ui.deltaY = -event.deltaY * 0.02
-
-    // if (event.deltaX) {
-    //   ui.deltaTheta = -event.deltaX * 0.02 / (Math.PI * 2)
-    // }
-    // if (event.deltaY) {
-    //   ui.deltaTheta = -event.deltaY * 0.02 / (Math.PI * 2)
-    // }
-
-    // initia speed
-    ui.inertia = ui.mass
-  }
-
-  this.onMD = (evt) => {
-    ui.isMD = true
-    onPanStart(evt)
-  }
-  this.onMU = (evt) => {
-    ui.isMD = false
-    onPanEnd(evt)
-  }
-
-  var onPointerMove = (ppp) => {
-    ui.pX = ppp.clientX
-    ui.pY = ppp.clientY
-    ui.cX = (ui.pX / ui.conW) * 2 - 1
-    ui.cY = (ui.pY / ui.conH) * 2 - 1
-
-    if (ui.conW >= ui.conH) {
-      let a = ui.conW / ui.conH
-      ui.cX = ui.cX * a
-      ui.cY = ui.cY
-    } else {
-      let a = ui.conH / ui.conW
-      ui.cX = ui.cX
-      ui.cY = ui.cY * a
-    }
-  }
-  // pan around
-  var onPanStart = (t1) => {
-  // var t1 = touch[0]
-  // var x = t1.pageX
-  // var y = t1.pageY
-    var x = t1.clientX
-    var y = t1.clientY
-
-    // ui.cX = (x / window.innerWidth) * 2 - 1
-    // ui.cY = (y / window.innerHeight) * 2 - 1
-
-    // var w = ui.conW
-    // var h = ui.conH
-    // var cX = (x - (w / 2)) / w
-    // var cY = (y - (h / 2)) / h
-    // var theta = Math.atan2(cY, cX)
-
-    // pan
-    ui._.tsX = x
-    ui._.tsY = y
-
-    // ui.inertia *= 0.05
-    ui.isIn = true
-  }
-
-  var onPanMove = (t1) => {
-    // var t1 = touch[0]
-    // var x = t1.pageX
-    // var y = t1.pageY
-    var x = t1.clientX
-    var y = t1.clientY
-
-    // ui.cX = (x / window.innerWidth) * 2 - 1
-    // ui.cY = (y / window.innerHeight) * 2 - 1
-
-    //
-    ui.deltaX = (x - ui._.tsX) * 0.05
-    ui.deltaY = (y - ui._.tsY) * 0.05
-
-    ui._.tsX = x
-    ui._.tsY = y
-
-    ui.aX += ui.deltaX
-    ui.aY += ui.deltaY
-
-    ui.inertia = ui.mass
-  }
-
-  var onPanEnd = (t1) => {
-    ui.isIn = false
-  }
-
-  this.onMM = (evt) => {
-    if (ui.disabled) { return }
-    onPointerMove(evt)
-  }
-  this.onTS = (evt) => {
-    if (ui.disabled) { return }
-    // console.log(evt)
-    // evt.target.style.outline = 'red solid 3px'
-    // if (evt.target === toucher) {
-    //   evt.preventDefault()
-    // }
-    var t = evt.touches
-    if (t.length >= 1) {
-      onPanStart(t[0])
-      // onThetaStart(t[0])
-    }
-    ui.touches = t.length
-  }
-  this.onTM = (evt) => {
-    if (ui.disabled) { return }
-    evt.preventDefault()
-    var t = evt.touches
-
-    if (t.length >= 1) {
-      onPanMove(t[0])
-      // onThetaMove(t[0])
-      onPointerMove(t[0])
-    }
-  }
-  this.onTE = (evt) => {
-    if (ui.disabled) { return }
-    // evt.preventDefault()
-    var t = evt.touches
-
-    if (t.length === 1) {
-      onPanEnd(t[0])
-      this.dispatchEvent(click)
-    }
-    ui.touches = t.length
-  }
-  this.onResize = () => {
-    ui.conW = toucher.clientWidth
-    ui.conH = toucher.clientHeight
-  }
-  var sim = () => {
-    if (ui.disabled) { return }
-    ui.inc += ui.addon
-    if (ui.inertia > 0.01) {
-      //
-      ui.inX = (ui.deltaX * ui.inertia)
-      ui.inY = (ui.deltaY * ui.inertia)
-      ui.aX += ui.inX
-      ui.aY += ui.inY
-
-      //
-      // ui.inTheta = ((ui.deltaTheta * ui.inertia) * 0.45)
-      // ui.aTheta += ui.inTheta
-
-      // inertia
-      ui.inertia *= 0.98
-
-      ui.canFireEnd = true
-      this.dispatchEvent(update)
-    }
-    if (ui.inertia < 0.9 && ui.canFireEnd) {
-      ui.canFireEnd = false
-      this.dispatchEvent(end)
-    }
-
-    this.dispatchEvent(loop)
-    ui.throttleID++
-    if (ui.throttleID % 16 === 0) {
-      this.dispatchEvent(throttledSim)
-    }
-  }
-  this.setup = () => {
-    var rAFID = 0
-    var rAF = () => {
-      rAFID = window.requestAnimationFrame(rAF)
-      sim()
-    }
-    rAFID = window.requestAnimationFrame(rAF)
-
-    this.onResize()
-
-    toucher.addEventListener('mousedown', this.onMD, false)
-    toucher.addEventListener('mousemove', this.onMM, false)
-    toucher.addEventListener('mouseup', this.onMU, false)
-
-    toucher.addEventListener('touchstart', this.onTS, false)
-    toucher.addEventListener('touchmove', this.onTM, false)
-    toucher.addEventListener('touchend', this.onTE, false)
-
-    window.addEventListener('wheel', this.onWHL, false)
-    window.addEventListener('resize', this.onResize, false)
-
-    return {
-      clean: () => {
-        toucher.removeEventListener('mousemove', this.onMM)
-        toucher.removeEventListener('mousedown', this.onMD)
-        toucher.removeEventListener('mouseup', this.onMU)
-
-        toucher.removeEventListener('touchstart', this.onTS)
-        toucher.removeEventListener('touchmove', this.onTM)
-        toucher.removeEventListener('touchend', this.onTE)
-
-        window.removeEventListener('wheel', this.onWHL)
-
-        window.removeEventListener('resize', this.onResize)
-        window.cancelAnimationFrame(rAFID)
-      }
-    }
-  }
-
-  var { clean } = this.setup()
-  this.clean = clean
-}
-
-// Mixing the EventDispatcher.prototype with the custom object prototype
-Object.assign(DomToucher.prototype, EventDispatcher.prototype)
+import * as MS from '../Hello/Data/HelloData.js'
+import TextOutlet from '../Hello/Elements/Text/TextOutlet.vue'
+import TextEdit from '../Hello/Elements/Text/TextEdit.vue'
 
 // // Using events with the custom object
 // var mover = new DomToucher({ toucher: window })
@@ -355,7 +109,9 @@ export default {
     ...Bundle,
     Honey,
     Hello,
-    VField
+    VField,
+    TextOutlet,
+    TextEdit
   },
   props: {
     renderer: {},
@@ -557,7 +313,20 @@ export default {
 
     return {
       scroller: false,
+
+      // text outlet
+      MS,
+      // touchSurface: false,
+      mode: 'SceneEdit',
       dragGroup: [],
+      current: {
+        mesh: false,
+        data: false
+      },
+      root: false,
+      tempv3: new THREE.Vector3(),
+      nowPos: new THREE.Vector3(),
+
       eGroup,
       TWEEN,
       touchPanControl: false,
@@ -565,14 +334,100 @@ export default {
       scene: false,
       camera: false,
       camPos: {
-        x: 0, y: 0, z: 25
+        x: 0, y: 0, z: 45
       },
       tGroup: new TWEEN.Group()
+    }
+  },
+  watch: {
+    mode () {
+      if (this.mode === 'SceneEdit') {
+        this.touchDragControl.deactivate()
+        this.touchDragControl.activate()
+      } else {
+        this.touchDragControl.deactivate()
+      }
     }
   },
   computed: {
   },
   methods: {
+    removeEffectBox (v) {
+      let heart = this.$refs['heart']
+      if (heart) {
+        heart.removeCurrentBox(v)
+      }
+    },
+    // refreshGLSL () {
+    //   let text = this.$refs['text-outlet']
+    //   if (text) {
+    //     text.$forceUpdate()
+    //   }
+    //   // let heart = this.$refs['heart']
+    //   // if (heart) {
+    //   //   heart.tryRefreshGLSL()
+    //   //   this.glsl = EN.makeGLSL({ root: this.current.data.effect })
+    //   // }
+    // },
+    refreshGUI () {
+      // let heart = this.$refs['heart']
+      // if (heart) {
+      //   heart.tryRefreshGUI()
+      //   setTimeout(() => {
+      //     heart.tryRefreshGUI()
+      //   }, 17)
+      //   setTimeout(() => {
+      //     heart.tryRefreshGUI()
+      //   }, 30)
+      //   setTimeout(() => {
+      //     heart.tryRefreshGUI()
+      //   }, 60)
+      // }
+    },
+    load () {
+      setTimeout(() => {
+        this.root = MS.makeDemoRoot()
+      }, 200)
+    },
+    itemDragStart (evt) {
+      this.touchPanControl.enabled = false
+      this.updatePos(evt)
+    },
+    itemDragging (evt) {
+      let obj = evt.object
+      let info = obj.userData.info
+
+      this.nowPos.copy(info.pos)
+
+      this.updatePos(evt)
+    },
+    itemClickObj (evt) {
+      this.updatePos(evt)
+
+      let obj = evt.object
+      let info = obj.userData.info
+
+      this.current.mesh = obj
+      this.current.data = info
+      this.refreshGUI()
+    },
+    itemDragEnd (evt) {
+      this.touchPanControl.enabled = true
+      let obj = evt.object
+      let info = obj.userData.info
+
+      this.$emit('pulse-update', { delta: info })
+    },
+    updatePos (evt) {
+      let obj = evt.object
+      let info = obj.userData.info
+      // console.table([info])
+      // console.table([obj.position])
+
+      info.pos.x = obj.position.x
+      info.pos.y = obj.position.y
+      info.pos.z = obj.position.z
+    },
     runWebGL () {
       this.tGroup.update()
       TWEEN.update()
@@ -663,7 +518,7 @@ export default {
 
       var layoutFn = () => {
         this.$nextTick(() => {
-          var fs = this.fs = fullScreener({ planeZ: 0, camera })
+          var fs = this.fs = fullScreener({ planeZ: -5, camera })
 
           this.eGroup.forEach((eg, key) => {
             var sizer = 1.0
@@ -719,23 +574,24 @@ export default {
       // }
       // window.document.documentElement.addEventListener('click', onClick, false)
 
-      // let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
-      // touchPanControl.rotateSpeed = 1.0
-      // touchPanControl.zoomSpeed = 1.0
-      // touchPanControl.panSpeed = window.innerWidth <= 256 * 512 ? 0.35 : 0.7
-      // touchPanControl.noZoom = false
-      // touchPanControl.noPan = false
-      // touchPanControl.staticMoving = false
-      // touchPanControl.dynamicDampingFactor = 0.234
-      // touchPanControl.addEventListener('end', this.viewCheck)
+      let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
+      touchPanControl.rotateSpeed = 1.0
+      touchPanControl.zoomSpeed = 1.0
+      touchPanControl.panSpeed = window.innerWidth <= 500 ? 0.25 : 0.5
+      touchPanControl.noZoom = true
+      touchPanControl.noPan = true
+      touchPanControl.staticMoving = false
+      touchPanControl.dynamicDampingFactor = 0.234
 
-      // let touchDragControl = this.touchDragControl = new THREE.DragDrag(this.dragGroup, camera, touchSurface)
-      // touchDragControl.addEventListener('dragstart', this.itemDragStart)
-      // touchDragControl.addEventListener('drag', this.itemDragging)
-      // touchDragControl.addEventListener('click', this.itemClickObj)
-      // touchDragControl.addEventListener('dragend', this.itemDragEnd)
+      let touchDragControl = this.touchDragControl = new THREE.DragDrag(this.dragGroup, camera, touchSurface)
+      touchDragControl.addEventListener('dragstart', this.itemDragStart)
+      touchDragControl.addEventListener('drag', this.itemDragging)
+      touchDragControl.addEventListener('click', this.itemClickObj)
+      touchDragControl.addEventListener('dragend', this.itemDragEnd)
 
       this.scene.background = new THREE.Color(0xefefef)
+
+      this.load()
     },
     bringIn (evt) {
       this.eGroup.forEach((eItem, key) => {
@@ -758,51 +614,6 @@ export default {
       })
 
       this.$forceUpdate()
-    },
-    itemDragStart (evt) {
-      this.touchPanControl.enabled = false
-      // this.updatePos(evt)
-    },
-    itemDragging (evt) {
-      // let obj = evt.object
-      // let info = obj.userData.info
-
-      // this.nowPos.copy(info.pos)
-
-      this.updatePos(evt)
-    },
-    itemClickObj (evt) {
-      this.updatePos(evt)
-
-      // let obj = evt.object
-      // let info = obj.userData.info
-
-      // this.current.mesh = obj
-      // this.current.data = info
-      // this.refreshGUI()
-    },
-    itemDragEnd (evt) {
-      this.renderCheck()
-      this.touchPanControl.enabled = true
-
-      console.log(evt.object.position)
-
-      // let obj = evt.object
-      // let info = obj.userData.info
-
-      // this.$emit('pulse-update', { delta: info })
-    },
-    updatePos (evt) {
-      // evt
-
-      let obj = evt.object
-      let info = obj.userData.info
-      // console.table([info])
-      // console.table([obj.position])
-
-      info.pos.x = obj.position.x
-      info.pos.y = obj.position.y
-      info.pos.z = obj.position.z
     }
   },
   mounted () {
@@ -831,4 +642,58 @@ export default {
   top: 0px;
   left: 0px;
 }
+.editor{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  background-color: rgba(255,255,255,0.5);
+}
+.closer{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0,0,0,0.2);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1.0s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.tools{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.en-create-btns{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.en-edit-glsl{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(255,255,255,0.5);
+  padding: 20px;
+}
+
+.en-edit-close{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+}
+
+.en-time-machine{
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
 </style>
