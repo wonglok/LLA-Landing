@@ -1,7 +1,7 @@
 <template>
 <div class="full">
 
-  <div class="full toucher" ref="touch-surface"></div>
+  <!-- <div class="full toucher" ref="touch-surface"></div> -->
 
   <div v-if="current.data && mode === 'SceneEdit'" class="full closer" @click="current.data = false; current.mesh = false;"></div>
 
@@ -35,14 +35,15 @@
         :renderer="renderer"
       />
     </Object3D>
-    <Object3D >
+
+    <!-- <Object3D >
       <Instancing
         v-if="renderer && camera && ori"
         :orientation="ori"
         :camera="camera"
         :renderer="renderer"
       />
-    </Object3D>
+    </Object3D> -->
 
   </Scene>
 
@@ -92,7 +93,8 @@ export default {
   },
   props: {
     renderer: {},
-    size: {}
+    size: {},
+    skip: {}
   },
   data () {
     return {
@@ -165,54 +167,57 @@ export default {
       // }
     },
     runWebGL () {
+      if (this.skip) { return }
       TWEEN.update()
 
       if (this.touchPanControl) {
         this.touchPanControl.update()
       }
 
-      if (this.renderer && this.camera && this.scene) {
+      if (this.renderer && this.camera && this.scene && this.$parent.rtt) {
+        this.renderer.render(this.scene, this.camera, this.$parent.rtt)
+      } else if (this.renderer && this.camera && this.scene) {
         this.renderer.render(this.scene, this.camera)
       }
     },
     setup () {
-      this.camera.position.z = 0
-      this.camera.position.y = 300
-
-      new TWEEN.Tween(this.camera.position)
-        .to({ z: 40, x: 0, y: 0 }, 5000)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onUpdate(() => {
-          this.camera.lookAt(this.scene.position)
-        })
-        .onStart(() => {
-          this.touchPanControl.enabled = false
-        })
-        .onComplete(() => {
-          this.touchPanControl.enabled = true
-        })
-        .delay(500)
-        .start()
+      this.camera.position.z = 35
+      // this.camera.position.z = 0
+      // this.camera.position.y = 300
+      // new TWEEN.Tween(this.camera.position)
+      //   .to({ z: 40, x: 0, y: 0 }, 5000)
+      //   .easing(TWEEN.Easing.Quadratic.Out)
+      //   .onUpdate(() => {
+      //     this.camera.lookAt(this.scene.position)
+      //   })
+      //   .onStart(() => {
+      //     this.touchPanControl.enabled = false
+      //   })
+      //   .onComplete(() => {
+      //     this.touchPanControl.enabled = true
+      //   })
+      //   .delay(500)
+      //   .start()
 
       this.scene.background = new THREE.Color('#fdfdfd')
 
-      let touchSurface = this.touchSurface = this.$refs['touch-surface']
-      let camera = this.camera
+      // let touchSurface = this.touchSurface = this.$refs['touch-surface']
+      // let camera = this.camera
 
-      let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
-      touchPanControl.rotateSpeed = 1.0
-      touchPanControl.zoomSpeed = 3.0
-      touchPanControl.panSpeed = window.innerWidth <= 500 ? 0.25 : 0.5
-      touchPanControl.noZoom = false
-      touchPanControl.noPan = false
-      touchPanControl.staticMoving = false
-      touchPanControl.dynamicDampingFactor = 0.234
+      // let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
+      // touchPanControl.rotateSpeed = 1.0
+      // touchPanControl.zoomSpeed = 1.0
+      // touchPanControl.panSpeed = window.innerWidth <= 500 ? 0.25 : 0.5
+      // touchPanControl.noZoom = false
+      // touchPanControl.noPan = false
+      // touchPanControl.staticMoving = false
+      // touchPanControl.dynamicDampingFactor = 0.234
 
-      let touchDragControl = this.touchDragControl = new THREE.DragDrag(this.dragGroup, camera, touchSurface)
-      touchDragControl.addEventListener('dragstart', this.itemDragStart)
-      touchDragControl.addEventListener('drag', this.itemDragging)
-      touchDragControl.addEventListener('click', this.itemClickObj)
-      touchDragControl.addEventListener('dragend', this.itemDragEnd)
+      // let touchDragControl = this.touchDragControl = new THREE.DragDrag(this.dragGroup, camera, touchSurface)
+      // touchDragControl.addEventListener('dragstart', this.itemDragStart)
+      // touchDragControl.addEventListener('drag', this.itemDragging)
+      // touchDragControl.addEventListener('click', this.itemClickObj)
+      // touchDragControl.addEventListener('dragend', this.itemDragEnd)
 
       var ori = this.ori = {
         sx: 0,
@@ -227,6 +232,13 @@ export default {
       function handleOrientation (event) {
         var x = event.beta - 45// In degree in the range [-180,180]
         var y = event.gamma // In degree in the range [-90,90]
+
+        if (window.innerWidth > window.innerHeight) {
+          var t = x
+          x = y
+          y = t
+        }
+
         if (!ori.sx) {
           ori.sx = x
           ori.sy = y
@@ -294,8 +306,8 @@ export default {
   mounted () {
     this.setup()
     var rAF = () => {
-      this.runWebGL()
       this.rAFID = window.requestAnimationFrame(rAF)
+      this.runWebGL()
     }
     this.rAFID = window.requestAnimationFrame(rAF)
   }

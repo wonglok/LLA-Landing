@@ -3,6 +3,9 @@ import Router from 'vue-router'
 import Hello from '@/components/pages/Hello/Hello'
 import HelloLayout from '@/components/pages/Hello/HelloLayout'
 
+import WinRenderer from '@/components/pages/WindowsSystem/WinRenderer'
+import WinLayout from '@/components/pages/WindowsSystem/WinLayout'
+
 Vue.use(Router)
 
 export default new Router({
@@ -10,6 +13,16 @@ export default new Router({
   routes: [
     {
       path: '/',
+      component: WinRenderer,
+      children: [
+        {
+          path: '',
+          component: WinLayout
+        }
+      ]
+    },
+    {
+      path: '/hello',
       name: 'Hello',
       component: HelloLayout,
       children: [

@@ -8,6 +8,7 @@ export default {
   CubeCamera: require('./System/CubeCamera.vue').default,
   // Refractor: require('./System/Refractor.vue').default,
   Raycaster: require('./System/Raycaster.vue').default,
+  RenderTarget: require('./System/RenderTarget.vue').default,
 
   Object3D: require('./Element/Object3D.vue').default,
   LineSegments: require('./Element/LineSegments.vue').default,

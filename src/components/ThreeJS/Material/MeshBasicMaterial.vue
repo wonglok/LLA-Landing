@@ -1,5 +1,5 @@
 <template>
-<div class="mesh-basic-material"></div>
+<div class="mesh-basic-material"><slot /></div>
 </template>
 
 <script>
@@ -25,9 +25,20 @@ export default {
       material: false
     }
   },
+  created () {
+  },
+  methods: {
+    makeMaterial (options) {
+      var config = { color: this.color, transparent: true, opacity: this.opacity, ...options }
+      this.material = new THREE.MeshBasicMaterial(config)
+      this.$parent.$emit('material', this.material)
+    }
+  },
   mounted () {
-    this.material = new THREE.MeshBasicMaterial({ color: this.color, transparent: true, opacity: this.opacity })
-    this.$parent.$emit('material', this.material)
+    this.makeMaterial({})
+    this.$on('texture', ({ texture }) => {
+      this.makeMaterial({ map: texture })
+    })
   }
 }
 </script>

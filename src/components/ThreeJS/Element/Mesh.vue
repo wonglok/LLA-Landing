@@ -9,6 +9,11 @@
 import * as THREE from 'three'
 export default {
   props: {
+    position: {
+      default () {
+        return { x: 0, y: 0, z: 0 }
+      }
+    }
   },
   data () {
     return {
@@ -18,8 +23,14 @@ export default {
       geometry: false
     }
   },
+  watch: {
+    position () {
+      this.mesh.position.copy(this.position)
+    }
+  },
   created () {
     this.element = this.mesh = new THREE.Mesh()
+    this.element.position.copy(this.position)
     this.$parent.$emit('add', this.mesh)
     this.$emit('attach', this.mesh)
     this.$emit('element', this.mesh)

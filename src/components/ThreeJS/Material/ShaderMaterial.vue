@@ -1,5 +1,5 @@
 <template>
-<div class="mesh-basic-material"></div>
+<div class="mesh-basic-material"><slot /></div>
 </template>
 
 <script>
