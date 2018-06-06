@@ -101,8 +101,8 @@ function DomToucher ({ toucher }) {
   this.toucher = toucher
   var ui = this.state = {
     disabled: false,
-    deltaX: -0.05,
-    deltaY: -0.1,
+    deltaX: -0.0,
+    deltaY: -0.0,
     addon: 0.0016667,
     mass: 5.0,
     inertia: 1.0,
@@ -616,12 +616,12 @@ export default {
 
           if (scroller.position.x > max) {
             let varying = { ...scroller.position }
-            varying.x -= (varying.x - max) * 0.24
+            varying.x -= (varying.x - max) * 0.5
             scroller.position.set(varying.x, varying.y, varying.z)
           }
           if (scroller.position.x < min) {
             let varying = { ...scroller.position }
-            varying.x -= (varying.x - min) * 0.24
+            varying.x -= (varying.x - min) * 0.5
             scroller.position.set(varying.x, varying.y, varying.z)
           }
         }
@@ -665,7 +665,7 @@ export default {
           var fs = this.fs = fullScreener({ planeZ: 0, camera })
 
           this.eGroup.forEach((eg, key) => {
-            var sizer = 0.95
+            var sizer = 1.0
             var dpi = 2
 
             eg.size.vw = fs.width * sizer
