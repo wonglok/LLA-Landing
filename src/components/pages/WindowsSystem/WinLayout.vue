@@ -89,7 +89,7 @@ import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 /* eslint-enable */
 
 import Honey from './Windows/Honey'
-import VField from './Windows/V-Field'
+import VectorField from './Windows/VectorField'
 import Instancing from './Windows/Instancing'
 import ParticleFormula from './Windows/ParticleFormula'
 
@@ -112,7 +112,7 @@ export default {
     ...Bundle,
     Honey,
     Hello,
-    VField,
+    VectorField,
     TextOutlet,
     TextEdit,
     Instancing,
@@ -128,16 +128,16 @@ export default {
     var eGroup = [
       {
         pos: {x: 0, y: 0, z: 0},
-        component: 'Hello',
+        component: 'VectorField',
         zIndex: 0.0,
         element: false,
         skip: false,
         size: {
           width: 256 * dpi,
-          height: 256 * dpi * 16 / 9,
+          height: 256 * dpi * 16.9 / 16.9,
           aspect: 1 * 1 / (16 / 9),
           vw: 18.0,
-          vh: 18.0 * 16 / 9
+          vh: 18.0 * 16.9 / 16.9
         },
         shader: {
           vs:
@@ -197,10 +197,10 @@ export default {
         skip: false,
         size: {
           width: 256 * dpi,
-          height: 256 * dpi * 16 / 9,
+          height: 256 * dpi * 16.9 / 16.9,
           aspect: 1 * 1 / (16 / 9),
           vw: 18.0,
-          vh: 18.0 * 16 / 9
+          vh: 18.0 * 16.9 / 16.9
         },
         shader: {
           vs:
@@ -260,10 +260,10 @@ export default {
         skip: false,
         size: {
           width: 256 * dpi,
-          height: 256 * dpi * 16 / 9,
+          height: 256 * dpi * 16.9 / 16.9,
           aspect: 1 * 1 / (16 / 9),
           vw: 18.0,
-          vh: 18.0 * 16 / 9
+          vh: 18.0 * 16.9 / 16.9
         },
         shader: {
           vs:
@@ -323,10 +323,10 @@ export default {
         skip: false,
         size: {
           width: 256 * dpi,
-          height: 256 * dpi * 16 / 9,
+          height: 256 * dpi * 16.9 / 16.9,
           aspect: 1 * 1 / (16 / 9),
           vw: 18.0,
-          vh: 18.0 * 16 / 9
+          vh: 18.0 * 16.9 / 16.9
         },
         shader: {
           vs:
@@ -526,7 +526,7 @@ export default {
           var fs = this.fs = fullScreener({ planeZ: -5, camera })
 
           this.eGroup.forEach((eg, key) => {
-            var dpi = 2
+            var dpi = 1.75
             var res = 768
 
             var nx = key
@@ -537,7 +537,7 @@ export default {
 
             // landscape
             if (fs.aspect > 1) {
-              let scaler = 0.75
+              let scaler = 0.7
 
               if (window.innerWidth >= 1921) {
                 scaler = 0.55
@@ -547,15 +547,19 @@ export default {
               eg.size.vh = fs.vmin * scaler
               res = 768 * scaler
 
-              // let rows = 2
-              // nx = key % rows
-              // ny = (rows - 1) * Math.floor(key / rows)
+              let rows = 2
+              nx = key % rows
+              ny = (rows - 1) * Math.floor(key / rows)
             }
 
             eg.size.aspect = eg.size.vw / eg.size.vh
 
             eg.size.width = res * eg.size.aspect * dpi
             eg.size.height = res * dpi
+
+            eg.size = {
+              ...eg.size
+            }
 
             eg.element.position.x = eg.size.vw * (nx)
             eg.element.position.y = -eg.size.vh * (ny)
@@ -598,10 +602,19 @@ export default {
         if (this.fs) {
           // if 1 row
           if (this.fs.aspect <= 1) {
-            new TWEEN.Tween(this.scroller.position)
-              .to({ x: -this.fs.width * 3 || -3.0 }, 2000)
+            // new TWEEN.Tween(this.scroller.position)
+            //   .to({ x: -this.fs.width * 3 || -3.0 }, 2000)
+            //   .easing(TWEEN.Easing.Quadratic.Out)
+            //   .delay(1500)
+            //   .start()
+
+            new TWEEN.Tween(mover.state)
+              .to({ deltaX: -3 || -3.0 }, 2000)
               .easing(TWEEN.Easing.Quadratic.Out)
               .delay(1500)
+              .onUpdate(() => {
+                mover.state.inertia = 3.0
+              })
               .start()
           }
         }

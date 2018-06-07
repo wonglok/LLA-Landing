@@ -21,7 +21,7 @@ void main() {
 
     // vec4 outputColor = vec4(vUv.x, vUv.y, vUv.y + vUv.x, opacity);
 
-    vec4 outputColor = vec4(vUv.x + vUv.y, vUv.y, vUv.y + vUv.x, opacity);
+    // vec4 outputColor = vec4(vUv.x + vUv.y, vUv.y, vUv.y + vUv.x, opacity);
 
-    gl_FragColor = outputColor;
+    gl_FragColor = vec4(vec3(1.0), opacity);
 }

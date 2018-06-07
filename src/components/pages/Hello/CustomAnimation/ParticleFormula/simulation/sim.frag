@@ -205,8 +205,8 @@ void main() {
 
     float t = M_PI * 2.0 * e * 20.0;
 
-    float x = 17.0 * sin(8.0 * t / 5.0) * cos(t);
-    float y = 17.0 * sin(8.0 * t / 5.0) * sin(t);
+    float x = 17.0 * sin(time + 8.0 * t / 5.0) * cos(t);
+    float y = 17.0 * sin(time + 8.0 * t / 5.0) * sin(t);
     float z = rand(uv) * 1.5;
 
     vec3 pt = vec3(x, y, z);
@@ -222,8 +222,8 @@ void main() {
     float cosTheta4 = cosTheta * cosTheta * cosTheta * cosTheta;
     float r1 = 0.5 - rand(uv);
 
-    float x = 17.0 * (sinTheta2 + cosTheta4) * cos(t);
-    float y = 17.0 * (sinTheta2 + cosTheta4) * sin(t);
+    float x = 17.0 * (time + sinTheta2 + cosTheta4) * cos(t);
+    float y = 17.0 * (time + sinTheta2 + cosTheta4) * sin(t);
     float z = r1 * 7.0;
 
     vec3 pt = vec3(x, y, z);

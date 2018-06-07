@@ -132,7 +132,7 @@ export default {
       if (this.fs && this.vs) {
         let uniforms = this.uniforms = {
           text: { value: this.textureOfCanvas },
-          pattern: { value: new THREE.TextureLoader().load(require('./Images/waves.svg')) },
+          pattern: { value: new THREE.TextureLoader().load(require('./Images/fabric.jpg')) },
           time: { value: 0 }
         }
         this.material = new THREE.ShaderMaterial({
@@ -147,7 +147,7 @@ export default {
       } else {
         // this.material = new THREE.MeshBasicMaterial({ map: this.textureOfCanvas, transparent: this.transparent })
         let uniforms = this.uniforms = {
-          pattern: { value: new THREE.TextureLoader().load(require('./Images/waves.svg')) },
+          pattern: { value: new THREE.TextureLoader().load(require('./Images/fabric.jpg')) },
           text: { value: this.textureOfCanvas },
           time: { value: 0 }
         }

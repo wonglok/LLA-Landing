@@ -38,7 +38,7 @@ void patternText (vec4 textColor) {
   swifting.y = fract(swifting.y);
   vec4 pattern = texture2D(pattern, swifting);
 
-  vec3 final = vec3((1.0 - textColor) * pattern);
+  vec3 final = vec3((1.0 - textColor) * (pattern.xxxw));
   gl_FragColor = vec4(vec3(final), textColor.a);
 }
 

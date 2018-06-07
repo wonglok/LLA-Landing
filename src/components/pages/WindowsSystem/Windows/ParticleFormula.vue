@@ -120,7 +120,21 @@ void main () {
       }
     }
   },
+  watch: {
+    width () {
+      this.resizer()
+    },
+    height () {
+      this.resizer()
+    }
+  },
   computed: {
+    width () {
+      return this.size.width
+    },
+    height () {
+      return this.size.height
+    }
   },
   methods: {
     runWebGL () {
@@ -176,8 +190,12 @@ void main () {
       let composer = this.composer = new THREE.EffectComposer(this.renderer, this.$parent.rtt)
       composer.setSize(this.size.width * dpi, this.size.height * dpi)
       window.addEventListener('resize', () => {
-        composer.setSize(this.size.width * dpi, this.size.height * dpi)
+        this.resizer()
       }, false)
+      this.resizer = () => {
+        composer.setSize(this.size.width * dpi, this.size.height * dpi)
+      }
+      this.$nextTick(this.resizer)
 
       let renderBG = new THREE.RenderPass(this.scene, this.camera)
       let bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(this.size.width, this.size.height), 1.5, 0.4, 0.85)

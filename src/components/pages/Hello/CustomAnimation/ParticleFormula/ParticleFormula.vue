@@ -109,10 +109,10 @@ export default {
     this.init = init
     init({ pingPongShader })
 
-    // setInterval(() => {
-    //   pingMat.uniforms.tapCount.value++
-    //   pongMat.uniforms.tapCount.value++
-    // }, 3000)
+    setInterval(() => {
+      pingMat.uniforms.tapCount.value++
+      pongMat.uniforms.tapCount.value++
+    }, 1500)
 
     // sim part
     let procSim = () => {
@@ -142,7 +142,6 @@ export default {
         resolution: 'vec2( ' + SIZE.toFixed(1) + ', ' + SIZE.toFixed(1) + ' )'
       },
       uniforms: {
-
         time: { value: 0 },
         opacity: { value: 1.0 },
         posTex: { value: null },

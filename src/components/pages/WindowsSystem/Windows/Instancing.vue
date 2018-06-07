@@ -37,13 +37,25 @@
 <script>
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
-import VectorField from '../../Hello/CustomAnimation/VectorField/VectorField.vue'
 import Instancing from '../../Hello/CustomAnimation/Instancing/Instancing.vue'
+/* eslint-disable */
+
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/RenderPass.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/MaskPass.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/ShaderPass.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/CopyShader.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/FXAAShader.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/ConvolutionShader.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/LuminosityHighPassShader.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/UnrealBloomPass.js'
+
+
+/* eslint-enable */
 
 export default {
   components: {
     ...Bundle,
-    VectorField,
     Instancing
   },
   props: {
@@ -54,12 +66,12 @@ export default {
   data () {
     return {
       ori: false,
-      colorMe: 0xffffff * Math.random(),
+      colorMe: 0xffffff * (Math.random() + 2.3),
       rAFID: 0,
       scene: false,
       camera: false,
       camPos: {
-        x: 0, y: 0, z: 45
+        x: 0, y: 0, z: 25
       },
       shader: {
         vs:
@@ -89,35 +101,48 @@ varying vec2 vUv;
 varying vec3 vPos;
 
 uniform float time;
-uniform vec3 color;
 
 void main () {
-  gl_FragColor = vec4(
-    vec3(
-        vPos * 0.1
-      + 0.5 * abs(cos(time * 10.0 + vPos.y))
-    ) * color,
-  1.0);
+  float x = vPos.x * sin(time * 3.0) * 0.1;
+  float y = vPos.y * cos(time * 3.0) * 0.1;
+  float z = vPos.z * sin(time * 3.0) * 0.1;
+
+  vec4 a = vec4(vUv.x + 0.04 + x, vUv.y + y, vUv.y + vUv.x + z, 1.0);
+
+  gl_FragColor = vec4(a.xyz, 1.0);
 }
 `,
         uniforms: {
           time: {
             value: 0
-          },
-          color: {
-            value: new THREE.Color(0xffffff * Math.random())
           }
         }
       }
     }
   },
+  watch: {
+    width () {
+      this.resizer()
+    },
+    height () {
+      this.resizer()
+    }
+  },
   computed: {
+    width () {
+      return this.size.width
+    },
+    height () {
+      return this.size.height
+    }
   },
   methods: {
     runWebGL () {
       this.shader.uniforms.time.value = window.performance.now() * 0.001
 
-      if (this.renderer && this.camera && this.scene && this.$parent.rtt) {
+      if (this.renderer && this.composer && this.camera && this.scene && this.$parent.rtt) {
+        this.composer.render()
+      } else if (this.renderer && this.camera && this.scene && this.$parent.rtt) {
         this.renderer.render(this.scene, this.camera, this.$parent.rtt)
       } else if (this.renderer && this.camera && this.scene) {
         this.renderer.render(this.scene, this.camera)
@@ -137,13 +162,6 @@ void main () {
       function handleOrientation (event) {
         var x = event.beta - 45// In degree in the range [-180,180]
         var y = event.gamma // In degree in the range [-90,90]
-
-        if (window.innerWidth > window.innerHeight) {
-          var t = x
-          x = y
-          y = t
-        }
-
         if (!ori.sx) {
           ori.sx = x
           ori.sy = y
@@ -161,7 +179,38 @@ void main () {
 
       window.addEventListener('deviceorientation', handleOrientation, false)
 
-      // this.scene.background = new THREE.Color('#bababa')
+      // let rtParameters = {
+      //   minFilter: THREE.LinearFilter,
+      //   magFilter: THREE.LinearFilter,
+      //   format: THREE.RGBFormat,
+      //   stencilBuffer: true
+      // }
+      var dpi = 1.0
+
+      let composer = this.composer = new THREE.EffectComposer(this.renderer, this.$parent.rtt)
+      composer.setSize(this.size.width * dpi, this.size.height * dpi)
+      window.addEventListener('resize', () => {
+        this.resizer()
+      }, false)
+      this.resizer = () => {
+        composer.setSize(this.size.width * dpi, this.size.height * dpi)
+      }
+      this.$nextTick(this.resizer)
+
+      let renderBG = new THREE.RenderPass(this.scene, this.camera)
+      let bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(this.size.width, this.size.height), 1.5, 0.4, 0.85)
+      // bloomPass.renderToScreen = true
+
+      bloomPass.threshold = Number(0.71)
+      bloomPass.strength = Number(1.5)
+      bloomPass.radius = Number(1.0)
+
+      composer.addPass(renderBG)
+      composer.addPass(bloomPass)
+
+      this.$emit('texture', this.composer.readBuffer.texture)
+
+      this.scene.background = new THREE.Color('hsl(389, 80%, 50%)')
     }
   },
   mounted () {

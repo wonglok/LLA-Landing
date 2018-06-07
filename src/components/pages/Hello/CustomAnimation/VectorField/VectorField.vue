@@ -53,7 +53,7 @@ export default {
   mounted () {
     // var moveY = 0
     // var moveX = 0
-    let SIZE = 128
+    let SIZE = 32
 
     var gpuCompute = new GPUComputationRenderer(SIZE, SIZE, this.renderer)
 
@@ -148,7 +148,7 @@ export default {
         // indexerTexture: { value: indexerTexture },
         // picture: { value: new THREE.TextureLoader().load('https://picsum.photos/256/256', (texture) => { texture.flipY = true; texture.needsUpdate = true }) },
         picture: { value: new THREE.TextureLoader().load(require('@/components/pages/Hello/Elements/Text/Images/sunset.jpg'), (texture) => { texture.flipY = true; texture.needsUpdate = true }) },
-        pointSize: { value: window.devicePixelRatio || 1.0 },
+        pointSize: { value: window.devicePixelRatio * 2.0 || 1.0 },
         mouse: { get value () {
           return getPos()
         } }
