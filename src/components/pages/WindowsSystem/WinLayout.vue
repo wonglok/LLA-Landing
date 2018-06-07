@@ -535,7 +535,7 @@ export default {
 
             // landscape
             if (fs.aspect > 1) {
-              let scaler = 0.75
+              let scaler = 0.9
 
               if (window.innerWidth >= 1921) {
                 scaler = 0.5
@@ -545,9 +545,9 @@ export default {
               eg.size.vh = fs.vmin * scaler
               res = 768 * scaler
 
-              let rows = 2
-              nx = key % rows
-              ny = (rows - 1) * Math.floor(key / rows)
+              // let rows = 2
+              // nx = key % rows
+              // ny = (rows - 1) * Math.floor(key / rows)
             }
 
             eg.size.aspect = eg.size.vw / eg.size.vh
@@ -712,22 +712,22 @@ export default {
           this.bringIn(evt)
         }
       }
-      touchSurface.addEventListener('click', onClick, false)
+      touchSurface.addEventListener('click', onClick, true)
 
-      let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
-      touchPanControl.rotateSpeed = 1.0
-      touchPanControl.zoomSpeed = 1.0
-      touchPanControl.panSpeed = window.innerWidth <= 500 ? 0.25 : 0.5
-      touchPanControl.noZoom = true
-      touchPanControl.noPan = true
-      touchPanControl.staticMoving = false
-      touchPanControl.dynamicDampingFactor = 0.234
+      // let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
+      // touchPanControl.rotateSpeed = 1.0
+      // touchPanControl.zoomSpeed = 1.0
+      // touchPanControl.panSpeed = window.innerWidth <= 500 ? 0.25 : 0.5
+      // touchPanControl.noZoom = true
+      // touchPanControl.noPan = true
+      // touchPanControl.staticMoving = false
+      // touchPanControl.dynamicDampingFactor = 0.234
 
-      let touchDragControl = this.touchDragControl = new THREE.DragDrag(this.dragGroup, camera, touchSurface)
-      touchDragControl.addEventListener('dragstart', this.itemDragStart)
-      touchDragControl.addEventListener('drag', this.itemDragging)
-      touchDragControl.addEventListener('click', this.itemClickObj)
-      touchDragControl.addEventListener('dragend', this.itemDragEnd)
+      // let touchDragControl = this.touchDragControl = new THREE.DragDrag(this.dragGroup, camera, touchSurface)
+      // touchDragControl.addEventListener('dragstart', this.itemDragStart)
+      // touchDragControl.addEventListener('drag', this.itemDragging)
+      // touchDragControl.addEventListener('click', this.itemClickObj)
+      // touchDragControl.addEventListener('dragend', this.itemDragEnd)
 
       this.scene.background = new THREE.Color(0xefefef)
     },
