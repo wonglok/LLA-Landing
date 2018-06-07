@@ -198,7 +198,7 @@ void main() {
     float y = cos(tc + nps * np.y + t) * sin(tc + nps * np.y + t);
     float z = cos(ts + nps * np.z + t) * sin(tc + ts + nps * np.z + t);
 
-    nextPos = rotateY(mouse.x * 5.0) * rotateX(-mouse.y * 5.0) * vec3(x, y, z) * ra * 0.2;
+    nextPos = rotateY(mouse.x * 5.0) * rotateX(-mouse.y * 5.0) * vec3(x, y, z) * ra * 1.0;
   }
 
 
