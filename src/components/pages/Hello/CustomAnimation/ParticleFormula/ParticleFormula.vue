@@ -70,7 +70,7 @@ export default {
     let displayF = require('./display/display.frag')
 
     let init = ({ pingPongShader }) => {
-      let lastTap = 0
+      let lastTap = 2
 
       if (pingMat) {
         lastTap = pingMat.uniforms.tapCount.value
@@ -109,10 +109,10 @@ export default {
     this.init = init
     init({ pingPongShader })
 
-    setInterval(() => {
-      pingMat.uniforms.tapCount.value++
-      pongMat.uniforms.tapCount.value++
-    }, 3000)
+    // setInterval(() => {
+    //   pingMat.uniforms.tapCount.value++
+    //   pongMat.uniforms.tapCount.value++
+    // }, 3000)
 
     // sim part
     let procSim = () => {

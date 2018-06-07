@@ -91,6 +91,7 @@ import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 import Honey from './Windows/Honey'
 import VField from './Windows/V-Field'
 import Instancing from './Windows/Instancing'
+import ParticleFormula from './Windows/ParticleFormula'
 
 import Hello from '../Hello/Hello.vue'
 
@@ -114,7 +115,8 @@ export default {
     VField,
     TextOutlet,
     TextEdit,
-    Instancing
+    Instancing,
+    ParticleFormula
   },
   props: {
     renderer: {},
@@ -252,7 +254,7 @@ export default {
 
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: 'VField',
+        component: 'ParticleFormula',
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -535,10 +537,10 @@ export default {
 
             // landscape
             if (fs.aspect > 1) {
-              let scaler = 0.9
+              let scaler = 0.75
 
               if (window.innerWidth >= 1921) {
-                scaler = 0.5
+                scaler = 0.55
               }
 
               eg.size.vw = fs.vmin * scaler
@@ -723,7 +725,7 @@ export default {
         var evt = raycaster.intersectObjects(this.eGroupMesh)[0]
         if (evt) {
           console.log(evt)
-          this.bringIn(evt)
+          // this.bringIn(evt)
         }
       }
       touchSurface.addEventListener('click', onClick, true)

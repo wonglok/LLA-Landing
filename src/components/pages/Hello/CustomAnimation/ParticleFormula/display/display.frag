@@ -14,7 +14,7 @@ void main() {
     vec4 outputColor = imgColor;
     outputColor.a = outputColor.a * opacity;
 
-    // outputColor.xyz *= posColor.xyz;
+    outputColor.xyz *= 2.0;
 
     gl_FragColor = outputColor;
 }
