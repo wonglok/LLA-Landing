@@ -78,7 +78,7 @@ import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
 
-import { fullScreener, DomToucher } from './Utils.js'
+import { fullScreener, DomToucher } from '@/components/Shared/Utils.js'
 
 import 'imports-loader?THREE=three!../../shared/Touch/TrackTrack.js'
 import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
@@ -88,8 +88,10 @@ import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 // import 'imports-loader?THREE=three!./Touch/DragDrag.js'
 /* eslint-enable */
 
-import Honey from './Content/Honey'
-import VField from './Content/V-Field'
+import Honey from './Windows/Honey'
+import VField from './Windows/V-Field'
+import Instancing from './Windows/Instancing'
+
 import Hello from '../Hello/Hello.vue'
 
 import * as MS from '../Hello/Data/HelloData.js'
@@ -111,7 +113,8 @@ export default {
     Hello,
     VField,
     TextOutlet,
-    TextEdit
+    TextEdit,
+    Instancing
   },
   props: {
     renderer: {},
@@ -308,6 +311,69 @@ export default {
             }
           }
         }
+      },
+
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: 'Instancing',
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16 / 9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16 / 9
+        },
+        shader: {
+          vs:
+  `
+  #include <common>
+
+  varying vec2 vUv;
+  varying vec3 vPos;
+
+  uniform float time;
+  uniform float wiggle;
+
+  void main ( void ) {
+    vec3 newPos = position;
+    newPos.y += sin(time * 55.0) * wiggle;
+
+    vPos = position;
+    vUv = uv;
+    vec4 mvPosition = modelViewMatrix * vec4( newPos, 1.0 );
+
+    vec4 outputPos = projectionMatrix * mvPosition;
+    gl_Position = outputPos;
+  }
+  `,
+          fs:
+  `
+  varying vec2 vUv;
+  varying vec3 vPos;
+
+  uniform float time;
+  uniform sampler2D tDiffuse;
+
+  void main () {
+    vec4 tColor = texture2D(tDiffuse, vUv);
+    gl_FragColor = tColor;
+  }
+  `,
+          uniforms: {
+            tDiffuse: {
+              value: null
+            },
+            time: {
+              value: 0
+            },
+            wiggle: {
+              value: 0
+            }
+          }
+        }
       }
     ]
 
@@ -341,6 +407,11 @@ export default {
     }
   },
   watch: {
+    camera () {
+      if (this.camera) {
+        this.load()
+      }
+    },
     mode () {
       if (this.mode === 'SceneEdit') {
         this.touchDragControl.deactivate()
@@ -386,9 +457,7 @@ export default {
       // }
     },
     load () {
-      setTimeout(() => {
-        this.root = MS.makeDemoRoot()
-      }, 200)
+      this.root = MS.makeDemoRoot({ camera: this.camera })
     },
     itemDragStart (evt) {
       this.mover.state.disabled = true
@@ -456,8 +525,8 @@ export default {
 
           this.eGroup.forEach((eg, key) => {
             var dpi = 2
-            var numInRow = 2
             var res = 768
+
             var nx = key
             var ny = 0
 
@@ -466,11 +535,19 @@ export default {
 
             // landscape
             if (fs.aspect > 1) {
-              eg.size.vw = fs.vmin * 0.5
-              eg.size.vh = fs.vmin * 0.5
-              res = 768 * 0.5
-              nx = key % numInRow
-              ny = (numInRow - 1) * Math.floor(key / numInRow)
+              let scaler = 0.75
+
+              if (window.innerWidth >= 1921) {
+                scaler = 0.5
+              }
+
+              eg.size.vw = fs.vmin * scaler
+              eg.size.vh = fs.vmin * scaler
+              res = 768 * scaler
+
+              let rows = 2
+              nx = key % rows
+              ny = (rows - 1) * Math.floor(key / rows)
             }
 
             eg.size.aspect = eg.size.vw / eg.size.vh
@@ -514,6 +591,7 @@ export default {
 
       // Using events with the custom object
       var mover = this.mover = new DomToucher({ toucher: touchSurface })
+      mover.state.deltaX = -0.5
       mover.addEventListener('update', (evt) => {
         //
 
@@ -527,8 +605,17 @@ export default {
         let moveAmountY = evt.state.inY * 0.15
         let scroller = this.scroller
         if (scroller) {
-          scroller.position.x += moveAmountX
-          scroller.position.y += -moveAmountY
+          if (this.fs) {
+            if (this.fs.aspect <= 1) {
+              scroller.position.x += moveAmountY + moveAmountX
+            } else {
+              scroller.position.x += moveAmountX
+              scroller.position.y += -moveAmountY
+            }
+          } else {
+            scroller.position.x += moveAmountX
+            scroller.position.y += -moveAmountY
+          }
 
           if (scroller.position.x > maxX) {
             let varying = { ...scroller.position }
@@ -635,8 +722,6 @@ export default {
       touchDragControl.addEventListener('dragend', this.itemDragEnd)
 
       this.scene.background = new THREE.Color(0xefefef)
-
-      this.load()
     },
     bringIn (evt) {
       this.eGroup.forEach((eItem, key) => {

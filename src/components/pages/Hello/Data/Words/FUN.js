@@ -1,6 +1,6 @@
 import { makeOneWord } from '../HelloData'
 
-export default () => {
+export default ({ camera, fullScreener }) => {
   let vs = `
 // varying vec3 vPos;
 uniform float time;
@@ -60,17 +60,26 @@ void main () {
 `
 
   var word = makeOneWord()
-  word.data.text = `Visual Effect Language
-Academy
-made with 😍😎 & ☯︎☁︎
-in Hong Kong`
-  word.data.width = 900
+  word.data.text = `
+Welcome to Lok Lok's
+Visual Effect Language Academy 😎`
+  word.data.width = 1200
   word.data.fontSize = '70'
-  word.pos = {
-    x: 7,
-    y: -26,
-    z: 3.552713678800501e-15
+
+  let getPos = () => {
+    var fsc = fullScreener({ planeZ: 0, camera })
+    word.pos = {
+      x: fsc.width * 0.5 * -1 + 22,
+      y: fsc.height * 0.5 * 1.0 - 5,
+      z: 0
+    }
   }
+
+  getPos()
+  window.addEventListener('resize', () => {
+    getPos()
+  })
+
   word.effect.vs = vs
   word.effect.fs = fs
 

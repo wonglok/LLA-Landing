@@ -257,52 +257,52 @@ export default {
 
       window.addEventListener('deviceorientation', handleOrientation, false)
 
-      this.load()
-    },
-    load () {
-      setTimeout(() => {
-        this.root = MS.makeDemoRoot()
-      }, 200)
-    },
-    itemDragStart (evt) {
-      this.touchPanControl.enabled = false
-      this.updatePos(evt)
-    },
-    itemDragging (evt) {
-      let obj = evt.object
-      let info = obj.userData.info
+      // this.load()
+    }// ,
+    // load () {
+    //   setTimeout(() => {
+    //     this.root = MS.makeDemoRoot({ camera: this.camera })
+    //   }, 200)
+    // },
+    // itemDragStart (evt) {
+    //   this.touchPanControl.enabled = false
+    //   this.updatePos(evt)
+    // },
+    // itemDragging (evt) {
+    //   let obj = evt.object
+    //   let info = obj.userData.info
 
-      this.nowPos.copy(info.pos)
+    //   this.nowPos.copy(info.pos)
 
-      this.updatePos(evt)
-    },
-    itemClickObj (evt) {
-      this.updatePos(evt)
+    //   this.updatePos(evt)
+    // },
+    // itemClickObj (evt) {
+    //   this.updatePos(evt)
 
-      let obj = evt.object
-      let info = obj.userData.info
+    //   let obj = evt.object
+    //   let info = obj.userData.info
 
-      this.current.mesh = obj
-      this.current.data = info
-      this.refreshGUI()
-    },
-    itemDragEnd (evt) {
-      this.touchPanControl.enabled = true
-      let obj = evt.object
-      let info = obj.userData.info
+    //   this.current.mesh = obj
+    //   this.current.data = info
+    //   this.refreshGUI()
+    // },
+    // itemDragEnd (evt) {
+    //   this.touchPanControl.enabled = true
+    //   let obj = evt.object
+    //   let info = obj.userData.info
 
-      this.$emit('pulse-update', { delta: info })
-    },
-    updatePos (evt) {
-      let obj = evt.object
-      let info = obj.userData.info
-      // console.table([info])
-      // console.table([obj.position])
+    //   this.$emit('pulse-update', { delta: info })
+    // },
+    // updatePos (evt) {
+    //   let obj = evt.object
+    //   let info = obj.userData.info
+    //   // console.table([info])
+    //   // console.table([obj.position])
 
-      info.pos.x = obj.position.x
-      info.pos.y = obj.position.y
-      info.pos.z = obj.position.z
-    }
+    //   info.pos.x = obj.position.x
+    //   info.pos.y = obj.position.y
+    //   info.pos.z = obj.position.z
+    // }
   },
   mounted () {
     this.setup()

@@ -12,7 +12,7 @@
     </Mesh> -->
 
     <Object3D>
-      <VectorField
+      <Instancing
         v-if="renderer && camera && ori"
         :orientation="ori"
         :camera="camera"
@@ -38,11 +38,13 @@
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
 import VectorField from '../../Hello/CustomAnimation/VectorField/VectorField.vue'
+import Instancing from '../../Hello/CustomAnimation/Instancing/Instancing.vue'
 
 export default {
   components: {
     ...Bundle,
-    VectorField
+    VectorField,
+    Instancing
   },
   props: {
     skip: { default: false },
@@ -57,7 +59,7 @@ export default {
       scene: false,
       camera: false,
       camPos: {
-        x: 0, y: 0, z: 35
+        x: 0, y: 0, z: 45
       },
       shader: {
         vs:

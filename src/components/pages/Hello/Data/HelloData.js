@@ -1,3 +1,5 @@
+import { fullScreener } from '@/components/Shared/Utils.js'
+
 export const makeRandomID = () => {
   var text = ''
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -45,14 +47,14 @@ export const makeOneWord = () => {
   }
 }
 
-export const makeDemoRoot = () => {
+export const makeDemoRoot = ({ camera }) => {
   let root = makeRoot()
 
   root.state.words = makeWords()
 
   function importAll (r) {
     r.keys().forEach(key => {
-      var item = r(key).default()
+      var item = r(key).default({ camera, fullScreener })
       root.state.words.push(item)
     })
   }

@@ -1,6 +1,6 @@
 import { makeOneWord } from '../HelloData'
 
-export default () => {
+export default ({ camera, fullScreener }) => {
   let vs = `
 // varying vec3 vPos;
 uniform float time;
@@ -58,12 +58,13 @@ void main () {
   }
 }
 `
+
   var word = makeOneWord()
   word.data.text = `Welcome to
 V.E.L.A.`
   word.pos = {
-    x: -5.0,
-    y: 26.0,
+    x: 0,
+    y: 0,
     z: 0
   }
   word.effect.vs = vs
