@@ -67,7 +67,7 @@ THREE.DragDrag = function ( _objects, _camera, _domElement ) {
 	}
 
 	function onDocumentClick ( event ) {
-		event.preventDefault();
+		// event.preventDefault();
 
 		_raycaster.setFromCamera( _mouse, _camera );
 

@@ -37,7 +37,7 @@
 <script>
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
-import VectorField from '../Hello/CustomAnimation/VectorField/VectorField.vue'
+import VectorField from '../../Hello/CustomAnimation/VectorField/VectorField.vue'
 
 export default {
   components: {

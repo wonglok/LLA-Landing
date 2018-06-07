@@ -37,7 +37,7 @@
 <script>
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
-import VectorField from '../Hello/CustomAnimation/VectorField/VectorField.vue'
+import VectorField from '../../Hello/CustomAnimation/VectorField/VectorField.vue'
 /* eslint-disable */
 
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'

@@ -395,8 +395,8 @@ THREE.TrackTrack = function ( object, domElement ) {
 
 		if ( _this.enabled === false ) return;
 
-		event.preventDefault();
-		event.stopPropagation();
+		// event.preventDefault();
+		// event.stopPropagation();
 
 		if ( _state === STATE.NONE ) {
 

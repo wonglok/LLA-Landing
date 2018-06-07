@@ -25,7 +25,7 @@
       >
         <Mesh
           :position="eGroupItem.pos"
-          @attach="(v) => { eGroupItem.element = v; v.userData.info = eGroupItem; }"
+          @attach="(v) => { eGroupItem.element = v; v.userData.info = eGroupItem; eGroupMesh.push(v); }"
         >
           <PlaneBufferGeometry :width="eGroupItem.size.vw" :height="eGroupItem.size.vh" :nx="64" :ny="64"></PlaneBufferGeometry>
           <ShaderMaterial :vs="eGroupItem.shader.vs" :fs="eGroupItem.shader.fs" :uniforms="eGroupItem.shader.uniforms">
@@ -88,8 +88,8 @@ import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 // import 'imports-loader?THREE=three!./Touch/DragDrag.js'
 /* eslint-enable */
 
-import Honey from './Honey'
-import VField from './V-Field'
+import Honey from './Content/Honey'
+import VField from './Content/V-Field'
 import Hello from '../Hello/Hello.vue'
 
 import * as MS from '../Hello/Data/HelloData.js'
@@ -327,6 +327,7 @@ export default {
       tempv3: new THREE.Vector3(),
       nowPos: new THREE.Vector3(),
 
+      eGroupMesh: [],
       eGroup,
       TWEEN,
       touchPanControl: false,
@@ -449,37 +450,105 @@ export default {
       let touchSurface = this.touchSurface = this.$refs['touch-surface']
       let camera = this.camera
 
-      // Using events with the custom object
-      var mover = this.mover = new DomToucher({ toucher: touchSurface })
+      var layoutFn = () => {
+        this.$nextTick(() => {
+          var fs = this.fs = fullScreener({ planeZ: -5, camera })
 
-      mover.addEventListener('update', (evt) => {
-        // alert(event.message)
-        // console.log(evt.state)
-        let max = 0
-        let min = -this.eGroup.reduce((accu, eg, key) => {
-          let length = eg.size.vw * key
+          this.eGroup.forEach((eg, key) => {
+            var dpi = 2
+            var numInRow = 2
+            var res = 768
+            var nx = key
+            var ny = 0
 
+            eg.size.vw = fs.width
+            eg.size.vh = fs.height
+
+            // landscape
+            if (fs.aspect > 1) {
+              eg.size.vw = fs.vmin * 0.5
+              eg.size.vh = fs.vmin * 0.5
+              res = 768 * 0.5
+              nx = key % numInRow
+              ny = (numInRow - 1) * Math.floor(key / numInRow)
+            }
+
+            eg.size.aspect = eg.size.vw / eg.size.vh
+
+            eg.size.width = res * eg.size.aspect * dpi
+            eg.size.height = res * dpi
+
+            eg.element.position.x = eg.size.vw * (nx)
+            eg.element.position.y = -eg.size.vh * (ny)
+          })
+
+          this.viewCheck()
+        })
+      }
+      layoutFn()
+      window.addEventListener('resize', layoutFn, false)
+
+      var sizer = {
+        eGroup: this.eGroup,
+        reduceMaxX: (accu, eg, key) => {
+          let length = Math.abs(eg.element.position.x)
           if (length >= accu) {
             accu = length
           }
-
           return accu
-        }, 0)
+        },
+        reduceMaxY: (accu, eg, key) => {
+          let length = Math.abs(eg.element.position.y)
+          if (length >= accu) {
+            accu = length
+          }
+          return accu
+        },
+        get totalX () {
+          return this.eGroup.reduce(this.reduceMaxX, 0)
+        },
+        get totalY () {
+          return this.eGroup.reduce(this.reduceMaxY, 0)
+        }
+      }
 
-        let moveAmount = evt.state.inX * 0.25 + evt.state.inY * 0.15
+      // Using events with the custom object
+      var mover = this.mover = new DomToucher({ toucher: touchSurface })
+      mover.addEventListener('update', (evt) => {
+        //
 
+        // Scroll X
+        let maxX = 0
+        let minX = -sizer.totalX
+        let maxY = sizer.totalY
+        let minY = 0
+
+        let moveAmountX = evt.state.inX * 0.25
+        let moveAmountY = evt.state.inY * 0.15
         let scroller = this.scroller
         if (scroller) {
-          scroller.position.x += moveAmount
+          scroller.position.x += moveAmountX
+          scroller.position.y += -moveAmountY
 
-          if (scroller.position.x > max) {
+          if (scroller.position.x > maxX) {
             let varying = { ...scroller.position }
-            varying.x -= (varying.x - max) * 0.35
+            varying.x -= (varying.x - maxX) * 0.35
             scroller.position.set(varying.x, varying.y, varying.z)
           }
-          if (scroller.position.x < min) {
+          if (scroller.position.x < minX) {
             let varying = { ...scroller.position }
-            varying.x -= (varying.x - min) * 0.35
+            varying.x -= (varying.x - minX) * 0.35
+            scroller.position.set(varying.x, varying.y, varying.z)
+          }
+
+          if (scroller.position.y > maxY) {
+            let varying = { ...scroller.position }
+            varying.y -= (varying.y - maxY) * 0.35
+            scroller.position.set(varying.x, varying.y, varying.z)
+          }
+          if (scroller.position.y < minY) {
+            let varying = { ...scroller.position }
+            varying.y -= (varying.y - minY) * 0.35
             scroller.position.set(varying.x, varying.y, varying.z)
           }
         }
@@ -518,63 +587,37 @@ export default {
         }
       }
 
-      var layoutFn = () => {
-        this.$nextTick(() => {
-          var fs = this.fs = fullScreener({ planeZ: -5, camera })
-
-          this.eGroup.forEach((eg, key) => {
-            var sizer = 1.0
-            var dpi = 2
-
-            eg.size.vw = fs.width * sizer
-            if (fs.aspect > 1) {
-              eg.size.vw = fs.vmin
-            }
-            eg.size.vh = fs.height * 1.0
-            eg.size.aspect = eg.size.vw / eg.size.vh
-
-            eg.size.width = 768 * eg.size.aspect * dpi
-            eg.size.height = 768 * dpi
-
-            eg.element.position.x = eg.size.vw * sizer * (key)
-          })
-
-          this.viewCheck()
-        })
-      }
-      layoutFn()
-      window.addEventListener('resize', layoutFn, false)
-
       // // ----------
       // // Clicker
-      // var raycaster = this.raycaster = new THREE.Raycaster()
-      // var mouse = new THREE.Vector2()
+      var raycaster = this.raycaster = new THREE.Raycaster()
+      var mouse = new THREE.Vector2()
 
-      // var onMouseMove = (event) => {
-      //   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-      //   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-      // }
-      // touchSurface.addEventListener('mousemove', onMouseMove, false)
+      var onMouseMove = (event) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+      }
+      touchSurface.addEventListener('mousemove', onMouseMove, false)
 
-      // var onTouchMove = (evt) => {
-      //   if (evt.type === 'touchmove' || evt.type === 'touchstart') {
-      //     mouse.x = (evt.touches[0].pageX / window.innerWidth) * 2 - 1
-      //     mouse.y = -(evt.touches[0].pageY / window.innerHeight) * 2 + 1
-      //   }
-      // }
-      // touchSurface.addEventListener('touchstart', onTouchMove, false)
-      // touchSurface.addEventListener('touchend', onTouchMove, false)
-      // touchSurface.addEventListener('touchmove', onTouchMove, false)
+      var onTouchMove = (evt) => {
+        if (evt.type === 'touchmove' || evt.type === 'touchstart') {
+          mouse.x = (evt.touches[0].pageX / window.innerWidth) * 2 - 1
+          mouse.y = -(evt.touches[0].pageY / window.innerHeight) * 2 + 1
+        }
+      }
+      touchSurface.addEventListener('touchstart', onTouchMove, false)
+      touchSurface.addEventListener('touchend', onTouchMove, false)
+      touchSurface.addEventListener('touchmove', onTouchMove, false)
 
-      // var onClick = () => {
-      //   raycaster.setFromCamera(mouse, camera)
-      //   // calculate objects intersecting the picking ray
-      //   var evt = raycaster.intersectObjects(this.dragGroup)[0]
-      //   if (evt) {
-      //     this.bringIn(evt)
-      //   }
-      // }
-      // window.document.documentElement.addEventListener('click', onClick, false)
+      var onClick = () => {
+        raycaster.setFromCamera(mouse, camera)
+        // calculate objects intersecting the picking ray
+        var evt = raycaster.intersectObjects(this.eGroupMesh)[0]
+        if (evt) {
+          console.log(evt)
+          this.bringIn(evt)
+        }
+      }
+      touchSurface.addEventListener('click', onClick, false)
 
       let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
       touchPanControl.rotateSpeed = 1.0
@@ -600,8 +643,8 @@ export default {
         if (eItem.element.uuid === evt.object.uuid) {
           // this.tweenIndexZ(eItem, 0)
 
-          new TWEEN.Tween(this.camera.position, this.tGroup)
-            .to({ x: eItem.element.position.x }, 500)
+          new TWEEN.Tween(this.scroller.position, this.tGroup)
+            .to({ x: -eItem.element.position.x, y: -eItem.element.position.y }, 500)
             .easing(TWEEN.Easing.Quadratic.Out)
             .start()
 
