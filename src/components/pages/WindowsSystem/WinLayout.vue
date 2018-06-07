@@ -591,7 +591,15 @@ export default {
 
       // Using events with the custom object
       var mover = this.mover = new DomToucher({ toucher: touchSurface })
-      mover.state.deltaX = -0.5
+
+      this.$nextTick(() => {
+        if (this.fs) {
+          if (this.fs.aspect < 1) {
+            mover.state.deltaX = -0.5
+          }
+        }
+      })
+
       mover.addEventListener('update', (evt) => {
         //
 
