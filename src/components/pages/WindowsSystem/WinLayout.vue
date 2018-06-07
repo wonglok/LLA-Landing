@@ -598,16 +598,10 @@ export default {
         if (this.fs) {
           // if 1 row
           if (this.fs.aspect <= 1) {
-            let tween2 = new TWEEN.Tween(this.scroller.position)
-              .to({ x: 0 }, 1000)
-              .easing(TWEEN.Easing.Quadratic.Out)
-              .delay(700)
-
             new TWEEN.Tween(this.scroller.position)
               .to({ x: -this.fs.width * 3 || -3.0 }, 2000)
               .easing(TWEEN.Easing.Quadratic.Out)
               .delay(1500)
-              .chain(tween2)
               .start()
           }
         }
