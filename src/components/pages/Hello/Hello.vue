@@ -36,14 +36,14 @@
       />
     </Object3D>
 
-    <Object3D >
+    <!-- <Object3D >
       <Instancing
         v-if="renderer && camera && ori"
         :orientation="ori"
         :camera="camera"
         :renderer="renderer"
       />
-    </Object3D>
+    </Object3D> -->
 
   </Scene>
 
@@ -184,9 +184,9 @@ export default {
     setup () {
       this.camera.position.z = 35
       this.camera.position.z = 0
-      this.camera.position.y = 300
+      this.camera.position.y = 200
       new TWEEN.Tween(this.camera.position)
-        .to({ z: 40, x: 0, y: 0 }, 5000)
+        .to({ z: 40, x: 0, y: 0 }, 3000)
         .easing(TWEEN.Easing.Quadratic.Out)
         .onUpdate(() => {
           this.camera.lookAt(this.scene.position)

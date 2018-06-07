@@ -592,13 +592,24 @@ export default {
       // Using events with the custom object
       var mover = this.mover = new DomToucher({ toucher: touchSurface })
 
-      this.$nextTick(() => {
+      setTimeout(() => {
         if (this.fs) {
-          if (this.fs.aspect < 1) {
-            mover.state.deltaX = -0.5
+          // if 1 row
+          if (this.fs.aspect <= 1) {
+            let tween2 = new TWEEN.Tween(this.scroller.position)
+              .to({ x: 0 }, 1000)
+              .easing(TWEEN.Easing.Quadratic.Out)
+              .delay(700)
+
+            new TWEEN.Tween(this.scroller.position)
+              .to({ x: -this.fs.width * 3 || -3.0 }, 2000)
+              .easing(TWEEN.Easing.Quadratic.Out)
+              .delay(1500)
+              .chain(tween2)
+              .start()
           }
         }
-      })
+      }, 3000)
 
       mover.addEventListener('update', (evt) => {
         //
@@ -614,13 +625,16 @@ export default {
         let scroller = this.scroller
         if (scroller) {
           if (this.fs) {
+            // if one row
             if (this.fs.aspect <= 1) {
               scroller.position.x += moveAmountY + moveAmountX
             } else {
+              // if 2x2
               scroller.position.x += moveAmountX
               scroller.position.y += -moveAmountY
             }
           } else {
+            // if no fullscreen detected
             scroller.position.x += moveAmountX
             scroller.position.y += -moveAmountY
           }
