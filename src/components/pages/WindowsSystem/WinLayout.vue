@@ -609,11 +609,11 @@ export default {
             //   .start()
 
             new TWEEN.Tween(mover.state)
-              .to({ deltaX: -3 || -3.0 }, 2000)
+              .to({ deltaX: -0.5 }, 300)
               .easing(TWEEN.Easing.Quadratic.Out)
               .delay(1500)
               .onUpdate(() => {
-                mover.state.inertia = 3.0
+                mover.state.inertia = 1.0
               })
               .start()
           }
