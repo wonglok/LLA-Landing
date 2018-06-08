@@ -176,9 +176,7 @@ void main () {
         var yd = 90
         if (window.innerWidth > window.innerHeight) {
           var t = x + 45
-          if (window.innerHeight < 600) {
-            y = y - 45
-          }
+          y = y - 45
           x = y
           y = t
           let tt = xd
