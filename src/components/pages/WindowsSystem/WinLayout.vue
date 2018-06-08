@@ -506,7 +506,7 @@ export default {
 
               nx = key
               ny = 0
-              padder = 1.2
+              padder = 1.03
             }
 
             eg.size.aspect = eg.size.vw / eg.size.vh

@@ -218,7 +218,7 @@ void main () {
 
       this.$emit('texture', this.composer.readBuffer.texture)
 
-      this.scene.background = new THREE.Color('hsl(0, 74%, 68%)')
+      this.scene.background = new THREE.Color('hsl(13, 74%, 68%)')
     }
   },
   mounted () {
