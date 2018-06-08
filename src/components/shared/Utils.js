@@ -22,6 +22,47 @@ export const fullScreener = ({ planeZ, camera }) => {
   }
 }
 
+export const makeOri = () => {
+  var ori = {
+    sx: 0,
+    sy: 0,
+    dx: 0,
+    dy: 0,
+    x: 0,
+    y: 0,
+    xx: 0,
+    yy: 0
+  }
+  function handleOrientation (event) {
+    var x = event.beta - 45// In degree in the range [-180,180]
+    var y = event.gamma // In degree in the range [-90,90]
+
+    if (window.innerWidth > window.innerHeight) {
+      var t = x
+      x = y
+      y = t
+    }
+
+    if (!ori.sx) {
+      ori.sx = x
+      ori.sy = y
+    }
+
+    ori.dx = x - ori.sx
+    ori.dy = y - ori.sy
+
+    ori.sx = x
+    ori.sy = y
+
+    ori.xx = (x / 180) % 1
+    ori.yy = (y / 90) % 1
+  }
+
+  window.addEventListener('deviceorientation', handleOrientation, false)
+
+  return ori
+}
+
 export function DomToucher ({ toucher }) {
   this.toucher = toucher
   var ui = this.state = {

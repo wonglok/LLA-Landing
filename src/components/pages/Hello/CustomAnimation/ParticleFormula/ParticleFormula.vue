@@ -84,8 +84,14 @@ export default {
       function getPos () {
         var pos = self.tempv3.copy(self.camera.position).normalize()
         pos.multiplyScalar(-1.0)
-        pos.x -= 2.0 * -self.orientation.yy
-        pos.y -= 2.0 * self.orientation.xx
+
+        pos.x -= -self.orientation.yy
+        pos.y -= self.orientation.xx
+
+        if (window.innerWidth > window.innerHeight) {
+          pos.x *= -1
+        }
+
         pos.z = 0.0
         return pos
       }

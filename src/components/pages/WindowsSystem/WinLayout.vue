@@ -44,6 +44,7 @@
                   height: eGroupItem.size.height,
                   aspect: eGroupItem.size.aspect
                 }"
+                :data="eGroupItem.data"
                 :touchSurface="$refs['touch-surface']"
                 @texture="(v) => { eGroupItem.shader.uniforms.tDiffuse.value = v; }"
               />
@@ -227,7 +228,7 @@ export default {
 
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle0.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -238,12 +239,17 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(225, 62%, 60%)`,
+          mode: 0
+        }
       },
 
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle1.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -254,11 +260,16 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(325, 62%, 60%)`,
+          mode: 1
+        }
       },
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle2.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -269,11 +280,16 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(103, 22%, 60%)`,
+          mode: 2
+        }
       },
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle3.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -284,11 +300,16 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(0, 74%, 68%)`,
+          mode: 3
+        }
       },
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle4.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -299,11 +320,16 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(240, 54%, 68%)`,
+          mode: 4
+        }
       },
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle5.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -314,11 +340,16 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(123, 32%, 60%)`,
+          mode: 5
+        }
       },
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: require('./Windows/Particle8.vue').default,
+        component: require('./Windows/Particle.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -329,7 +360,12 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: getShader({ dpi })
+        shader: getShader({ dpi }),
+        data: {
+          type: 'particle',
+          backgroundColor: `hsl(13, 74%, 68%)`,
+          mode: 8
+        }
       }
     ]
 

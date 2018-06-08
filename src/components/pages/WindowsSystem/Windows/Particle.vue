@@ -17,7 +17,7 @@
         :orientation="ori"
         :camera="camera"
         :renderer="renderer"
-        :mode="1"
+        :mode="data.mode"
       />
     </Object3D>
 
@@ -39,6 +39,7 @@
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
 import ParticleFormula from '../../Hello/CustomAnimation/ParticleFormula/ParticleFormula.vue'
+
 /* eslint-disable */
 
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'
@@ -62,7 +63,15 @@ export default {
   props: {
     skip: { default: false },
     renderer: {},
-    size: {}
+    size: {},
+    data: {
+      default () {
+        return {
+          type: 'particle',
+          mode: 0
+        }
+      }
+    }
   },
   data () {
     return {
@@ -163,11 +172,18 @@ void main () {
       function handleOrientation (event) {
         var x = event.beta - 45// In degree in the range [-180,180]
         var y = event.gamma // In degree in the range [-90,90]
-
+        var xd = 180
+        var yd = 90
         if (window.innerWidth > window.innerHeight) {
-          var t = x
+          var t = x + 45
+          if (window.innerHeight < 600) {
+            y = y - 45
+          }
           x = y
           y = t
+          let tt = xd
+          xd = yd
+          yd = tt
         }
 
         if (!ori.sx) {
@@ -181,10 +197,29 @@ void main () {
         ori.sx = x
         ori.sy = y
 
-        ori.xx = x / 180
-        ori.yy = y / 90
-      }
+        ori.xx = x / xd
+        ori.yy = y / yd
 
+        switch (window.orientation) {
+          case 0:
+            // "Portrait"
+            break
+
+          case -90:
+            // "Landscape (right, screen turned clockwise)"
+            break
+
+          case 90:
+            ori.xx = 0
+            ori.yy = 0
+            // "Landscape (left, screen turned counterclockwise)"
+            break
+
+          case 180:
+            // "Portrait (upside-down portrait)"
+            break
+        }
+      }
       window.addEventListener('deviceorientation', handleOrientation, false)
 
       // let rtParameters = {
@@ -218,7 +253,7 @@ void main () {
 
       this.$emit('texture', this.composer.readBuffer.texture)
 
-      this.scene.background = new THREE.Color(`hsl(325, 62%, 60%)`)
+      this.scene.background = new THREE.Color(this.data.backgroundColor)
     }
   },
   mounted () {
