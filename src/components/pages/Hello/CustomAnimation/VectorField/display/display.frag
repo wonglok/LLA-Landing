@@ -20,5 +20,6 @@ void main() {
 
     outputColor2 = vec4(vec3(1.0), opacity);
 
-    gl_FragColor = mix(outputColor2, outputColor, smoothstep(0.0, 1.0, abs(mouse.y) / 0.5));
+    // gl_FragColor = mix(outputColor2, outputColor, smoothstep(0.0, 1.0, abs(mouse.y) / 0.5));
+    gl_FragColor = outputColor2;
 }

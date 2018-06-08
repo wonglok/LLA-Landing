@@ -69,5 +69,5 @@ void main() {
     vUv = uv;
 
     gl_Position = outputPos;
-    gl_PointSize = pointSize + abs(mouse.y * 16.0);
+    gl_PointSize = pointSize; // + abs(mouse.y * 16.0);
 }

@@ -12,11 +12,12 @@
     </Mesh> -->
 
     <Object3D>
-      <Instancing
+      <ParticleFormula
         v-if="renderer && camera && ori"
         :orientation="ori"
         :camera="camera"
         :renderer="renderer"
+        :mode="2"
       />
     </Object3D>
 
@@ -37,7 +38,7 @@
 <script>
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
-import Instancing from '../../Hello/CustomAnimation/Instancing/Instancing.vue'
+import ParticleFormula from '../../Hello/CustomAnimation/ParticleFormula/ParticleFormula.vue'
 /* eslint-disable */
 
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'
@@ -56,7 +57,7 @@ import 'imports-loader?THREE=three!three/examples/js/postprocessing/UnrealBloomP
 export default {
   components: {
     ...Bundle,
-    Instancing
+    ParticleFormula
   },
   props: {
     skip: { default: false },
@@ -217,7 +218,7 @@ void main () {
 
       this.$emit('texture', this.composer.readBuffer.texture)
 
-      this.scene.background = new THREE.Color('hsl(389, 80%, 50%)')
+      this.scene.background = new THREE.Color(`hsl(103, 62%, 60%)`)
     }
   },
   mounted () {

@@ -181,6 +181,7 @@ void main() {
     float z = 0.5 - rand(uv + .3);
 
     vec3 ball1 = ballify(vec3(x, y, z), 1.0);
+    ball1 = ball1 * rotateZ(time);
 
     nextPos = ballify(ball1 + nextPos, 17.0);
     nextPos += getDiff(nextPos, mouse * 17.0) * 50.0;
@@ -230,7 +231,7 @@ void main() {
     nextPos.xyz = rotateY(mouse.x) * rotateX(-mouse.y) * pt;
   } else if (MATH_EQ == 5.0) {
 
-    float t = M_PI * 2.0 * e * 1.0;
+    float t = time + M_PI * 2.0 * e * 1.0;
 
     float r1 = rand(uv);
     float x = 10.0 * cos(t) - 3.5 * cos(18.0 * t / 2.0);
@@ -263,7 +264,7 @@ void main() {
     nextPos.xyz = rotateY(mouse.x) * rotateX(-mouse.y) * pt;
   } else if (MATH_EQ == 8.0) {
 
-    float t = M_PI * 2.0 * e;
+    float t = M_PI * 2.0 * e + time;
 
     float r1 = rand(uv);
     float x = 15.0 * cos(5.0 * t);

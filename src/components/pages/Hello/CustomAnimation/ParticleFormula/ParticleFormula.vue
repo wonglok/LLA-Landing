@@ -33,6 +33,9 @@ export default {
       default () {
         return require('./simulation/sim.frag')
       }
+    },
+    mode: {
+      default: 2
     }
   },
   data () {
@@ -70,7 +73,7 @@ export default {
     let displayF = require('./display/display.frag')
 
     let init = ({ pingPongShader }) => {
-      let lastTap = 2
+      let lastTap = this.mode
 
       if (pingMat) {
         lastTap = pingMat.uniforms.tapCount.value
@@ -109,10 +112,10 @@ export default {
     this.init = init
     init({ pingPongShader })
 
-    setInterval(() => {
-      pingMat.uniforms.tapCount.value++
-      pongMat.uniforms.tapCount.value++
-    }, 1500)
+    // setInterval(() => {
+    //   pingMat.uniforms.tapCount.value++
+    //   pongMat.uniforms.tapCount.value++
+    // }, 1500)
 
     // sim part
     let procSim = () => {
@@ -143,12 +146,12 @@ export default {
       },
       uniforms: {
         time: { value: 0 },
-        opacity: { value: 1.0 },
+        opacity: { value: 0.67 },
         posTex: { value: null },
         indexerTexture: { value: indexerTexture },
         // picture: { value: new THREE.TextureLoader().load('https://picsum.photos/256/256', (texture) => { texture.flipY = true; texture.needsUpdate = true }) },
         picture: { value: new THREE.TextureLoader().load(require('@/components/pages/Hello/Elements/Text/Images/waves.svg'), (texture) => { texture.flipY = true; texture.needsUpdate = true }) },
-        pointSize: { value: window.devicePixelRatio || 1.0 }
+        pointSize: { value: window.devicePixelRatio * 0.4 || 1.0 }
       }
     })
 

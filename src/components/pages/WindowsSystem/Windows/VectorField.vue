@@ -162,6 +162,13 @@ void main () {
       function handleOrientation (event) {
         var x = event.beta - 45// In degree in the range [-180,180]
         var y = event.gamma // In degree in the range [-90,90]
+
+        if (window.innerWidth > window.innerHeight) {
+          var t = x
+          x = y
+          y = t
+        }
+
         if (!ori.sx) {
           ori.sx = x
           ori.sy = y

@@ -88,12 +88,15 @@ import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 // import 'imports-loader?THREE=three!./Touch/DragDrag.js'
 /* eslint-enable */
 
-import Honey from './Windows/Honey'
-import VectorField from './Windows/VectorField'
-import Instancing from './Windows/Instancing'
-import ParticleFormula from './Windows/ParticleFormula'
+// import Honey from './Windows/Honey'
+// import VectorField from './Windows/VectorField'
+// import Instancing from './Windows/Instancing'
+// import Particle0 from './Windows/Particle0'
+// import Particle1 from './Windows/Particle1'
+// import Particle2 from './Windows/Particle2'
+// import Particle3 from './Windows/Particle3'
 
-import Hello from '../Hello/Hello.vue'
+// import Hello from '../Hello/Hello.vue'
 
 import * as MS from '../Hello/Data/HelloData.js'
 import TextOutlet from '../Hello/Elements/Text/TextOutlet.vue'
@@ -107,16 +110,65 @@ import TextEdit from '../Hello/Elements/Text/TextEdit.vue'
 //   console.log(evt.message)
 // })
 
+var getShader = ({ dpi }) => {
+  return {
+    vs:
+`
+#include <common>
+
+varying vec2 vUv;
+varying vec3 vPos;
+
+uniform float time;
+uniform float wiggle;
+
+void main ( void ) {
+vec3 newPos = position;
+newPos.y += sin(time * 55.0) * wiggle;
+
+vPos = position;
+vUv = uv;
+vec4 mvPosition = modelViewMatrix * vec4( newPos, 1.0 );
+
+vec4 outputPos = projectionMatrix * mvPosition;
+gl_Position = outputPos;
+}
+`,
+    fs:
+`
+varying vec2 vUv;
+varying vec3 vPos;
+
+uniform float time;
+uniform sampler2D tDiffuse;
+
+void main () {
+vec4 tColor = texture2D(tDiffuse, vUv);
+gl_FragColor = tColor;
+}
+`,
+    uniforms: {
+      tDiffuse: {
+        value: null
+      },
+      time: {
+        value: 0
+      },
+      wiggle: {
+        value: 0
+      }
+    }
+  }
+}
+
 export default {
   components: {
     ...Bundle,
-    Honey,
-    Hello,
-    VectorField,
+    // Honey,
+    // Hello,
+    // VectorField,
     TextOutlet,
-    TextEdit,
-    Instancing,
-    ParticleFormula
+    TextEdit
   },
   props: {
     renderer: {},
@@ -128,7 +180,7 @@ export default {
     var eGroup = [
       {
         pos: {x: 0, y: 0, z: 0},
-        component: 'VectorField',
+        component: require('./Windows/VectorField.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -139,59 +191,27 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: {
-          vs:
-  `
-  #include <common>
-
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform float wiggle;
-
-  void main ( void ) {
-    vec3 newPos = position;
-    newPos.y += sin(time * 55.0) * wiggle;
-
-    vPos = position;
-    vUv = uv;
-    vec4 mvPosition = modelViewMatrix * vec4( newPos, 1.0 );
-
-    vec4 outputPos = projectionMatrix * mvPosition;
-    gl_Position = outputPos;
-  }
-  `,
-          fs:
-  `
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform sampler2D tDiffuse;
-
-  void main () {
-    vec4 tColor = texture2D(tDiffuse, vUv);
-    gl_FragColor = tColor;
-  }
-  `,
-          uniforms: {
-            tDiffuse: {
-              value: null
-            },
-            time: {
-              value: 0
-            },
-            wiggle: {
-              value: 0
-            }
-          }
-        }
+        shader: getShader({ dpi })
       },
 
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: require('./Windows/Instancing.vue').default,
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16.9 / 16.9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16.9 / 16.9
+        },
+        shader: getShader({ dpi })
+      },
       {
         pos: {x: 20, y: 0, z: 0},
-        component: 'Honey',
+        component: require('./Windows/Honey.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -202,59 +222,12 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: {
-          vs:
-  `
-  #include <common>
-
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform float wiggle;
-
-  void main ( void ) {
-    vec3 newPos = position;
-    newPos.y += sin(time * 55.0) * wiggle;
-
-    vPos = position;
-    vUv = uv;
-    vec4 mvPosition = modelViewMatrix * vec4( newPos, 1.0 );
-
-    vec4 outputPos = projectionMatrix * mvPosition;
-    gl_Position = outputPos;
-  }
-  `,
-          fs:
-  `
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform sampler2D tDiffuse;
-
-  void main () {
-    vec4 tColor = texture2D(tDiffuse, vUv);
-    gl_FragColor = tColor;
-  }
-  `,
-          uniforms: {
-            tDiffuse: {
-              value: null
-            },
-            time: {
-              value: 0
-            },
-            wiggle: {
-              value: 0
-            }
-          }
-        }
+        shader: getShader({ dpi })
       },
 
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: 'ParticleFormula',
+        component: require('./Windows/Particle0.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -265,59 +238,12 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: {
-          vs:
-  `
-  #include <common>
-
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform float wiggle;
-
-  void main ( void ) {
-    vec3 newPos = position;
-    newPos.y += sin(time * 55.0) * wiggle;
-
-    vPos = position;
-    vUv = uv;
-    vec4 mvPosition = modelViewMatrix * vec4( newPos, 1.0 );
-
-    vec4 outputPos = projectionMatrix * mvPosition;
-    gl_Position = outputPos;
-  }
-  `,
-          fs:
-  `
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform sampler2D tDiffuse;
-
-  void main () {
-    vec4 tColor = texture2D(tDiffuse, vUv);
-    gl_FragColor = tColor;
-  }
-  `,
-          uniforms: {
-            tDiffuse: {
-              value: null
-            },
-            time: {
-              value: 0
-            },
-            wiggle: {
-              value: 0
-            }
-          }
-        }
+        shader: getShader({ dpi })
       },
 
       {
         pos: {x: 20 * 2, y: 0, z: 0},
-        component: 'Instancing',
+        component: require('./Windows/Particle1.vue').default,
         zIndex: 0.0,
         element: false,
         skip: false,
@@ -328,54 +254,82 @@ export default {
           vw: 18.0,
           vh: 18.0 * 16.9 / 16.9
         },
-        shader: {
-          vs:
-  `
-  #include <common>
-
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform float wiggle;
-
-  void main ( void ) {
-    vec3 newPos = position;
-    newPos.y += sin(time * 55.0) * wiggle;
-
-    vPos = position;
-    vUv = uv;
-    vec4 mvPosition = modelViewMatrix * vec4( newPos, 1.0 );
-
-    vec4 outputPos = projectionMatrix * mvPosition;
-    gl_Position = outputPos;
-  }
-  `,
-          fs:
-  `
-  varying vec2 vUv;
-  varying vec3 vPos;
-
-  uniform float time;
-  uniform sampler2D tDiffuse;
-
-  void main () {
-    vec4 tColor = texture2D(tDiffuse, vUv);
-    gl_FragColor = tColor;
-  }
-  `,
-          uniforms: {
-            tDiffuse: {
-              value: null
-            },
-            time: {
-              value: 0
-            },
-            wiggle: {
-              value: 0
-            }
-          }
-        }
+        shader: getShader({ dpi })
+      },
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: require('./Windows/Particle2.vue').default,
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16.9 / 16.9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16.9 / 16.9
+        },
+        shader: getShader({ dpi })
+      },
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: require('./Windows/Particle3.vue').default,
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16.9 / 16.9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16.9 / 16.9
+        },
+        shader: getShader({ dpi })
+      },
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: require('./Windows/Particle4.vue').default,
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16.9 / 16.9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16.9 / 16.9
+        },
+        shader: getShader({ dpi })
+      },
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: require('./Windows/Particle5.vue').default,
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16.9 / 16.9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16.9 / 16.9
+        },
+        shader: getShader({ dpi })
+      },
+      {
+        pos: {x: 20 * 2, y: 0, z: 0},
+        component: require('./Windows/Particle8.vue').default,
+        zIndex: 0.0,
+        element: false,
+        skip: false,
+        size: {
+          width: 256 * dpi,
+          height: 256 * dpi * 16.9 / 16.9,
+          aspect: 1 * 1 / (16 / 9),
+          vw: 18.0,
+          vh: 18.0 * 16.9 / 16.9
+        },
+        shader: getShader({ dpi })
       }
     ]
 
@@ -526,7 +480,7 @@ export default {
           var fs = this.fs = fullScreener({ planeZ: -5, camera })
 
           this.eGroup.forEach((eg, key) => {
-            var dpi = 1.75
+            var dpi = 1.35
             var res = 768
 
             var nx = key
@@ -535,21 +489,24 @@ export default {
             eg.size.vw = fs.width
             eg.size.vh = fs.height
 
+            var padder = 1.0
+
             // landscape
             if (fs.aspect > 1) {
+              dpi = 1.35
               let scaler = 0.7
-
-              if (window.innerWidth >= 1921) {
-                scaler = 0.55
-              }
 
               eg.size.vw = fs.vmin * scaler
               eg.size.vh = fs.vmin * scaler
-              res = 768 * scaler
+              res *= scaler
 
-              let rows = 2
-              nx = key % rows
-              ny = (rows - 1) * Math.floor(key / rows)
+              // let rows = 2
+              // nx = key % rows
+              // ny = Math.floor(key / rows)
+
+              nx = key
+              ny = 0
+              padder = 1.2
             }
 
             eg.size.aspect = eg.size.vw / eg.size.vh
@@ -561,8 +518,8 @@ export default {
               ...eg.size
             }
 
-            eg.element.position.x = eg.size.vw * (nx)
-            eg.element.position.y = -eg.size.vh * (ny)
+            eg.element.position.x = eg.size.vw * (nx * padder)
+            eg.element.position.y = -eg.size.vh * (ny * padder)
           })
 
           this.viewCheck()
@@ -633,20 +590,22 @@ export default {
         let moveAmountY = evt.state.inY * 0.15
         let scroller = this.scroller
         if (scroller) {
-          if (this.fs) {
-            // if one row
-            if (this.fs.aspect <= 1) {
-              scroller.position.x += moveAmountY + moveAmountX
-            } else {
-              // if 2x2
-              scroller.position.x += moveAmountX
-              scroller.position.y += -moveAmountY
-            }
-          } else {
-            // if no fullscreen detected
-            scroller.position.x += moveAmountX
-            scroller.position.y += -moveAmountY
-          }
+          // if (this.fs) {
+          //   // if one row
+          //   if (this.fs.aspect <= 1) {
+          //     scroller.position.x += moveAmountY + moveAmountX
+          //   } else {
+          //     // if 2x2
+          //     scroller.position.x += moveAmountX
+          //     scroller.position.y += -moveAmountY
+          //   }
+          // } else {
+          //   // if no fullscreen detected
+          //   scroller.position.x += moveAmountX
+          //   scroller.position.y += -moveAmountY
+          // }
+
+          scroller.position.x += moveAmountY + moveAmountX
 
           if (scroller.position.x > maxX) {
             let varying = { ...scroller.position }

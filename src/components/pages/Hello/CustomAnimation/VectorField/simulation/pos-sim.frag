@@ -186,15 +186,32 @@ void main() {
 
     // -0-0--0-0-- Bally
 
-    float t = M_PI * 2.0 * e;
+    // float t = M_PI * 2.0 * e;
 
-    float x = 0.5 - fract(i / u);
-    float y = 0.5 - e;
-    float z = 0.0;
+    // float x = 0.5 - fract(i / u);
+    // float y = 0.5 - e;
+    // float z = 0.0;
 
-    vec3 pt2 = vec3(x * 1.3, y * -1.3, z) * ra * 1.4;
+    // vec3 pt2 = vec3(x * 1.3, y * -1.3, z) * ra * 1.4;
+
+    float k = 2.5 - mouse.y * 1.5; // winder;
+
+    vec3 startPos = vec3(
+      rand(uv + .1) * 4.0,
+      rand(uv + .2) * 4.0,
+      rand(uv + .3) * 4.0
+    );
+
+    float x = cnoise(vec2(time + startPos.xx + .1)) * rand(startPos.xx + .0) * 3.5 + 17.0 * (sin(PI2 * e * k) * cos(PI2 * e * k) * 1.0);
+    float y = cnoise(vec2(time + startPos.yy + .2)) * rand(startPos.yy + .1) * 3.5 + 17.0 * (sin(PI2 * e * k) * sin(PI2 * e * k) * 1.0 - 0.5);
+    float z = cnoise(vec2(time + startPos.zz + .3)) * rand(startPos.zz + .2) * 3.5 + 17.0 * (e * 2.0 - 1.0);
+    vec3 pt = rotateX(PI * 0.5) * vec3(x, y, z);
+
+    vec3 updatedPos = vec3(pt);
+    vec3 pt2 = updatedPos * rotateY(time * 1.5);
 
     nextPos = mix(pt1, pt2, smoothstep(0.0, 1.0, abs(mouse.y) / 0.5));
+    // nextPos = pt1;
 
     // nextPos += vec3(
     //   0.1, 0.1, 0.1
