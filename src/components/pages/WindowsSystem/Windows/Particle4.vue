@@ -62,7 +62,8 @@ export default {
   props: {
     skip: { default: false },
     renderer: {},
-    size: {}
+    size: {},
+    mode: { default: 1 }
   },
   data () {
     return {
