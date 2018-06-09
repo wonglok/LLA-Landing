@@ -524,7 +524,7 @@ export default {
       for (let i = 0; i < 100; i++) {
         this.listItems.push({
           id: i,
-          text: i + ''
+          text: i + 'have some fun fun fun fun fun fun fun fun'
         })
       }
 

@@ -32,7 +32,7 @@
       >
 
         <Text3DComp
-          :fontSize="300"
+          :fontSize="100"
           :fontFamily="'Arial'"
           :vs="null"
           :fs="null"
@@ -41,7 +41,7 @@
           :transparent="true"
           :placeholder="'Click to edit me.'"
           :text="item.text + ''"
-          :width="900"
+          :width="9000"
           @attach="(mesh) => { attachText({ mesh, info: item }) }"
           @detach="(mesh) => { detachText({ mesh }) }"
         />
@@ -56,7 +56,7 @@
     :aspect="512 / 512"
     :near="1"
     :far="10000"
-    :position="{ x: 0, y: 0, z: 46 }"
+    :position="{ x: 0, y: 0, z: 60 }"
     @camera="(v) => { cameraRTT = v }"
   />
 
@@ -91,6 +91,7 @@ export default {
   },
   data () {
     return {
+      layoutFn () {},
       viewport: {
         width: 30,
         height: 30
@@ -119,12 +120,14 @@ export default {
       let touchSurface = this.touchSurface
       let camera = this.cameraRTT
 
-      var layoutFn = () => {
+      var layoutFn = this.layoutFn = () => {
         this.$nextTick(() => {
           // var fs = this.fullScreener({ planeZ: 0, camera })
           this.meshes.forEach((mesh, key) => {
             var word = mesh.geometry.parameters.height
-            mesh.position.y = this.viewport.height - key * word
+            var firstWord = word * 0.5
+            var padding = 1.3
+            mesh.position.y = this.viewport.height - firstWord - key * (word + padding)
           })
         })
       }
@@ -187,7 +190,7 @@ export default {
         let maxY = sizer.totalY
         let minY = 0
 
-        // let moveAmountX = evt.state.inX * 0.25
+        let moveAmountX = evt.state.inX * 0.25
         let moveAmountY = evt.state.inY * 0.15
         let scroller = this.scroller
         if (scroller) {
@@ -206,7 +209,7 @@ export default {
           //   scroller.position.y += -moveAmountY
           // }
 
-          scroller.position.y += -moveAmountY
+          scroller.position.y += -moveAmountY - moveAmountX
 
           if (scroller.position.x > maxX) {
             let varying = { ...scroller.position }
@@ -272,6 +275,7 @@ export default {
       mesh.userData.info = info
       this.meshes.push(mesh)
       this.group.push(mesh)
+      this.layoutFn()
     },
     detachText ({ mesh }) {
       this.meshes.forEach((im, idx) => {
