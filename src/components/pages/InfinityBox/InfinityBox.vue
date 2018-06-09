@@ -32,7 +32,7 @@
       >
 
         <Text3DComp
-          :fontSize="100"
+          :fontSize="200"
           :fontFamily="'Arial'"
           :vs="null"
           :fs="null"
@@ -41,9 +41,10 @@
           :transparent="true"
           :placeholder="'Click to edit me.'"
           :text="item.text + ''"
-          :width="9000"
+          :width="2000"
           @attach="(mesh) => { attachText({ mesh, info: item }) }"
           @detach="(mesh) => { detachText({ mesh }) }"
+          @layout="(v) => { layoutFn(v) }"
         />
       </Object3D>
 
@@ -91,6 +92,7 @@ export default {
   },
   data () {
     return {
+      fs: false,
       layoutFn () {},
       viewport: {
         width: 30,
@@ -120,31 +122,32 @@ export default {
       let touchSurface = this.touchSurface
       let camera = this.cameraRTT
 
-      var layoutFn = this.layoutFn = () => {
+      var layoutFn = this.layoutFn = ({ width, height, mesh }) => {
         this.$nextTick(() => {
-          // var fs = this.fullScreener({ planeZ: 0, camera })
-          this.meshes.forEach((mesh, key) => {
-            var word = mesh.geometry.parameters.height
-            var firstWord = word * 0.5
-            var padding = 1.3
-            mesh.position.y = this.viewport.height - firstWord - key * (word + padding)
+          var fs = this.fs = this.fullScreener({ planeZ: 0, camera: this.cameraRTT })
+          this.meshes.forEach((iMesh, key) => {
+            var eachWord = iMesh.geometry.parameters.height
+            // var padding = 3.3
+            iMesh.position.y = fs.height * 0.5 - eachWord * 0.5 - key * eachWord
           })
         })
       }
-      layoutFn()
       window.addEventListener('resize', layoutFn, false)
+
+      //
+      this.fs = this.fullScreener({ planeZ: 0, camera: this.cameraRTT })
 
       var sizer = {
         meshes: this.meshes,
         reduceMaxX: (accu, mesh, key) => {
-          let length = Math.abs(mesh.position.x)
+          let length = Math.abs(mesh.position.x) - (this.fs.height * 0.5) + this.meshes[this.meshes.length - 1].geometry.parameters.height * 0.5
           if (length >= accu) {
             accu = length
           }
           return accu
         },
         reduceMaxY: (accu, mesh, key) => {
-          let length = Math.abs(mesh.position.y) - this.viewport.height
+          let length = Math.abs(mesh.position.y) - (this.fs.height * 0.5) + this.meshes[this.meshes.length - 1].geometry.parameters.height * 0.5
           if (length >= accu) {
             accu = length
           }
@@ -190,8 +193,8 @@ export default {
         let maxY = sizer.totalY
         let minY = 0
 
-        let moveAmountX = evt.state.inX * 0.25
-        let moveAmountY = evt.state.inY * 0.15
+        let moveAmountX = evt.state.inX * 0.35
+        let moveAmountY = evt.state.inY * 0.35
         let scroller = this.scroller
         if (scroller) {
           // if (this.fs) {

@@ -102,6 +102,11 @@ export default {
         this.$nextTick(() => {
           this.material.needsUpdate = true
           this.textureOfCanvas.needsUpdate = true
+          this.$emit('layout', {
+            mesh: this.mesh,
+            width: this.canvas.width / this.scale,
+            height: this.canvas.height / this.scale
+          })
         })
       })
     },
@@ -121,6 +126,7 @@ export default {
       this.plane = new THREE.Mesh(planeGeometry)
       this.loadMaterial()
 
+      this.update({ newText: this.text })
       this.plane.position.copy(this.pos)
 
       this.loop()
