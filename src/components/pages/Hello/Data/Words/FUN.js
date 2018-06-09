@@ -61,7 +61,7 @@ void main () {
 
   var word = makeOneWord()
   word.data.text = `
-Welcome to Lok Lok's
+Welcome to Lok Lok's Free
 Visual Effect Language Academy 😎`
   word.data.width = 1200
   word.data.fontSize = '70'

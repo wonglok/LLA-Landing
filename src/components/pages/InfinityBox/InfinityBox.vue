@@ -11,11 +11,10 @@
     <MeshBasicMaterial :color="0xffffff" :texture="rtt.texture"></MeshBasicMaterial>
   </Mesh>
 
-
   <!-- Content -->
   <RenderTarget
-    :width="512"
-    :height="512"
+    :width="res.width"
+    :height="res.height"
     @rtt="(v) => { rtt = v }"
   />
   <Scene v-if="rtt.texture" @scene="(v) => { sceneRTT = v; setup() }">
@@ -32,20 +31,21 @@
       >
 
         <Text3DComp
-          :fontSize="200"
+          :fontSize="40"
           :fontFamily="'Arial'"
-          :vs="null"
-          :fs="null"
-
+          :vs="textShader.vs"
+          :fs="textShader.fs"
+          :textAlign="'left'"
           :pos="{ x: 0, y: 0, z: 0 }"
           :transparent="true"
           :placeholder="'Click to edit me.'"
           :text="item.text + ''"
-          :width="2000"
+          :width="res.width"
           @attach="(mesh) => { attachText({ mesh, info: item }) }"
           @detach="(mesh) => { detachText({ mesh }) }"
           @layout="(v) => { layoutFn(v) }"
         />
+
       </Object3D>
 
     </Object3D>
@@ -54,10 +54,10 @@
   </Scene>
   <PerspectiveCamera
     :fov="75"
-    :aspect="512 / 512"
+    :aspect="res.width / res.height"
     :near="1"
     :far="10000"
-    :position="{ x: 0, y: 0, z: 60 }"
+    :position="{ x: 0, y: 0, z: 10 }"
     @camera="(v) => { cameraRTT = v }"
   />
 
@@ -88,7 +88,12 @@ export default {
       }
     },
     renderer: {},
-    size: {}
+    size: {},
+    group: {
+      default () {
+        return []
+      }
+    }
   },
   data () {
     return {
@@ -98,14 +103,72 @@ export default {
         width: 30,
         height: 30
       },
+      res: {
+        width: 512,
+        height: 512
+      },
       fullScreener,
       scroller: false,
       sceneRTT: false,
       rtt: false,
       rAFID: 0,
       camearRTT: false,
-      group: [],
-      meshes: []
+      meshes: [],
+      textShader: {
+        vs: `// varying vec3 vPos;
+uniform float time;
+varying vec2 vUv;
+
+void main (void) {
+  vec3 nPos = position;
+
+  nPos.z += sin(time * 4.0 + nPos.x) * 0.25;
+  nPos.z += sin(time * 4.0 + nPos.y) * 0.25;
+
+  vUv = uv;
+
+  vec4 mvPosition = modelViewMatrix * vec4(nPos, 1.0);
+  vec4 outputPos = projectionMatrix * mvPosition;
+  gl_Position = outputPos;
+  gl_PointSize = 1.0;
+}`,
+        fs: `// varying vec3 vPos;
+varying vec2 vUv;
+
+uniform float time;
+uniform sampler2D text;
+uniform sampler2D pattern;
+
+void patternText (vec4 textColor) {
+  vec2 swifting = vUv;
+  swifting.x = swifting.x + time * 0.3;
+  swifting.x = fract(swifting.x);
+
+  swifting.y = swifting.y + time * 0.3;
+  swifting.y = fract(swifting.y);
+  vec4 pattern = texture2D(pattern, swifting);
+
+  vec3 final = vec3((1.0 - textColor) * (pattern.rrra));
+  gl_FragColor = vec4(vec3(final), textColor.a);
+}
+
+void emoji (vec4 textColor) {
+  gl_FragColor = textColor;
+}
+
+void main () {
+  vec4 textColor = texture2D(text, vUv);
+
+  if (textColor.a > 0.1 && textColor.r < 0.01) {
+    patternText(textColor);
+  } else if (textColor.a > 0.1) {
+    emoji(textColor);
+  } else {
+    discard;
+  }
+}
+`
+      }
     }
   },
   computed: {
@@ -164,27 +227,16 @@ export default {
       // Using events with the custom object
       var mover = this.mover = new DomToucher({ toucher: touchSurface })
 
-      // setTimeout(() => {
-      //   if (this.fs) {
-      //     // if 1 row
-      //     if (this.fs.aspect <= 1) {
-      //       // new TWEEN.Tween(this.scroller.position)
-      //       //   .to({ x: -this.fs.width * 3 || -3.0 }, 2000)
-      //       //   .easing(TWEEN.Easing.Quadratic.Out)
-      //       //   .delay(1500)
-      //       //   .start()
-
-      //       new TWEEN.Tween(mover.state)
-      //         .to({ deltaX: -0.5 }, 300)
-      //         .easing(TWEEN.Easing.Quadratic.Out)
-      //         .delay(1500)
-      //         .onUpdate(() => {
-      //           mover.state.inertia = 1.0
-      //         })
-      //         .start()
-      //     }
-      //   }
-      // }, 3000)
+      setTimeout(() => {
+        new TWEEN.Tween(mover.state)
+          .to({ deltaX: -1.0 }, 300)
+          .easing(TWEEN.Easing.Quadratic.Out)
+          .delay(1500)
+          .onUpdate(() => {
+            mover.state.inertia = 1.0
+          })
+          .start()
+      }, 0)
 
       mover.addEventListener('update', (evt) => {
         // Scroll X
@@ -217,23 +269,23 @@ export default {
           if (scroller.position.x > maxX) {
             let varying = { ...scroller.position }
             varying.x -= (varying.x - maxX) * 0.35
-            scroller.position.set(varying.x, varying.y, varying.z)
+            scroller.position.copy(varying)
           }
           if (scroller.position.x < minX) {
             let varying = { ...scroller.position }
             varying.x -= (varying.x - minX) * 0.35
-            scroller.position.set(varying.x, varying.y, varying.z)
+            scroller.position.copy(varying)
           }
 
           if (scroller.position.y > maxY) {
             let varying = { ...scroller.position }
             varying.y -= (varying.y - maxY) * 0.35
-            scroller.position.set(varying.x, varying.y, varying.z)
+            scroller.position.copy(varying)
           }
           if (scroller.position.y < minY) {
             let varying = { ...scroller.position }
             varying.y -= (varying.y - minY) * 0.35
-            scroller.position.set(varying.x, varying.y, varying.z)
+            scroller.position.copy(varying)
           }
         }
       })
@@ -278,7 +330,6 @@ export default {
       mesh.userData.info = info
       this.meshes.push(mesh)
       this.group.push(mesh)
-      this.layoutFn()
     },
     detachText ({ mesh }) {
       this.meshes.forEach((im, idx) => {

@@ -5,6 +5,8 @@
 <script>
 import * as THREE from 'three'
 import TextCanvas from 'text-canvas'
+
+let sharedPattern = new THREE.TextureLoader().load(require('./Images/fabric.jpg'))
 export default {
   props: {
     effect: {
@@ -32,6 +34,16 @@ export default {
     },
     text: {
       default: 'Text '
+    },
+    pattern: {
+      default () {
+        return sharedPattern
+      }
+    },
+    textAlign: {
+      default () {
+        return 'left'
+      }
     }
   },
   data () {
@@ -97,7 +109,7 @@ export default {
         this.textCanvas.style = this.style
         this.textCanvas.render()
 
-        let planeGeometry = new THREE.PlaneBufferGeometry(this.canvas.width / this.scale, this.canvas.height / this.scale, 80, 80)
+        let planeGeometry = new THREE.PlaneBufferGeometry(this.canvas.width / this.scale, this.canvas.height / this.scale, 64, 64)
         this.plane.geometry = planeGeometry
         this.$nextTick(() => {
           this.material.needsUpdate = true
@@ -122,7 +134,7 @@ export default {
       this.canvas = this.textCanvas.render()
       this.textureOfCanvas = new THREE.CanvasTexture(this.canvas)
 
-      let planeGeometry = new THREE.PlaneBufferGeometry(this.canvas.width / this.scale, this.canvas.height / this.scale, 80, 80)
+      let planeGeometry = new THREE.PlaneBufferGeometry(this.canvas.width / this.scale, this.canvas.height / this.scale, 64, 64)
       this.plane = new THREE.Mesh(planeGeometry)
       this.loadMaterial()
 
@@ -135,38 +147,26 @@ export default {
       this.$emit('attach', this.plane)
     },
     loadMaterial () {
-      if (this.fs && this.vs) {
-        let uniforms = this.uniforms = {
-          text: { value: this.textureOfCanvas },
-          pattern: { value: new THREE.TextureLoader().load(require('./Images/fabric.jpg')) },
-          time: { value: 0 }
-        }
-        this.material = new THREE.ShaderMaterial({
-          uniforms: uniforms,
-          transparent: this.transparent,
-          vertexShader: this.vs,
-          fragmentShader: this.fs
-        })
-        this.textureOfCanvas.needsUpdate = true
-        this.plane.material = this.material
-        this.plane.needsUpdate = true
-      } else {
-        // this.material = new THREE.MeshBasicMaterial({ map: this.textureOfCanvas, transparent: this.transparent })
-        let uniforms = this.uniforms = {
-          pattern: { value: new THREE.TextureLoader().load(require('./Images/fabric.jpg')) },
-          text: { value: this.textureOfCanvas },
-          time: { value: 0 }
-        }
-        this.material = new THREE.ShaderMaterial({
-          uniforms: uniforms,
-          transparent: this.transparent,
-          vertexShader: require('./Shaders/Golden/vs.vert'),
-          fragmentShader: require('./Shaders/Golden/fs.frag')
-        })
-        this.textureOfCanvas.needsUpdate = true
-        this.plane.material = this.material
-        this.plane.needsUpdate = true
+      // this.material = new THREE.MeshBasicMaterial({ map: this.textureOfCanvas, transparent: this.transparent })
+      let uniforms = this.uniforms = {
+        pattern: { value: this.pattern },
+        text: { value: this.textureOfCanvas },
+        time: { value: 0 }
       }
+      let shader = {
+        uniforms: uniforms,
+        transparent: this.transparent,
+        vertexShader: require('./Shaders/Golden/vs.vert'),
+        fragmentShader: require('./Shaders/Golden/fs.frag')
+      }
+      if (this.fs && this.vs) {
+        shader.vertexShader = this.vs
+        shader.fragmentShader = this.fs
+      }
+      this.material = new THREE.ShaderMaterial(shader)
+      this.textureOfCanvas.needsUpdate = true
+      this.plane.material = this.material
+      this.plane.needsUpdate = true
     }
   },
   beforeDestroy () {
@@ -180,6 +180,7 @@ export default {
     },
     style () {
       return {
+        textAlign: this.textAlign,
         fontFamily: this.fontFamily,
         fontSize: (this.fontSize + '') || '24',
         wordWrap: this.width || 300

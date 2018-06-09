@@ -91,8 +91,8 @@ import { fullScreener, DomToucher } from '@/components/shared/tools.js'
 
 import InfinityBox from '../InfinityBox/InfinityBox.vue'
 
-import 'imports-loader?THREE=three!../../shared/Touch/TrackTrack.js'
-import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
+// import 'imports-loader?THREE=three!../../shared/Touch/TrackTrack.js'
+// import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 
 // import 'imports-loader?THREE=three!three/examples/js/controls/TrackBallControls.js'
 // import 'imports-loader?THREE=three!./Touch/TrackTrack.js'
@@ -520,11 +520,12 @@ export default {
       }
     },
     setup () {
+      // wordsssss
       this.listItems = []
       for (let i = 0; i < 100; i++) {
         this.listItems.push({
           id: i,
-          text: i + 'have some fun fun fun fun fun fun fun fun'
+          text: i + ` Let's Learn Effect.`
         })
       }
 
