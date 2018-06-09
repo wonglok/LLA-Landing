@@ -13,6 +13,21 @@
 
   <Scene @scene="(v) => { $emit('scene', v); scene = v }">
 
+    <InfinityBox
+      v-if="renderer && scene && $refs['touch-surface']"
+      :size="size"
+      :renderer="renderer"
+      :touchSurface="$refs['touch-surface']"
+      :list="[
+        { id: 1, size: { vw: 10, vh: 10 }, text: 1 },
+        { id: 2, size: { vw: 10, vh: 10 }, text: 2 },
+        { id: 3, size: { vw: 10, vh: 10 }, text: 3 },
+        { id: 4, size: { vw: 10, vh: 10 }, text: 4 },
+        { id: 5, size: { vw: 10, vh: 10 }, text: 5 },
+      ]"
+    >
+    </InfinityBox>
+
     <Object3D @element="(v) => {
       scroller = v
     }"
@@ -78,8 +93,7 @@ import Bundle from '@/components/ThreeJS/Bundle.js'
 /* eslint-disable */
 import * as TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
-
-import { fullScreener, DomToucher } from '@/components/Shared/Utils.js'
+import { fullScreener, DomToucher } from '@/components/shared/tools.js'
 
 import InfinityBox from '../InfinityBox/InfinityBox.vue'
 
@@ -171,7 +185,8 @@ export default {
     // Hello,
     // VectorField,
     TextOutlet,
-    TextEdit
+    TextEdit,
+    InfinityBox
   },
   props: {
     renderer: {},

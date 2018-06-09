@@ -65,8 +65,8 @@ import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three'
 
-import 'imports-loader?THREE=three!../../shared/Touch/TrackTrack.js'
-import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
+import 'imports-loader?THREE=three!../../Shared/Touch/TrackTrack.js'
+import 'imports-loader?THREE=three!../../Shared/Touch/DragDrag.js'
 
 // import 'imports-loader?THREE=three!three/examples/js/controls/TrackBallControls.js'
 // import 'imports-loader?THREE=three!./Touch/TrackTrack.js'

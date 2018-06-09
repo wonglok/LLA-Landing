@@ -1,4 +1,4 @@
-import { fullScreener } from '@/components/Shared/Utils.js'
+import { fullScreener } from '@/components/shared/tools.js'
 
 export const makeRandomID = () => {
   var text = ''
