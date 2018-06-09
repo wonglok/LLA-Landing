@@ -18,13 +18,7 @@
       :size="size"
       :renderer="renderer"
       :touchSurface="$refs['touch-surface']"
-      :list="[
-        { id: 1, size: { vw: 10, vh: 10 }, text: 1 },
-        { id: 2, size: { vw: 10, vh: 10 }, text: 2 },
-        { id: 3, size: { vw: 10, vh: 10 }, text: 3 },
-        { id: 4, size: { vw: 10, vh: 10 }, text: 4 },
-        { id: 5, size: { vw: 10, vh: 10 }, text: 5 },
-      ]"
+      :list="listItems"
     >
     </InfinityBox>
 
@@ -412,7 +406,8 @@ export default {
       camPos: {
         x: 0, y: 0, z: 45
       },
-      tGroup: new TWEEN.Group()
+      tGroup: new TWEEN.Group(),
+      listItems: []
     }
   },
   watch: {
@@ -525,6 +520,14 @@ export default {
       }
     },
     setup () {
+      this.listItems = []
+      for (let i = 0; i < 100; i++) {
+        this.listItems.push({
+          id: i,
+          text: i + ''
+        })
+      }
+
       let touchSurface = this.touchSurface = this.$refs['touch-surface']
       let camera = this.camera
 

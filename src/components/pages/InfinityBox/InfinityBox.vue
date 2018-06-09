@@ -7,7 +7,7 @@
     @attach="(v) => { $parent.$emit('add', v) }"
     @detach="(v) => { $parent.$emit('remove', v) }"
   >
-    <PlaneBufferGeometry :width="30" :height="30" :nx="5" :ny="5"></PlaneBufferGeometry>
+    <PlaneBufferGeometry :width="viewport.width" :height="viewport.height" :nx="5" :ny="5"></PlaneBufferGeometry>
     <MeshBasicMaterial :color="0xffffff" :texture="rtt.texture"></MeshBasicMaterial>
   </Mesh>
 
@@ -91,6 +91,10 @@ export default {
   },
   data () {
     return {
+      viewport: {
+        width: 30,
+        height: 30
+      },
       fullScreener,
       scroller: false,
       sceneRTT: false,
@@ -118,8 +122,9 @@ export default {
       var layoutFn = () => {
         this.$nextTick(() => {
           // var fs = this.fullScreener({ planeZ: 0, camera })
-          this.list.forEach((item, key) => {
-
+          this.meshes.forEach((mesh, key) => {
+            var word = mesh.geometry.parameters.height
+            mesh.position.y = this.viewport.height - key * word
           })
         })
       }
@@ -136,7 +141,7 @@ export default {
           return accu
         },
         reduceMaxY: (accu, mesh, key) => {
-          let length = Math.abs(mesh.position.y)
+          let length = Math.abs(mesh.position.y) - this.viewport.height
           if (length >= accu) {
             accu = length
           }
@@ -182,7 +187,7 @@ export default {
         let maxY = sizer.totalY
         let minY = 0
 
-        let moveAmountX = evt.state.inX * 0.25
+        // let moveAmountX = evt.state.inX * 0.25
         let moveAmountY = evt.state.inY * 0.15
         let scroller = this.scroller
         if (scroller) {
@@ -201,7 +206,7 @@ export default {
           //   scroller.position.y += -moveAmountY
           // }
 
-          scroller.position.x += moveAmountY + moveAmountX
+          scroller.position.y += -moveAmountY
 
           if (scroller.position.x > maxX) {
             let varying = { ...scroller.position }
@@ -251,16 +256,16 @@ export default {
               tempFrustum.containsPoint(position)
             )) {
               // this.tweenIndexZ(mesh, -5, 1)
-              mesh.skip = true
+              // mesh.visible = false
             } else {
               // this.tweenIndexZ(mesh, 0, 0)
-              mesh.skip = false
+              // mesh.visible = true
             }
           })
         }
       }
 
-      this.sceneRTT.background = new THREE.Color('hsl(261, 83%, 66%)')
+      // this.sceneRTT.background = new THREE.Color('hsl(261, 83%, 66%)')
     },
     attachText ({ mesh, info }) {
       mesh.userData = mesh.userData || {}
