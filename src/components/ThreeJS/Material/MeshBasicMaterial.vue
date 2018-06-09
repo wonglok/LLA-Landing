@@ -6,6 +6,7 @@
 import * as THREE from 'three'
 export default {
   props: {
+    texture: {},
     opacity: {
       default: 1
     },
@@ -16,6 +17,9 @@ export default {
     }
   },
   watch: {
+    texture () {
+      this.material.map = this.texture
+    },
     opacity () {
       this.material.opacity = this.opacity
     }
@@ -35,7 +39,7 @@ export default {
     }
   },
   mounted () {
-    this.makeMaterial({})
+    this.makeMaterial({ map: this.texture })
     this.$on('texture', ({ texture }) => {
       this.makeMaterial({ map: texture })
     })

@@ -5,6 +5,7 @@ import HelloLayout from '@/components/pages/Hello/HelloLayout'
 
 import WinRenderer from '@/components/pages/WindowsSystem/WinRenderer'
 import WinLayout from '@/components/pages/WindowsSystem/WinLayout'
+import InfinityBox from '@/components/pages/InfinityBox/InfinityBox'
 
 Vue.use(Router)
 
@@ -18,6 +19,10 @@ export default new Router({
         {
           path: '',
           component: WinLayout
+        },
+        {
+          path: '/box',
+          component: InfinityBox
         }
       ]
     },

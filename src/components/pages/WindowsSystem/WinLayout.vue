@@ -81,6 +81,8 @@ import * as THREE from 'three'
 
 import { fullScreener, DomToucher } from '@/components/Shared/Utils.js'
 
+import InfinityBox from '../InfinityBox/InfinityBox.vue'
+
 import 'imports-loader?THREE=three!../../shared/Touch/TrackTrack.js'
 import 'imports-loader?THREE=three!../../shared/Touch/DragDrag.js'
 
@@ -700,37 +702,37 @@ export default {
         }
       }
 
-      // // ----------
-      // // Clicker
-      var raycaster = this.raycaster = new THREE.Raycaster()
-      var mouse = new THREE.Vector2()
+      // // // ----------
+      // // // Clicker
+      // var raycaster = this.raycaster = new THREE.Raycaster()
+      // var mouse = new THREE.Vector2()
 
-      var onMouseMove = (event) => {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-      }
-      touchSurface.addEventListener('mousemove', onMouseMove, false)
+      // var onMouseMove = (event) => {
+      //   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+      //   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+      // }
+      // touchSurface.addEventListener('mousemove', onMouseMove, false)
 
-      var onTouchMove = (evt) => {
-        if (evt.type === 'touchmove' || evt.type === 'touchstart') {
-          mouse.x = (evt.touches[0].pageX / window.innerWidth) * 2 - 1
-          mouse.y = -(evt.touches[0].pageY / window.innerHeight) * 2 + 1
-        }
-      }
-      touchSurface.addEventListener('touchstart', onTouchMove, false)
-      touchSurface.addEventListener('touchend', onTouchMove, false)
-      touchSurface.addEventListener('touchmove', onTouchMove, false)
+      // var onTouchMove = (evt) => {
+      //   if (evt.type === 'touchmove' || evt.type === 'touchstart') {
+      //     mouse.x = (evt.touches[0].pageX / window.innerWidth) * 2 - 1
+      //     mouse.y = -(evt.touches[0].pageY / window.innerHeight) * 2 + 1
+      //   }
+      // }
+      // touchSurface.addEventListener('touchstart', onTouchMove, false)
+      // touchSurface.addEventListener('touchend', onTouchMove, false)
+      // touchSurface.addEventListener('touchmove', onTouchMove, false)
 
-      var onClick = () => {
-        raycaster.setFromCamera(mouse, camera)
-        // calculate objects intersecting the picking ray
-        var evt = raycaster.intersectObjects(this.eGroupMesh)[0]
-        if (evt) {
-          console.log(evt)
-          // this.bringIn(evt)
-        }
-      }
-      touchSurface.addEventListener('click', onClick, true)
+      // var onClick = () => {
+      //   raycaster.setFromCamera(mouse, camera)
+      //   // calculate objects intersecting the picking ray
+      //   var evt = raycaster.intersectObjects(this.eGroupMesh)[0]
+      //   if (evt) {
+      //     console.log(evt)
+      //     // this.bringIn(evt)
+      //   }
+      // }
+      // touchSurface.addEventListener('click', onClick, true)
 
       // let touchPanControl = this.touchPanControl = new THREE.TrackTrack(camera, touchSurface)
       // touchPanControl.rotateSpeed = 1.0
