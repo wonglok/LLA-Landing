@@ -197,9 +197,11 @@ export default {
           this.updatePos()
           this.updateSize()
         } catch (e) {
-          console.error(e)
+          this.obj3D.visible = false
+          console.log(e)
           setTimeout(() => {
             this.resizer()
+            this.obj3D.visible = true
           }, 1000)
         }
       }
