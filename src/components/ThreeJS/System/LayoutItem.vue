@@ -193,8 +193,15 @@ export default {
       }
 
       this.resizer = () => {
-        this.updatePos()
-        this.updateSize()
+        try {
+          this.updatePos()
+          this.updateSize()
+        } catch (e) {
+          console.error(e)
+          setTimeout(() => {
+            this.resizer()
+          }, 1000)
+        }
       }
 
       this.resizer()
