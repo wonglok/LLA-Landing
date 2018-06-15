@@ -77,7 +77,7 @@ export const makeLayouts = () => {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
 
-        x: '0',
+        x: 'fsw * 0.5 - szw * 0.5',
         y: 'fsh * 0.5 - szh * 0.5 - welcome.size.height - 0.5 - viewer.size.height',
         z: '0'
       }
@@ -90,7 +90,7 @@ export const makeLayouts = () => {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
 
-        x: '0',
+        x: '-fsw * 0.5 + szw * 0.5',
         y: 'fsh * 0.5 - szh * 0.5 - welcome.size.height - 0.5 - viewer.size.height - velaBox.size.height - 1.0',
         z: '0'
       }
@@ -103,7 +103,7 @@ export const makeLayouts = () => {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
 
-        x: '0',
+        x: 'fsw * 0.5 - szw * 0.5',
         y: 'fsh * 0.5 - szh * 0.5 - welcome.size.height - 0.5 - viewer.size.height - velaBox.size.height - 1.0 - youCanLearn.size.height - 1.0',
         z: '0'
       }
