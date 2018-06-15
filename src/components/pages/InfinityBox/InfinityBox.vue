@@ -32,7 +32,7 @@
 
         <Text3DComp
           :fontSize="40"
-          :fontFamily="'Arial'"
+          :fontFamily="'\'InterUI\', \'Avenir\', Helvetica, Arial, sans-serif'"
           :vs="textShader.vs"
           :fs="textShader.fs"
           :textAlign="'left'"

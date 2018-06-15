@@ -8,7 +8,7 @@
 <script>
 import * as THREE from 'three'
 /* eslint-disable */
-import 'imports-loader?THREE=three!three/examples/js/controls/OrbitControls.js'
+// import 'imports-loader?THREE=three!three/examples/js/controls/OrbitControls.js'
 /* eslint-enable */
 
 export default {

@@ -13,14 +13,30 @@
 
   <Scene @scene="(v) => { $emit('scene', v); scene = v }">
 
-    <InfinityBox
+    <!-- <InfinityBox
       v-if="renderer && scene && $refs['touch-surface']"
       :size="size"
       :renderer="renderer"
       :touchSurface="$refs['touch-surface']"
       :list="listItems"
     >
-    </InfinityBox>
+    </InfinityBox> -->
+
+    <Object3D :pz="5">
+      <!-- <Mesh>
+        <PlaneBufferGeometry
+          :width="10"
+          :height="10"
+          :nx="10"
+          :ny="10"
+        >
+        </PlaneBufferGeometry>
+        <MeshBasicMaterial>
+        </MeshBasicMaterial>
+      </Mesh> -->
+      <!-- <SVGLoader :src="undefined" /> -->
+      <!-- <ImageLoader v-if="fs" :h="Math.min(fs.height, fs.width)" :src="link" /> -->
+    </Object3D>
 
     <Object3D @element="(v) => {
       scroller = v
@@ -113,7 +129,7 @@ import * as MS from '../Hello/Data/HelloData.js'
 import TextOutlet from '../Hello/Elements/Text/TextOutlet.vue'
 import TextEdit from '../Hello/Elements/Text/TextEdit.vue'
 
-// // Using events with the custom object
+// Using events with the custom object
 // var mover = new DomToucher({ toucher: window })
 
 // mover.addEventListener('start', (evt) => {
@@ -381,8 +397,10 @@ export default {
     ]
 
     return {
+      Math,
+      link: require('./Tutorial/data-types.svg'),
       scroller: false,
-
+      fs: false,
       // text outlet
       MS,
       // touchSurface: false,
@@ -528,6 +546,7 @@ export default {
           text: i + ` Let's Learn Effect.`
         })
       }
+      this.listItems = this.listItems.slice().reverse()
 
       let touchSurface = this.touchSurface = this.$refs['touch-surface']
       let camera = this.camera
@@ -635,8 +654,6 @@ export default {
       }, 3000)
 
       mover.addEventListener('update', (evt) => {
-        //
-
         // Scroll X
         let maxX = 0
         let minX = -sizer.totalX

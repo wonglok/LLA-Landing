@@ -1,0 +1,40 @@
+
+<svg width="277px" height="92px" viewBox="0 0 277 92" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="5.36714234%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#3056E6" offset="0%"></stop>
+            <stop stop-color="#26E8DF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mobile" transform="translate(-137.000000, -918.000000)">
+            <g id="Group-3" transform="translate(137.000000, 919.000000)">
+                <g id="Group-7" transform="translate(160.000000, 0.000000)">
+                    <g id="Group-4-Copy" transform="translate(0.000000, 41.000000)">
+                        <circle id="Oval" stroke="#979797" stroke-width="3" cx="3.5" cy="42.5" r="3.5"></circle>
+                        <polyline id="Line-3" stroke="url(#linearGradient-1)" stroke-linecap="square" points="7 43 50.0974188 43 82.2757353 1.13686838e-13 124 1.301112e-13"></polyline>
+                    </g>
+                    <g id="Group-4-Copy-2" transform="translate(0.000000, 21.000000)">
+                        <circle id="Oval" stroke="#979797" stroke-width="3" cx="3.5" cy="42.5" r="3.5"></circle>
+                        <polyline id="Line-3" stroke="url(#linearGradient-1)" stroke-linecap="square" points="7 43 50.0974188 43 82.2757353 1.13686838e-13 124 1.301112e-13"></polyline>
+                    </g>
+                    <g id="Group-4-Copy-3">
+                        <circle id="Oval" stroke="#979797" stroke-width="3" cx="3.5" cy="42.5" r="3.5"></circle>
+                        <polyline id="Line-3" stroke="url(#linearGradient-1)" stroke-linecap="square" points="7 43 50.0974188 43 82.2757353 1.13686838e-13 124 1.301112e-13"></polyline>
+                    </g>
+                </g>
+                <text id="FREE-TUTORIALS" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="0.133324" y="48">FREE TUTORIALS</tspan>
+                </text>
+                <text id="Step-by-Step" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="20.399992" y="69">Step by Step</tspan>
+                </text>
+                <text id="INDUSTRY-Level" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="0.133324" y="91">INDUSTRY Level</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

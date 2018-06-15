@@ -34,6 +34,8 @@ export default {
       }
     }
   },
+  created () {
+  },
   watch: {
     transparent () { this.initShader() },
     vs () { this.initShader() },

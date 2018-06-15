@@ -1,0 +1,300 @@
+
+<svg width="881px" height="871px" viewBox="0 0 881 871" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="295" y="810" width="449" height="131"></rect>
+        <rect id="path-2" x="741" y="452" width="221" height="253"></rect>
+        <rect id="path-3" x="339" y="452" width="272" height="253"></rect>
+        <circle id="path-4" cx="4" cy="51" r="4"></circle>
+        <rect id="path-5" x="0" y="0" width="28" height="204"></rect>
+        <rect id="path-6" x="0" y="0" width="28" height="204"></rect>
+        <rect id="path-7" x="0" y="0" width="28" height="204"></rect>
+        <rect id="path-8" x="0" y="0" width="28" height="204"></rect>
+        <rect id="path-9" x="0" y="0" width="28" height="204"></rect>
+        <rect id="path-10" x="0" y="0" width="28" height="204"></rect>
+        <rect id="path-11" x="0" y="0" width="146" height="20"></rect>
+        <circle id="path-12" cx="4" cy="51" r="4"></circle>
+        <rect id="path-13" x="0" y="0" width="146" height="20"></rect>
+        <circle id="path-14" cx="4" cy="51" r="4"></circle>
+        <rect id="path-15" x="0" y="0" width="146" height="20"></rect>
+        <circle id="path-16" cx="4" cy="51" r="4"></circle>
+        <circle id="path-17" cx="4" cy="51" r="4"></circle>
+        <circle id="path-18" cx="4" cy="51" r="4"></circle>
+        <circle id="path-19" cx="4" cy="51" r="4"></circle>
+        <rect id="path-20" x="0" y="0" width="146" height="20"></rect>
+        <rect id="path-21" x="0" y="0" width="146" height="20"></rect>
+        <rect id="path-22" x="0" y="0" width="146" height="20"></rect>
+        <circle id="path-23" cx="4" cy="51" r="4"></circle>
+        <rect id="path-24" x="0" y="0" width="146" height="20"></rect>
+        <rect id="path-25" x="0" y="0" width="146" height="20"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-HD-Copy-4" transform="translate(-295.000000, -70.000000)">
+            <g id="Rectangle-20">
+                <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="295.5" y="810.5" width="448" height="130"></rect>
+            </g>
+            <g id="Group-8" transform="translate(343.000000, 887.000000)">
+                <path d="M0.5,15.5 L45.5111097,15.5" id="Line" stroke="#FFFFFF" stroke-linecap="square"></path>
+                <text id="MESH-/-Poitns-/-Line" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="1.499988" y="12">MESH / Poitns / Line / LINE_SEGMENTS</tspan>
+                </text>
+            </g>
+            <text id="TYPES-OF-OBJECT-TO-D" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                <tspan x="403.366659" y="860">TYPES OF OBJECT TO DRAW</tspan>
+            </text>
+            <g id="Rectangle-12">
+                <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-2"></use>
+                <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="741.5" y="452.5" width="220" height="252"></rect>
+            </g>
+            <g id="Rectangle-12-Copy">
+                <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-3"></use>
+                <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="339.5" y="452.5" width="271" height="252"></rect>
+            </g>
+            <g id="Group-4-Copy-5" transform="translate(942.000000, 418.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-4"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 37.4683206 51 59.4705882 1.34837877e-13 88 1.54317934e-13"></polyline>
+            </g>
+            <text id="SHADER-Material" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                <tspan x="753" y="567">SHADER</tspan>
+                <tspan x="753" y="581">Material</tspan>
+            </text>
+            <g id="Group-6" transform="translate(711.000000, 150.000000)">
+                <g id="Group-3" transform="translate(14.000000, 203.000000)" stroke="#979797">
+                    <circle id="Oval" stroke-width="3" transform="translate(42.750000, 121.000000) rotate(-90.000000) translate(-42.750000, -121.000000) " cx="42.75" cy="121" r="3.5"></circle>
+                    <polyline id="Line-3" stroke-linecap="square" transform="translate(21.750000, 59.000000) rotate(-90.000000) translate(-21.750000, -59.000000) " points="-36.75 80.5 6.34741885 80.5 38.5257353 37.5 80.25 37.5"></polyline>
+                </g>
+                <g id="Group-2">
+                    <g id="Rectangle-18">
+                        <use fill-opacity="0.181555707" fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-5"></use>
+                        <rect stroke="#979797" stroke-width="1" x="0.5" y="0.5" width="27" height="203"></rect>
+                    </g>
+                    <text id="VERTEX-SHADER" transform="translate(13.500000, 102.000000) rotate(-90.000000) translate(-13.500000, -102.000000) " font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                        <tspan x="-55.166671" y="107">VERTEX SHADER</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Group-5" transform="translate(746.000000, 150.000000)">
+                <g id="Group-4" transform="translate(15.000000, 204.000000)" stroke="#979797">
+                    <circle id="Oval" stroke-width="3" transform="translate(42.500000, 120.500000) rotate(-90.000000) translate(-42.500000, -120.500000) " cx="42.5" cy="120.5" r="3.5"></circle>
+                    <polyline id="Line-3" stroke-linecap="square" transform="translate(21.500000, 58.500000) rotate(-90.000000) translate(-21.500000, -58.500000) " points="-37 80 6.09741885 80 38.2757353 37 80 37"></polyline>
+                </g>
+                <g id="Group">
+                    <g id="Rectangle-18-Copy">
+                        <use fill-opacity="0.181555707" fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-6"></use>
+                        <rect stroke="#979797" stroke-width="1" x="0.5" y="0.5" width="27" height="203"></rect>
+                    </g>
+                    <text id="Fragment-Shader" transform="translate(13.000000, 101.500000) rotate(-90.000000) translate(-13.000000, -101.500000) " font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                        <tspan x="-66.600005" y="106.5">Fragment Shader</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Group-6-Copy" transform="translate(318.000000, 158.000000)">
+                <g id="Group-3" transform="translate(14.000000, 203.000000)" stroke="#979797">
+                    <circle id="Oval" stroke-width="3" transform="translate(42.750000, 121.000000) rotate(-90.000000) translate(-42.750000, -121.000000) " cx="42.75" cy="121" r="3.5"></circle>
+                    <polyline id="Line-3" stroke-linecap="square" transform="translate(21.750000, 59.000000) rotate(-90.000000) translate(-21.750000, -59.000000) " points="-36.75 80.5 6.34741885 80.5 38.5257353 37.5 80.25 37.5"></polyline>
+                </g>
+                <g id="Group-2">
+                    <g id="Rectangle-18">
+                        <use fill-opacity="0.181555707" fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-7"></use>
+                        <rect stroke="#979797" stroke-width="1" x="0.5" y="0.5" width="27" height="203"></rect>
+                    </g>
+                    <text id="POSITION" transform="translate(13.500000, 102.000000) rotate(-90.000000) translate(-13.500000, -102.000000) " font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                        <tspan x="-23.833336" y="107">POSITION</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Group-5-Copy" transform="translate(353.000000, 158.000000)">
+                <g id="Group-4" transform="translate(15.000000, 204.000000)" stroke="#979797">
+                    <circle id="Oval" stroke-width="3" transform="translate(42.500000, 120.500000) rotate(-90.000000) translate(-42.500000, -120.500000) " cx="42.5" cy="120.5" r="3.5"></circle>
+                    <polyline id="Line-3" stroke-linecap="square" transform="translate(21.500000, 58.500000) rotate(-90.000000) translate(-21.500000, -58.500000) " points="-37 80 6.09741885 80 38.2757353 37 80 37"></polyline>
+                </g>
+                <g id="Group">
+                    <g id="Rectangle-18-Copy">
+                        <use fill-opacity="0.181555707" fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-8"></use>
+                        <rect stroke="#979797" stroke-width="1" x="0.5" y="0.5" width="27" height="203"></rect>
+                    </g>
+                    <text id="UV" transform="translate(13.000000, 101.500000) rotate(-90.000000) translate(-13.000000, -101.500000) " font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                        <tspan x="2.066666" y="106.5">UV</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Group-5-Copy-2" transform="translate(416.000000, 158.000000)">
+                <g id="Group-4" transform="translate(15.000000, 204.000000)" stroke="#979797">
+                    <circle id="Oval" stroke-width="3" transform="translate(42.500000, 120.500000) rotate(-90.000000) translate(-42.500000, -120.500000) " cx="42.5" cy="120.5" r="3.5"></circle>
+                    <polyline id="Line-3" stroke-linecap="square" transform="translate(21.500000, 58.500000) rotate(-90.000000) translate(-21.500000, -58.500000) " points="-37 80 6.09741885 80 38.2757353 37 80 37"></polyline>
+                </g>
+                <g id="Group">
+                    <g id="Rectangle-18-Copy">
+                        <use fill-opacity="0.181555707" fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-9"></use>
+                        <rect stroke="#979797" stroke-width="1" x="0.5" y="0.5" width="27" height="203"></rect>
+                    </g>
+                    <text id="Vertex_Color" transform="translate(13.000000, 101.500000) rotate(-90.000000) translate(-13.000000, -101.500000) " font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                        <tspan x="-52.600004" y="106.5">Vertex_Color</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Group-5-Copy-3" transform="translate(450.000000, 158.000000)">
+                <g id="Group-4" transform="translate(15.000000, 204.000000)" stroke="#979797">
+                    <circle id="Oval" stroke-width="3" transform="translate(42.500000, 120.500000) rotate(-90.000000) translate(-42.500000, -120.500000) " cx="42.5" cy="120.5" r="3.5"></circle>
+                    <polyline id="Line-3" stroke-linecap="square" transform="translate(21.500000, 58.500000) rotate(-90.000000) translate(-21.500000, -58.500000) " points="-37 80 6.09741885 80 38.2757353 37 80 37"></polyline>
+                </g>
+                <g id="Group">
+                    <g id="Rectangle-18-Copy">
+                        <use fill-opacity="0.181555707" fill="#D8D8D8" fill-rule="evenodd" xlink:href="#path-10"></use>
+                        <rect stroke="#979797" stroke-width="1" x="0.5" y="0.5" width="27" height="203"></rect>
+                    </g>
+                    <text id="end_position" transform="translate(13.000000, 101.500000) rotate(-90.000000) translate(-13.000000, -101.500000) " font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                        <tspan x="-49.400004" y="106.5">end_position</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="Group-7" transform="translate(1030.000000, 408.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-11"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="Transparent" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="12.866663" y="14">Transparent</tspan>
+                </text>
+            </g>
+            <g id="Group-4-Copy-6" transform="translate(942.000000, 444.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-12"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 37.4683206 51 59.4705882 1.34837877e-13 88 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-7-Copy-5" transform="translate(1030.000000, 434.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-13"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="depth-test" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="19.93333" y="14">depth-test</tspan>
+                </text>
+            </g>
+            <g id="Group-4-Copy-11" transform="translate(942.000000, 471.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-14"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 37.4683206 51 59.4705882 1.34837877e-13 88 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-7-Copy-6" transform="translate(1030.000000, 461.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-15"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="DOUBLE-side" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="16.066663" y="14">DOUBLE-side</tspan>
+                </text>
+            </g>
+            <text id="Buffer-Geometry-Each" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                <tspan x="363" y="545">Buffer </tspan>
+                <tspan x="363" y="559">Geometry</tspan>
+                <tspan x="363" y="573"></tspan>
+                <tspan x="363" y="587">Each</tspan>
+                <tspan x="363" y="601">Vertex’s</tspan>
+                <tspan x="363" y="615">attribute</tspan>
+            </text>
+            <g id="Group-4-Copy-2" transform="translate(744.000000, 761.000000) scale(1, -1) rotate(-90.000000) translate(-744.000000, -761.000000) translate(662.000000, 733.000000)" stroke="#E6B976">
+                <circle id="Oval" stroke-width="3" cx="3.5" cy="52.5" r="3.5"></circle>
+                <circle id="Oval-Copy" stroke-width="3" cx="160.5" cy="3.5" r="3.5"></circle>
+                <polyline id="Line-3" stroke-linecap="square" points="8.875 52.625 62.6546851 52.625 103.375 3.625 155.441176 3.625"></polyline>
+            </g>
+            <g id="Group-4-Copy-3" transform="translate(346.000000, 761.000000) scale(1, -1) rotate(-90.000000) translate(-346.000000, -761.000000) translate(264.000000, 733.000000)" stroke="#E6B976">
+                <circle id="Oval" stroke-width="3" cx="3.5" cy="52.5" r="3.5"></circle>
+                <circle id="Oval-Copy" stroke-width="3" cx="160.5" cy="3.5" r="3.5"></circle>
+                <polyline id="Line-3" stroke-linecap="square" points="8.875 52.625 62.6546851 52.625 103.375 3.625 155.441176 3.625"></polyline>
+            </g>
+            <g id="Group-4-Copy-7" transform="translate(976.500000, 597.500000) scale(1, -1) translate(-976.500000, -597.500000) translate(942.000000, 570.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-16"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 30.4695944 51 47.2463235 1.34837877e-13 69 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-4-Copy-8" transform="translate(976.500000, 625.500000) scale(1, -1) translate(-976.500000, -625.500000) translate(942.000000, 598.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-17"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 30.4695944 51 47.2463235 1.34837877e-13 69 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-4-Copy-10" transform="translate(976.500000, 656.500000) scale(1, -1) translate(-976.500000, -656.500000) translate(942.000000, 629.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-18"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 30.4695944 51 47.2463235 1.34837877e-13 69 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-4-Copy-9" transform="translate(976.500000, 684.500000) scale(1, -1) translate(-976.500000, -684.500000) translate(942.000000, 657.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-19"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 30.4695944 51 47.2463235 1.34837877e-13 69 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-7-Copy" transform="translate(1011.000000, 615.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-20"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="Time" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="52.733332" y="14">Time</tspan>
+                </text>
+            </g>
+            <g id="Group-7-Copy-2" transform="translate(1011.000000, 643.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-21"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="mouse" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="45.666665" y="14">mouse</tspan>
+                </text>
+            </g>
+            <g id="Group-7-Copy-4" transform="translate(1011.000000, 702.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-22"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="opacity" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="36.333331" y="14">opacity</tspan>
+                </text>
+            </g>
+            <g id="Group-4-Copy-12" transform="translate(976.500000, 711.500000) scale(1, -1) translate(-976.500000, -711.500000) translate(942.000000, 684.000000)">
+                <g id="Oval-3-Copy">
+                    <use fill-opacity="0.6622226" fill="#223569" fill-rule="evenodd" xlink:href="#path-23"></use>
+                    <circle stroke="#47CCFF" stroke-width="1" cx="4" cy="51" r="3.5"></circle>
+                </g>
+                <polyline id="Line-3" stroke-opacity="0.41" stroke="#47CCFF" stroke-linecap="square" points="8 51 30.4695944 51 47.2463235 1.34837877e-13 69 1.54317934e-13"></polyline>
+            </g>
+            <g id="Group-7-Copy-7" transform="translate(1011.000000, 729.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-24"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="progress" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="29.266664" y="14">progress</tspan>
+                </text>
+            </g>
+            <g id="Group-7-Copy-3" transform="translate(1011.000000, 674.000000)">
+                <g id="Rectangle-19">
+                    <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-25"></use>
+                    <rect stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" x="0.5" y="0.5" width="145" height="19"></rect>
+                </g>
+                <text id="Texture" font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                    <tspan x="34.733331" y="14">Texture</tspan>
+                </text>
+            </g>
+            <text id="Three.JS-Custom-anim" font-family="Trivial-Light, Trivial" font-size="30" font-weight="300" letter-spacing="1.333334" fill="#FFFFFF">
+                <tspan x="433.083325" y="90">Three.JS Custom animation</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

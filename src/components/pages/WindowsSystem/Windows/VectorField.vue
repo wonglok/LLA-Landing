@@ -208,8 +208,8 @@ void main () {
       let bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(this.size.width, this.size.height), 1.5, 0.4, 0.85)
       // bloomPass.renderToScreen = true
 
-      bloomPass.threshold = Number(0.71)
-      bloomPass.strength = Number(1.5)
+      bloomPass.threshold = Number(0.001)
+      bloomPass.strength = Number(3.0)
       bloomPass.radius = Number(1.0)
 
       composer.addPass(renderBG)
@@ -217,7 +217,8 @@ void main () {
 
       this.$emit('texture', this.composer.readBuffer.texture)
 
-      this.scene.background = new THREE.Color('hsl(180, 36%, 57%)')
+      // this.scene.background = new THREE.Color('hsl(180, 36%, 57%)')
+      this.scene.background = new THREE.Color('#000000')
     }
   },
   mounted () {

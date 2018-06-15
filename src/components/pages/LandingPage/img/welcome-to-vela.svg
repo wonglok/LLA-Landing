@@ -1,0 +1,25 @@
+
+<svg width="292px" height="23px" viewBox="0 0 292 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="269.276953 23.9955258 292 1 0 1 22.7274685 24"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mobile" transform="translate(-49.000000, -10.000000)">
+            <g id="Group-6" transform="translate(49.000000, 9.000000)">
+                <g id="Group-11-Copy-4">
+                    <g id="Path-2">
+                        <use fill-opacity="0.351704031" fill="#223569" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        <path stroke-opacity="0.412081069" stroke="#47CCFF" stroke-width="1" d="M269.068094,23.4955296 L290.802995,1.5 L1.19700535,1.5 L22.9363193,23.4999962 L269.068094,23.4955296 Z"></path>
+                    </g>
+                    <path d="M184.567568,23.5 L246.5,23.5" id="Line-4" stroke="#47CCFF" stroke-linecap="square"></path>
+                    <path d="M33.5740741,1.5 L63.4259259,1.5" id="Line-4-Copy" stroke="#47CCFF" stroke-linecap="square"></path>
+                </g>
+                <text id="welcome-TO-V.E.L.A." font-family="Trivial-Light, Trivial" font-size="12" font-weight="300" letter-spacing="1.33333397" fill="#FFFFFF">
+                    <tspan x="72.2333273" y="17">welcome TO V.E.L.A.</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

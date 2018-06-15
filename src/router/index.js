@@ -7,6 +7,8 @@ import WinRenderer from '@/components/pages/WindowsSystem/WinRenderer'
 import WinLayout from '@/components/pages/WindowsSystem/WinLayout'
 import InfinityBox from '@/components/pages/InfinityBox/InfinityBox'
 
+import LandingPage from '@/components/pages/LandingPage/LandingPage.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -18,10 +20,14 @@ export default new Router({
       children: [
         {
           path: '',
+          component: LandingPage
+        },
+        {
+          path: 'win',
           component: WinLayout
         },
         {
-          path: '/box',
+          path: 'box',
           component: InfinityBox
         }
       ]
