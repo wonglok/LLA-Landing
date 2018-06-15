@@ -75,7 +75,7 @@ export default {
     },
     prepareTexture ({ image }) {
       return new Promise((resolve, reject) => {
-        var dpi = window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio
+        var dpi = window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio * 1.25
         var canvas = document.createElement('canvas')
 
         canvas.width = image.width * dpi
