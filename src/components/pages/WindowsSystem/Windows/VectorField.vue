@@ -192,6 +192,7 @@ void main () {
       //   format: THREE.RGBFormat,
       //   stencilBuffer: true
       // }
+
       var dpi = 1.0
 
       let composer = this.composer = new THREE.EffectComposer(this.renderer, this.$parent.rtt)

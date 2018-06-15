@@ -18,11 +18,17 @@
       <Object3D @element="(v) => {
         scroller = v; setupScroll()
       }" v-if="fullscreen && layoutItems" :pz="-5">
-
         <Object3D :key="item.id" v-for="item in layoutItems">
-          <LayoutItem :data="item" :fs="fullscreen" :page="page" />
-        </Object3D>
+          <LayoutItem :data="item" :fs="fullscreen" :page="page">
 
+            <component
+              v-if="renderer"
+              :renderer="renderer"
+              :is="item.component"
+            />
+
+          </LayoutItem>
+        </Object3D>
       </Object3D>
 
     </Scene>
@@ -35,6 +41,10 @@ import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
 import { fullScreener, DomToucher } from '@/components/shared/tools.js'
 import * as landing from '@/components/pages/LandingPage/code/landing.js'
+
+import VectorField from '@/components/pages/Hello/CustomAnimation/VectorField/VectorField.vue'
+import GlowingWindow from '@/components/pages/LandingPage/GlowingWindow.vue'
+
 // , DomToucher
 export default {
   props: {
@@ -42,7 +52,9 @@ export default {
     renderer: {}
   },
   components: {
-    ...Bundle
+    ...Bundle,
+    VectorField,
+    GlowingWindow
   },
   computed: {
   },

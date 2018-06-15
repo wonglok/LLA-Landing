@@ -71,6 +71,35 @@ export const makeLayouts = () => {
     },
     {
       id: Math.random() + '',
+      name: 'animation',
+      src: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      component: 'GlowingWindow',
+      base: {
+        width: 10,
+        height: 10,
+        aspect: 1,
+        scale: {
+          x: 1.0,
+          y: 1.0,
+          z: 1.0
+        },
+        position: {
+          x: 0,
+          y: 0,
+          z: -0.01
+        }
+      },
+      formulas: {
+        width: 'fsw * 0.85',
+        height: 'fsw * 0.85 / ia',
+
+        x: '0',
+        y: 'fsh * 0.5 - szh * 0.5 - welcome.size.height - 0.5',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
       name: 'velaBox',
       src: require('../img/vela-box.svg'),
       formulas: {

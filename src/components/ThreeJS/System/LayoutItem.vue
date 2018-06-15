@@ -31,6 +31,7 @@ export default {
       geometry: false,
       material: false,
       mesh: false,
+      base3D: false,
       obj3D: false,
       size: false,
       resizer () {},
@@ -42,6 +43,24 @@ export default {
       clean () {},
       loader: new THREE.ImageLoader()
     }
+  },
+  created () {
+    this.base3D = this.makeObject3D()
+    if (this.data.base && this.data.base.scale) {
+      this.base3D.scale.copy(this.data.base.scale)
+    }
+    if (this.data.base && this.data.base.position) {
+      this.base3D.position.copy(this.data.base.position)
+    }
+    this.$on('add', (v) => {
+      this.base3D.add(v)
+    })
+    this.$on('remove', (v) => {
+      this.base3D.remove(v)
+    })
+    this.$on('texture', (v) => {
+      this.texture = v
+    })
   },
   watch: {
     fs () {
@@ -136,10 +155,11 @@ export default {
     },
     async onMount () {
       let image = this.image = await this.loadImage({ src: this.data.src })
-      let texture = this.texture = await this.prepareTexture({ image })
+      let texture = this.texture = this.texture || await this.prepareTexture({ image })
       let size = this.size = await this.evalSize({
         formulas: this.data.formulas,
         info: {
+          base: this.data.base || { width: 1, height: 1, aspect: 1 },
           fsw: this.fs.width,
           fsh: this.fs.height,
           fsa: this.fs.aspect,
@@ -151,6 +171,7 @@ export default {
       let mesh = this.mesh = await this.prepareMesh({ geometry, material })
       let obj3D = this.obj3D = this.makeObject3D()
       obj3D.add(mesh)
+      this.base3D.add(obj3D)
 
       this.updatePos = () => {
         let position = this.evalPosition({
@@ -206,16 +227,21 @@ export default {
         }
       }
 
+      this.updateTexutre = () => {
+        this.material.map = this.texture
+        this.material.needsUpdate = true
+      }
+
       this.resizer()
       window.addEventListener('resize', this.resizer, false)
 
-      this.$parent.$emit('add', obj3D)
+      this.$parent.$emit('add', this.base3D)
       if (this.clean) {
         this.clean()
       }
       this.clean = () => {
         window.removeEventListener('resize', this.resizer)
-        this.$parent.$emit('remove', obj3D)
+        this.$parent.$emit('remove', this.base3D)
       }
       this.$emit('element', this)
       this.$emit('resizer', this.resizer)
