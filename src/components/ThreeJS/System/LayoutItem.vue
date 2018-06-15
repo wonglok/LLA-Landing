@@ -215,15 +215,16 @@ export default {
 
       this.resizer = () => {
         try {
+          this.mesh.visible = false
           this.updatePos()
           this.updateSize()
+          this.mesh.visible = true
         } catch (e) {
           this.mesh.visible = false
           console.log(e)
           setTimeout(() => {
             this.resizer()
-            this.mesh.visible = true
-          }, 1000)
+          }, 100)
         }
       }
 
