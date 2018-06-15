@@ -93,8 +93,8 @@ export default {
         let maxY = sizer.totalY
         let minY = 0
 
-        // let moveAmountX = evt.state.inX * 0.35
-        let moveAmountY = evt.state.inY * 0.35
+        // let moveAmountX = evt.state.inX * 0.25
+        let moveAmountY = evt.state.inY * 0.25
         let scroller = this.scroller
         if (scroller) {
           // if (this.fs) {
