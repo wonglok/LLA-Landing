@@ -160,8 +160,8 @@ export const makeTablet768 = () => {
       name: 'welcomeBox',
       src: require('../img/tablet768/welcomeBox.svg'),
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 292 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 292 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 292 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 292 / 768 / ia',
 
         x: '0',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35',
@@ -173,10 +173,10 @@ export const makeTablet768 = () => {
       name: 'velaBox',
       src: require('../img/tablet768/velaBox.svg'),
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 289 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 289 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 289 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 289 / 768 / ia',
 
-        x: '((fsw > 20.53) ? 20.53 : fsw) * (-225.5 + 10) / 768',
+        x: '((fsw > 25.53) ? 25.53 : fsw) * (-225.5 + 10) / 768',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25',
         z: '0'
       }
@@ -186,10 +186,10 @@ export const makeTablet768 = () => {
       name: 'frame',
       src: require('../img/tablet768/frame.svg'),
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 428 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 428 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 428 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 428 / 768 / ia',
 
-        x: '((fsw > 20.53) ? 20.53 : fsw) * (133 + 10) / 768',
+        x: '((fsw > 25.53) ? 25.53 : fsw) * (133 + 10) / 768',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25',
         z: '0'
       }
@@ -215,10 +215,10 @@ export const makeTablet768 = () => {
         }
       },
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 428 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 428 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 428 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 428 / 768 / ia',
 
-        x: '((fsw > 20.53) ? 20.53 : fsw) * (133 + 10) / 768',
+        x: '((fsw > 25.53) ? 25.53 : fsw) * (133 + 10) / 768',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25',
         z: '0'
       }
@@ -228,10 +228,10 @@ export const makeTablet768 = () => {
       name: 'youCanLearn',
       src: require('../img/tablet768/youCanLearn.svg'),
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 325 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 325 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 325 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 325 / 768 / ia',
 
-        x: '-((fsw > 20.53) ? 20.53 : fsw) * 0.5 + szw * 0.5',
+        x: '-((fsw > 25.53) ? 25.53 : fsw) * 0.5 + szw * 0.5',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25 - frame.size.height - 1.25',
         z: '0'
       }
@@ -241,10 +241,10 @@ export const makeTablet768 = () => {
       name: 'sellingPoint',
       src: require('../img/tablet768/sellingPoint.svg'),
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 325 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 325 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 325 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 325 / 768 / ia',
 
-        x: '((fsw > 20.53) ? 20.53 : fsw) * 0.5 - szw * 0.5',
+        x: '((fsw > 25.53) ? 25.53 : fsw) * 0.5 - szw * 0.5',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25 - frame.size.height - 1.25 - youCanLearn.size.height',
         z: '0'
       }
@@ -254,8 +254,8 @@ export const makeTablet768 = () => {
       name: 'enter',
       src: require('../img/tablet768/enter.svg'),
       formulas: {
-        width: '((fsw > 20.53) ? 20.53 : fsw) * 257 / 768',
-        height: '((fsw > 20.53) ? 20.53 : fsw) * 257 / 768 / ia',
+        width: '((fsw > 25.53) ? 25.53 : fsw) * 257 / 768',
+        height: '((fsw > 25.53) ? 25.53 : fsw) * 257 / 768 / ia',
 
         x: '0',
         y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25 - frame.size.height - 1.25 - youCanLearn.size.height - sellingPoint.size.height - 1.25',
