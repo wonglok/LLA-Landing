@@ -74,6 +74,13 @@ export default {
     GlowingWindow
   },
   computed: {
+    page () {
+      if (this.winWidth >= 768) {
+        return this.page768
+      } else {
+        return this.page414
+      }
+    }
   },
   methods: {
     setupScroll () {
@@ -183,7 +190,9 @@ export default {
       fullscreen: false,
       scene: false,
       camera: false,
-      page: landing.makePage(),
+
+      page414: landing.makePage(),
+      page768: landing.makePage(),
 
       mobile414: landing.makeMobile414(),
       tablet768: landing.makeTablet768()
