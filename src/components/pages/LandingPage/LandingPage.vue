@@ -14,11 +14,28 @@
 
     <Scene @scene="(v) => { scene = v }">
 
-      <!-- layoutItems -->
+      <!-- mobile414 -->
       <Object3D @element="(v) => {
         scroller = v; setupScroll()
-      }" v-if="fullscreen && layoutItems" :pz="-5">
-        <Object3D :key="item.id" v-for="item in layoutItems">
+      }" v-if="fullscreen && mobile414 && winWidth < 768" :pz="-5">
+        <Object3D :key="item.id" v-for="item in mobile414">
+          <LayoutItem :data="item" :fs="fullscreen" :page="page">
+
+            <component
+              v-if="renderer"
+              :renderer="renderer"
+              :is="item.component"
+            />
+
+          </LayoutItem>
+        </Object3D>
+      </Object3D>
+
+      <!-- tablet768 -->
+      <Object3D @element="(v) => {
+        scroller = v; setupScroll()
+      }" v-if="fullscreen && tablet768 && winWidth >= 768" :pz="-5">
+        <Object3D :key="item.id" v-for="item in tablet768">
           <LayoutItem :data="item" :fs="fullscreen" :page="page">
 
             <component
@@ -63,7 +80,7 @@ export default {
       let self = this
       let touchSurface = this.$refs['touch-surface']
       var sizer = {
-        get eGroup () {
+        get elements () {
           return self.page.state.array.elements
         },
         reduceMaxX: (accu, eg, key) => {
@@ -83,15 +100,15 @@ export default {
           return accu
         },
         get totalX () {
-          return this.eGroup.reduce(this.reduceMaxX, 0)
+          return this.elements.reduce(this.reduceMaxX, 0)
         },
         get totalY () {
-          return this.eGroup.reduce(this.reduceMaxY, 0) - self.fullscreen.height * 0.5 + this.lastItemHalf
+          return this.elements.reduce(this.reduceMaxY, 0) - self.fullscreen.height * 0.5 + this.lastItemHalf
         },
         get lastItemHalf () {
           // if there is no last item then return 0
-          if (!this.eGroup[this.eGroup.length - 1]) { return 0 }
-          return this.eGroup[this.eGroup.length - 1].geometry.parameters.height * 0.5 + 1.0
+          if (!this.elements[this.elements.length - 1]) { return 0 }
+          return this.elements[this.elements.length - 1].geometry.parameters.height * 0.5 + 1.0
         }
       }
 
@@ -158,13 +175,18 @@ export default {
   },
   data () {
     return {
+      get winWidth () {
+        return window.innerWidth
+      },
       scroller: false,
       resizer () {},
       fullscreen: false,
       scene: false,
       camera: false,
       page: landing.makePage(),
-      layoutItems: landing.makeLayouts()
+
+      mobile414: landing.makeMobile414(),
+      tablet768: landing.makeTablet768()
     }
   },
   created () {

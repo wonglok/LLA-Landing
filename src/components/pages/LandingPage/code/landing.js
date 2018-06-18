@@ -41,12 +41,12 @@ export const makePage = () => {
   return api
 }
 
-export const makeLayouts = () => {
+export const makeMobile414 = () => {
   return [
     {
       id: Math.random() + '',
       name: 'welcome',
-      src: require('../img/welcome-to-vela.svg'),
+      src: require('../img/mobile414/welcome-to-vela.svg'),
       formulas: {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
@@ -59,7 +59,7 @@ export const makeLayouts = () => {
     {
       id: Math.random() + '',
       name: 'viewer',
-      src: require('../img/viewer.svg'),
+      src: require('../img/mobile414/viewer.svg'),
       formulas: {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
@@ -101,7 +101,7 @@ export const makeLayouts = () => {
     {
       id: Math.random() + '',
       name: 'velaBox',
-      src: require('../img/vela-box.svg'),
+      src: require('../img/mobile414/vela-box.svg'),
       formulas: {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
@@ -114,7 +114,7 @@ export const makeLayouts = () => {
     {
       id: Math.random() + '',
       name: 'youCanLearn',
-      src: require('../img/you-can-learn.svg'),
+      src: require('../img/mobile414/you-can-learn.svg'),
       formulas: {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
@@ -126,8 +126,8 @@ export const makeLayouts = () => {
     },
     {
       id: Math.random() + '',
-      name: 'usp',
-      src: require('../img/usp.svg'),
+      name: 'sellingPoint',
+      src: require('../img/mobile414/usp.svg'),
       formulas: {
         width: 'fsw * 0.85',
         height: 'fsw * 0.85 / ia',
@@ -140,13 +140,125 @@ export const makeLayouts = () => {
     {
       id: Math.random() + '',
       name: 'enter',
-      src: require('../img/enter.svg'),
+      src: require('../img/mobile414/enter.svg'),
       formulas: {
         width: 'fsw * 0.5',
         height: 'fsw * 0.5 / ia',
 
         x: '0',
-        y: 'fsh * 0.5 - szh * 0.5 - welcome.size.height - 0.5 - viewer.size.height - velaBox.size.height - 1.0 - youCanLearn.size.height - 1.0 - usp.size.height - 1.5',
+        y: 'fsh * 0.5 - szh * 0.5 - welcome.size.height - 0.5 - viewer.size.height - velaBox.size.height - 1.0 - youCanLearn.size.height - 1.0 - sellingPoint.size.height - 1.5',
+        z: '0'
+      }
+    }
+  ]
+}
+
+export const makeTablet768 = () => {
+  return [
+    {
+      id: Math.random() + '',
+      name: 'welcomeBox',
+      src: require('../img/tablet768/welcomeBox.svg'),
+      formulas: {
+        width: 'fsw * 292 / 768',
+        height: 'fsw * 292 / 768 / ia',
+
+        x: '0',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
+      name: 'velaBox',
+      src: require('../img/tablet768/velaBox.svg'),
+      formulas: {
+        width: 'fsw * 289 / 768',
+        height: 'fsw * 289 / 768 / ia',
+
+        x: 'fsw * (-225.5 + 10) / 768',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
+      name: 'frame',
+      src: require('../img/tablet768/frame.svg'),
+      formulas: {
+        width: 'fsw * 428 / 768',
+        height: 'fsw * 428 / 768 / ia',
+
+        x: 'fsw * (133 + 10) / 768',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
+      name: 'animation',
+      src: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      component: 'GlowingWindow',
+      base: {
+        width: 10,
+        height: 10,
+        aspect: 1,
+        scale: {
+          x: 1.0,
+          y: 1.0,
+          z: 1.0
+        },
+        position: {
+          x: 0,
+          y: 0,
+          z: -0.01
+        }
+      },
+      formulas: {
+        width: 'fsw * 428 / 768',
+        height: 'fsw * 428 / 768 / ia',
+
+        x: 'fsw * (133 + 10) / 768',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
+      name: 'youCanLearn',
+      src: require('../img/tablet768/youCanLearn.svg'),
+      formulas: {
+        width: 'fsw * 325 / 768',
+        height: 'fsw * 325 / 768 / ia',
+
+        x: '-fsw * 0.5 + szw * 0.5',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25 - frame.size.height - 1.25',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
+      name: 'sellingPoint',
+      src: require('../img/tablet768/sellingPoint.svg'),
+      formulas: {
+        width: 'fsw * 325 / 768',
+        height: 'fsw * 325 / 768 / ia',
+
+        x: 'fsw * 0.5 - szw * 0.5',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25 - frame.size.height - 1.25 - youCanLearn.size.height',
+        z: '0'
+      }
+    },
+    {
+      id: Math.random() + '',
+      name: 'enter',
+      src: require('../img/tablet768/enter.svg'),
+      formulas: {
+        width: 'fsw * 257 / 768',
+        height: 'fsw * 257 / 768 / ia',
+
+        x: '0',
+        y: 'fsh * 0.5 - szh * 0.5 - 0.35 - welcomeBox.size.height - 1.25 - frame.size.height - 1.25 - youCanLearn.size.height - sellingPoint.size.height - 1.25',
         z: '0'
       }
     }

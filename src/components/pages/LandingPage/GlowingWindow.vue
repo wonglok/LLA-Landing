@@ -17,6 +17,7 @@
     :height="res.height"
     @rtt="(v) => { rtt = v }"
   />
+
   <Scene v-if="rtt.texture" @scene="(v) => { sceneRTT = v; setup() }">
 
     <VectorField
@@ -166,7 +167,7 @@ export default {
       // bloomPass.renderToScreen = true
 
       bloomPass.threshold = Number(0.0001)
-      bloomPass.strength = Number(3.0)
+      bloomPass.strength = Number(3.5)
       bloomPass.radius = Number(1.0)
 
       composer.addPass(renderBG)
@@ -176,7 +177,7 @@ export default {
 
       this.outputTexture = this.composer.readBuffer.texture
 
-      this.$parent.$emit('texture', this.outputTexture)
+      this.$parent.$emit('textureRTT', this.outputTexture)
 
       // this.sceneRTT.background = new THREE.Color('hsl(180, 36%, 57%)')
       this.sceneRTT.background = new THREE.Color('#000000')

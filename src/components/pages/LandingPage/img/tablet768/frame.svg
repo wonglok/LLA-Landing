@@ -1,0 +1,17 @@
+
+<svg width="428px" height="428px" viewBox="0 0 428 428" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Tablet" transform="translate(-315.000000, -134.000000)" stroke="#C5C5C5">
+            <g id="Group-3" transform="translate(315.000000, 134.000000)">
+                <polyline id="Line" stroke-linecap="square" points="22 381 22 405 46 405"></polyline>
+                <polyline id="Line-Copy" stroke-linecap="square" transform="translate(34.000000, 35.000000) rotate(90.000000) translate(-34.000000, -35.000000) " points="22 23 22 47 46 47"></polyline>
+                <polyline id="Line-Copy-2" stroke-linecap="square" transform="translate(394.000000, 35.000000) rotate(180.000000) translate(-394.000000, -35.000000) " points="382 23 382 47 406 47"></polyline>
+                <polyline id="Line-Copy-3" stroke-linecap="square" transform="translate(394.000000, 393.000000) rotate(270.000000) translate(-394.000000, -393.000000) " points="382 381 382 405 406 405"></polyline>
+                <rect id="Rectangle-5-Copy" stroke-opacity="0.758859828" x="0.5" y="0.5" width="427" height="427"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

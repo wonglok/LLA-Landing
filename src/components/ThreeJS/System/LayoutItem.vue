@@ -26,6 +26,7 @@ export default {
   },
   data () {
     return {
+      textureRTT: false,
       image: false,
       texture: false,
       geometry: false,
@@ -58,8 +59,12 @@ export default {
     this.$on('remove', (v) => {
       this.base3D.remove(v)
     })
-    this.$on('texture', (v) => {
-      this.texture = v
+    this.$on('textureRTT', (v) => {
+      this.textureRTT = v
+      if (this.material) {
+        this.material.map = v
+        this.material.needsUpdate = true
+      }
     })
   },
   watch: {
@@ -94,7 +99,8 @@ export default {
     },
     prepareTexture ({ image }) {
       return new Promise((resolve, reject) => {
-        var dpi = window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio * 1.25
+        var zoom = window.innerWidth / image.width
+        var dpi = window.devicePixelRatio < 2.0 ? 2.0 : window.devicePixelRatio * zoom
         var canvas = document.createElement('canvas')
 
         canvas.width = image.width * dpi
@@ -155,7 +161,7 @@ export default {
     },
     async onMount () {
       let image = this.image = await this.loadImage({ src: this.data.src })
-      let texture = this.texture = this.texture || await this.prepareTexture({ image })
+      let texture = this.texture = this.textureRTT || await this.prepareTexture({ image })
       let size = this.size = await this.evalSize({
         formulas: this.data.formulas,
         info: {
