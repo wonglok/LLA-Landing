@@ -11,7 +11,7 @@ export default {
     }
   },
   mounted () {
-    let geometry = new THREE.BoxBufferGeometry(2, 2, 2, 12, 12, 12)
+    let geometry = new THREE.BoxBufferGeometry(2, 2, 2, 50, 50, 50)
     this.$parent.$emit('geometry', geometry)
   }
 }

@@ -1,6 +1,20 @@
 <template>
   <div class="full">
     <div class="full toucher" ref="touch-surface">
+
+      <div class="full scroll-container" ref="scroll-container" @scroll="scl.onScroll">
+        <div class="scroll-content" ref="scroll-content">
+          <div class="tall">1</div>
+          <div class="tall">2</div>
+          <div class="tall">3</div>
+          <div class="tall">4</div>
+          <div class="tall">5</div>
+          <div class="tall">6</div>
+          <div class="tall">7</div>
+          <div class="tall">8</div>
+        </div>
+      </div>
+
     </div>
 
     <PerspectiveCamera
@@ -9,14 +23,15 @@
       :near="1"
       :far="1000"
       :position="camPos"
-      @camera="(v) => { camera = v; resizer() }"
+      @camera="(v) => { camera = v; }"
     />
 
     <Scene @scene="(v) => { scene = v }">
 
-      <!-- OMG -->
-
-      <!-- LOL -->
+      <Box
+        v-if="scl && scl.state && scene"
+        :scl="scl"
+      />
 
     </Scene>
 
@@ -26,8 +41,9 @@
 <script>
 import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
-// import { fullScreener, DomToucher } from '@/components/shared/tools.js'
+import * as Scroller from '@/components/shared/DomScroller/DomScroller.js'
 
+import Box from './Box/Box.vue'
 // DomToucher
 export default {
   props: {
@@ -35,10 +51,13 @@ export default {
     renderer: {}
   },
   components: {
-    ...Bundle
+    ...Bundle,
+    Box
   },
   data () {
     return {
+      THREE,
+      scl: { onScroll () {} },
       camPos: { x: 0, y: 0, z: 45 },
       ori: false,
       resizer () {},
@@ -55,6 +74,9 @@ export default {
       if (this.scene && this.camera && this.renderer) {
         this.renderer.render(this.scene, this.camera)
       }
+    },
+    setupDomScroller () {
+      this.scl = Scroller.make({ scroller: this.$refs['scroll-container'], content: this.$refs['scroll-content'] })
     },
     setupOrientation () {
       var ori = this.ori = {
@@ -93,24 +115,30 @@ export default {
       }
 
       window.addEventListener('deviceorientation', handleOrientation, false)
+      var resizer = this.resizer = () => {
+        // if (!this.camera) { return }
+        // this.fullscreen = fullScreener({ planeZ: -5, camera: this.camera })
+      }
+      window.addEventListener('resize', resizer, false)
+      resizer()
+      this.$nextTick(resizer)
     }
   },
 
   created () {
-
+    this.$on('add', (v) => {
+      this.scene.add(v)
+    })
+    this.$on('remove', (v) => {
+      this.scene.remove(v)
+    })
   },
   mounted () {
-    var resizer = this.resizer = () => {
-      // if (!this.camera) { return }
-      // this.fullscreen = fullScreener({ planeZ: -5, camera: this.camera })
-    }
-    window.addEventListener('resize', resizer, false)
-    resizer()
-    this.$nextTick(resizer)
+    this.setupDomScroller()
 
     this.setupOrientation()
 
-    this.scene.background = new THREE.Color(0xffffff)
+    this.scene.background = new THREE.Color(0x000000)
 
     var self = this
     function loop () {
@@ -137,4 +165,14 @@ export default {
   top: 0px;
   left: 0px;
 }
+
+.tall{
+  height: 30vh;
+}
+
+.scroll-container{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 </style>
