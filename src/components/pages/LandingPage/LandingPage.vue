@@ -62,7 +62,7 @@ import * as landing from '@/components/pages/LandingPage/code/landing.js'
 import VectorField from '@/components/pages/Hello/CustomAnimation/VectorField/VectorField.vue'
 import GlowingWindow from '@/components/pages/LandingPage/GlowingWindow.vue'
 
-// , DomToucher
+// DomToucher
 export default {
   props: {
     size: {},
@@ -120,7 +120,6 @@ export default {
       }
 
       var mover = this.mover = new DomToucher({ toucher: touchSurface })
-      console.log(sizer)
 
       mover.addEventListener('update', (evt) => {
         // Scroll X

@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+import HelpingFriends from '@/components/pages/HelpingFriends/HelpingFriends'
+
 import Hello from '@/components/pages/Hello/Hello'
 import HelloLayout from '@/components/pages/Hello/HelloLayout'
 
@@ -20,6 +23,10 @@ export default new Router({
       children: [
         {
           path: '',
+          component: HelpingFriends
+        },
+        {
+          path: 'vela',
           component: LandingPage
         },
         {
@@ -38,7 +45,7 @@ export default new Router({
       component: HelloLayout,
       children: [
         {
-          path: '',
+          path: '/lla',
           component: Hello
         }
       ]

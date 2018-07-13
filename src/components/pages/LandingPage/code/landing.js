@@ -8,6 +8,7 @@ export const makePage = () => {
         return accu
       }, [])
     },
+
     get layouts () {
       return Object.keys(layout).reduce((accu, key) => {
         accu.push(layout[key])
@@ -15,6 +16,7 @@ export const makePage = () => {
       }, [])
     }
   }
+
   let state = {
     elements,
     layout,

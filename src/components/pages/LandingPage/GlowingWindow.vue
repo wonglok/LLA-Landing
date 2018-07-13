@@ -54,6 +54,17 @@ import * as THREE from 'three'
 import VectorField from '@/components/pages/Hello/CustomAnimation/VectorField/VectorField.vue'
 
 /* eslint-disable */
+/*
+https://threejs.org/examples/js/postprocessing/EffectComposer.js
+https://threejs.org/examples/js/postprocessing/RenderPass.js
+https://threejs.org/examples/js/postprocessing/MaskPass.js
+https://threejs.org/examples/js/postprocessing/ShaderPass.js
+https://threejs.org/examples/js/shaders/CopyShader.js
+https://threejs.org/examples/js/shaders/FXAAShader.js
+https://threejs.org/examples/js/shaders/ConvolutionShader.js
+https://threejs.org/examples/js/shaders/LuminosityHighPassShader.js
+https://threejs.org/examples/js/postprocessing/UnrealBloomPass.js
+*/
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/RenderPass.js'
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/MaskPass.js'
