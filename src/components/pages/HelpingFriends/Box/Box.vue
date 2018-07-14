@@ -2,10 +2,10 @@
   <div>
 
     <Object3D
-    @attach="(v) => { $parent.$emit('add', v) }"
-    @detach="(v) => { $parent.$emit('remove', v) }"
+    @attach="(v) => { $parent.$emit('add', v); box = v }"
+    @detach="(v) => { $parent.$emit('remove', v); box = false }"
 
-    v-if="scl.state" :rx="scl.state.progress * PI * 2.0" :px="0" :py="0.0" :pz="0">
+    v-if="scl.state" :rx="0.0" :px="0" :py="0.0" :pz="0">
       <Points @element="(v) => { v.frustumCulled = false; }">
         <BoxBufferGeometry  />
         <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
@@ -28,6 +28,7 @@ export default {
   },
   data () {
     return {
+      box: false,
       THREE,
       simple: {
         vs: `
@@ -98,11 +99,17 @@ void main () {
     var self = this
     function loop () {
       self.rAFID = window.requestAnimationFrame(loop)
-      self.animatable.time.value = window.performance.now() * 0.0001
+      self.updateAnimatable()
     }
     self.rAFID = window.requestAnimationFrame(loop)
-
-    console.log(this.scl)
+  },
+  methods: {
+    updateAnimatable () {
+      this.animatable.time.value = window.performance.now() * 0.0001
+      if (this.box) {
+        this.box.rotation.x = this.scl.state.progress * Math.PI * 2.0
+      }
+    }
   }
 }
 </script>

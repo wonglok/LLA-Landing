@@ -86,6 +86,7 @@ export default {
     setupScroll () {
       let self = this
       let touchSurface = this.$refs['touch-surface']
+
       var sizer = {
         get elements () {
           return self.page.state.array.elements
