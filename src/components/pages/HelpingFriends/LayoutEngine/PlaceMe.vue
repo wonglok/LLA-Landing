@@ -136,17 +136,10 @@ export default {
     }
   },
   created () {
-    this.$on('register-layout', (v) => {
-      this.$parent.$emit('register-layout', v)
-    })
-
-    this.$on('unregister-layout', (v) => {
-      this.$parent.$emit('unregister-layout', v)
-    })
-
     this.$on('add', (v) => {
       this.$parent.$emit('add', v)
     })
+
     this.$on('remove', (v) => {
       this.$parent.$emit('remove', v)
     })
@@ -200,7 +193,7 @@ export default {
         console.log('update value dep waiting')
         setTimeout(() => {
           this.updateValue()
-        }, 150)
+        }, 16.667 * 30)
       }
     }
   }

@@ -7,7 +7,7 @@
 
     v-if="scl.state" :rx="0.0" :px="0" :py="0.0" :pz="0">
       <Points @element="(v) => { v.frustumCulled = false; }">
-        <BoxBufferGeometry  />
+        <SphereBufferGeometry :nx="parNum" :ny="parNum" :r="10"  />
         <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
       </Points>
     </Object3D>
@@ -28,6 +28,7 @@ export default {
   },
   data () {
     return {
+      parNum: window.innerWidth < 500 ? 50 : 100,
       box: false,
       THREE,
       simple: {
@@ -55,7 +56,6 @@ mat3 rotateY(float rad) {
     );
 }
 
-
 mat3 rotateZ(float rad) {
     float c = cos(rad);
     float s = sin(rad);
@@ -68,8 +68,8 @@ mat3 rotateZ(float rad) {
 
 void main (void) {
   vec3 newPos = position;
-  newPos.x += tan(newPos.x * 10.0 + time);
-  newPos.y += tan(newPos.y * 10.0 + time);
+  // newPos.x += tan(newPos.x * 10.0 + time);
+  newPos.y += tan(newPos.y * 3.14 * 20.5 + time);
 
   newPos = rotateZ(time) * newPos;
 
@@ -83,9 +83,10 @@ void main (void) {
         `,
         fs: `
 varying vec3 vPos;
+uniform float time;
 
 void main () {
-  gl_FragColor = vec4(vec3(1.0 - vPos), 1.0);
+  gl_FragColor = vec4(vec3(1.0), 1.0);
 }
         `
       },
@@ -107,7 +108,8 @@ void main () {
     updateAnimatable () {
       this.animatable.time.value = window.performance.now() * 0.0001
       if (this.box) {
-        this.box.rotation.x = this.scl.state.progress * Math.PI * 2.0
+        this.box.rotation.y = Math.PI * 0.25
+        this.box.rotation.z = this.scl.state.progress * Math.PI * 2.0
       }
     }
   }

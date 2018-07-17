@@ -37,6 +37,7 @@ import PlaceMe from './../LayoutEngine/PlaceMe.vue'
 import LayoutSet from './../LayoutEngine/LayoutSet.vue'
 
 import Box from './Box'
+
 export default {
   props: {
     boxesData: {},
