@@ -28,7 +28,7 @@ export default {
   },
   data () {
     return {
-      parNum: window.innerWidth < 500 ? 50 : 100,
+      parNum: window.innerWidth < 500 ? 65 : 100,
       box: false,
       THREE,
       simple: {
