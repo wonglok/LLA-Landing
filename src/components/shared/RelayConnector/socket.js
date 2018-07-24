@@ -7,9 +7,6 @@ export const $on = socket.on.bind(socket)
 $on('connect', () => {
   console.log('connected')
 })
-// $on('chat message', (data) => {
-//   console.log(data)
-// })
 $on('disconnect', () => {
   console.log('disconnected')
 })

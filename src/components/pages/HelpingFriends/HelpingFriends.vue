@@ -7,7 +7,7 @@
 
           <!-- <pre class="white">{{ Relay }}</pre> -->
 
-          <!-- <input v-if="Relay.internal.state" type="range" step="0.000001" min="-100" max="100" v-model="Relay.internal.state.slider"> -->
+          <pre v-if="Relay.internal.state">{{ Relay.internal.state }}</pre>
 
           <div :key="box.id" v-for="box in boxesData">
             x<input type="text" v-model="box.formulas.px" />
@@ -56,7 +56,7 @@ import Bundle from '@/components/ThreeJS/Bundle.js'
 import * as THREE from 'three'
 import * as Scroller from '@/components/shared/DomScroller/DomScroller.js'
 
-// import * as Relay from '@/components/shared/RelayConnector/relay.js'
+import * as Relay from '@/components/shared/RelayConnector/relay.js'
 
 /* eslint-disable */
 /*
@@ -93,9 +93,9 @@ export default {
     BoxesGroup
   },
   data () {
-    // Relay.internal.$forceUpdate = this.$forceUpdate.bind(this)
+    Relay.internal.$forceUpdate = this.$forceUpdate.bind(this)
     return {
-      // Relay,
+      Relay,
       boxesData: [
         {
           id: 'box1',

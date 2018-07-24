@@ -230,6 +230,7 @@ export default {
         xx: 0,
         yy: 0
       }
+
       function handleOrientation (event) {
         var x = event.beta - 45// In degree in the range [-180,180]
         var y = event.gamma // In degree in the range [-90,90]
