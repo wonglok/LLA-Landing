@@ -1,0 +1,55 @@
+{
+	"data": [
+		{
+			"_id": "_cvzvh45vkvf",
+			"name": "Drawing Editor",
+			"type": "drawing",
+			"ready": false,
+			"path": "drawing/my-drawings",
+			"undo": [],
+			"lines": []
+		},
+		{
+			"_id": "_bbvx7fqsuvl",
+			"name": "Slider Editor",
+			"type": "sliders",
+			"ready": false,
+			"path": "slider/my-sliders",
+			"sliders": [
+				{
+					"id": "s1",
+					"value": 29.8,
+					"min": 0,
+					"max": 100
+				},
+				{
+					"id": "s2",
+					"value": 40.6,
+					"min": 0,
+					"max": 100
+				},
+				{
+					"id": "s3",
+					"value": 46.7,
+					"min": 0,
+					"max": 100
+				},
+				{
+					"id": "s4",
+					"value": 50.5,
+					"min": 0,
+					"max": 100
+				},
+				{
+					"id": "s5",
+					"value": 24.8,
+					"min": 0,
+					"max": 100
+				}
+			]
+		}
+	],
+	"time": "2018-07-27T01:19:09.016Z",
+	"slider": "59.210526",
+	"fafa": "fafafa"
+}

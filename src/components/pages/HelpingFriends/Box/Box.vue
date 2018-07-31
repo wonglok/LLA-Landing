@@ -5,7 +5,7 @@
     @attach="(v) => { $parent.$emit('add', v); box = v }"
     @detach="(v) => { $parent.$emit('remove', v); box = false }"
 
-    v-if="scl.state" :rx="0.0" :px="0" :py="0.0" :pz="0">
+    :rx="0.0" :px="0" :py="0.0" :pz="0">
       <Points @element="(v) => { v.frustumCulled = false; }">
         <SphereBufferGeometry :nx="parNum" :ny="parNum" :r="10"  />
         <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
@@ -28,7 +28,7 @@ export default {
   },
   data () {
     return {
-      parNum: window.innerWidth < 500 ? 65 : 100,
+      parNum: window.innerWidth < 500 ? 25 : 40,
       box: false,
       THREE,
       simple: {
@@ -71,7 +71,7 @@ void main (void) {
   // newPos.x += tan(newPos.x * 10.0 + time);
   newPos.y += tan(newPos.y * 3.14 * 20.5 + time);
 
-  newPos = rotateZ(time) * newPos;
+  // newPos = rotateZ(time) * newPos;
 
   vPos = position;
 
@@ -107,10 +107,10 @@ void main () {
   methods: {
     updateAnimatable () {
       this.animatable.time.value = window.performance.now() * 0.0001
-      if (this.box) {
-        this.box.rotation.y = Math.PI * 0.25
-        this.box.rotation.z = this.scl.state.progress * Math.PI * 2.0
-      }
+      // if (this.box) {
+      //   this.box.rotation.y = Math.PI * 0.25
+      //   this.box.rotation.z = this.scl.state.progress * Math.PI * 2.0
+      // }
     }
   }
 }

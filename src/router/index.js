@@ -12,6 +12,8 @@ import InfinityBox from '@/components/pages/InfinityBox/InfinityBox'
 
 import LandingPage from '@/components/pages/LandingPage/LandingPage.vue'
 
+import LeapMotion from '@/components/pages/LeapMotion/LeapMotion.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -36,6 +38,10 @@ export default new Router({
         {
           path: 'box',
           component: InfinityBox
+        },
+        {
+          path: '/leap',
+          component: LeapMotion
         }
       ]
     },

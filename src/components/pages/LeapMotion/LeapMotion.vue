@@ -2,18 +2,22 @@
   <div class="full">
     <div class="full toucher" ref="touch-surface">
 
-      <div class="full scroll-container" ref="scroll-container" @scroll="scl.onScroll">
+      <div class="full scroll-container" ref="scroll-container" @scroll="scl.onScroll" v-show="false">
         <div class="scroll-content" ref="scroll-content">
+
+          <pre :key="hand.id" v-for="hand in hands">{{ hand.handString }}</pre>
+          <!--
+          <pre :key="pointable.id" v-for="pointable in pointables">{{ pointable }}</pre> -->
 
           <!-- <pre class="white">{{ Relay }}</pre> -->
 
-          <pre v-if="Relay.internal.state">{{ Relay.internal.state }}</pre>
+          <!-- <pre v-if="Relay.internal.state">{{ Relay.internal.state }}</pre>
 
           <div :key="box.id" v-for="box in boxesData">
             x<input type="text" v-model="box.formulas.px" />
             y<input type="text" v-model="box.formulas.py" />
             z<input type="text" v-model="box.formulas.pz" />
-          </div>
+          </div> -->
 
           <div class="tall">1</div>
           <div class="tall">2</div>
@@ -39,12 +43,43 @@
 
     <Scene @scene="(v) => { scene = v }">
 
-      <BoxesGroup
+      <!-- <BoxesGroup
         v-if="scl && scl.state && scene && camera"
         :scl="scl"
         :boxesData="boxesData"
         :camera="camera"
-      />
+      /> -->
+
+      <keep-alive
+        v-if="hand.activate"
+        :key="ip" v-for="(hand, ip) in hands"
+      >
+        <Object3D
+          :activate="(o) => {
+            o.visible = true
+          }"
+          :deactivate="(o) => {
+            o.visible = false
+          }"
+
+          :px="hand.palm[0]"
+          :py="hand.palm[1]"
+          :pz="hand.palm[2]"
+
+          :rz="hand.palm[2] / 100 * 3.14"
+
+          :d-rx="hand.dir[0]"
+          :d-ry="hand.dir[1]"
+          :d-rz="hand.dir[0]"
+
+          :sx="2.5"
+          :sy="2.5"
+          :sz="2.5"
+        >
+          <Box
+          />
+        </Object3D>
+      </keep-alive>
 
     </Scene>
 
@@ -81,7 +116,14 @@ import 'imports-loader?THREE=three!three/examples/js/shaders/LuminosityHighPassS
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/UnrealBloomPass.js'
 /* eslint-enable */
 
-import BoxesGroup from './Box/BoxesGroup.vue'
+import BoxesGroup from '@/components/pages/HelpingFriends/Box/BoxesGroup.vue'
+import Box from '@/components/pages/HelpingFriends/Box/Box.vue'
+import * as Leap from 'leapjs'
+
+let vectorToString = (v) => {
+  return v
+}
+
 // DomToucher
 export default {
   props: {
@@ -90,13 +132,20 @@ export default {
   },
   components: {
     ...Bundle,
-    BoxesGroup
+    BoxesGroup,
+    Box
   },
   data () {
     Relay.internal.$forceUpdate = () => {
       this.$forceUpdate()
     }
     return {
+      handCount: 0,
+      hands: [],
+      pointables: [],
+
+      //
+
       Relay,
       boxesData: [
         {
@@ -123,7 +172,7 @@ export default {
 
       THREE,
       scl: { onScroll () {} },
-      camPos: { x: 0, y: 0, z: 45 },
+      camPos: { x: 0, y: 100, z: 180 },
       ori: false,
       resizer () {},
       fullscreen: false,
@@ -143,7 +192,7 @@ export default {
   },
   methods: {
     setupComposer () {
-      var dpi = 1.0
+      var dpi = 0.5
 
       let composer = this.composer = new THREE.EffectComposer(this.renderer)
       composer.setSize(this.res.width * dpi, this.res.height * dpi)
@@ -167,7 +216,9 @@ export default {
       composer.addPass(bloomPass)
     },
     renderWebGL () {
-      if (this.scene && this.camera && this.renderer && this.composer) {
+      let noHands = this.handCount === 0
+
+      if (!noHands && this.scene && this.camera && this.renderer && this.composer) {
         this.composer.render()
       } else if (this.scene && this.camera && this.renderer) {
         this.renderer.render(this.scene, this.camera)
@@ -197,6 +248,65 @@ export default {
       self.renderWebGL()
     }
     self.rAFID = window.requestAnimationFrame(loop)
+
+    //
+
+    // leap
+    Leap.loop((frame) => {
+      this.handCount = frame.hands.length
+
+      this.hands.forEach((h) => { h.activate = false })
+
+      if (frame.hands.length > 0) {
+        for (let i = 0; i < frame.hands.length; i++) {
+          let handString = ''
+          let hand = frame.hands[i]
+
+          handString += 'Hand ID: ' + hand.id + '\n'
+          handString += 'Direction: ' + vectorToString(hand.direction, 2) + '\n'
+          handString += 'Palm normal: ' + vectorToString(hand.palmNormal, 2) + '\n'
+          handString += 'Palm position: ' + vectorToString(hand.palmPosition) + ' mm\n'
+          handString += 'Palm velocity: ' + vectorToString(hand.palmVelocity) + ' mm/s\n'
+          handString += 'Sphere center: ' + vectorToString(hand.sphereCenter) + ' mm\n'
+          handString += 'Sphere radius: ' + hand.sphereRadius.toFixed(1) + ' mm\n'
+
+          // this.camPos = {
+          //   x: hand.sphereCenter[0],
+          //   y: hand.sphereCenter[1],
+          //   z: this.camPos.z
+          // }
+          this.hands[i] = {
+            activate: true,
+            palm: hand.palmPosition,
+            dir: hand.direction,
+            handString
+          }
+          // this.hands[i] = handString || this.hands[i]
+        }
+      }
+
+      if (frame.pointables.length > 0) {
+        for (let i = 0; i < frame.pointables.length; i++) {
+          let pointable = frame.pointables[i]
+          // let pointableString = ''
+          // pointableString += 'Pointable ID: ' + pointable.id + '\n'
+          // pointableString += 'Belongs to hand with ID: ' + pointable.handId + '\n'
+          // pointableString += 'Length: ' + pointable.length.toFixed(1) + ' mm\n'
+          // pointableString += 'Width: ' + pointable.width.toFixed(1) + ' mm\n'
+          // pointableString += 'Direction: ' + vectorToString(pointable.direction, 2) + '\n'
+          // pointableString += 'Tip position: ' + vectorToString(pointable.tipPosition) + ' mm\n'
+          // pointableString += 'Tip velocity: ' + vectorToString(pointable.tipVelocity) + ' mm/s\n'
+
+          this.pointables[i] = {
+            tipPos: pointable.tipPosition,
+            dir: pointable.direction
+          }
+          // pointableString || this.pointables[i]
+        }
+      }
+
+      this.$forceUpdate()
+    })
   },
   beforeDestroy () {
     window.cancelAnimationFrame(this.rAFID)

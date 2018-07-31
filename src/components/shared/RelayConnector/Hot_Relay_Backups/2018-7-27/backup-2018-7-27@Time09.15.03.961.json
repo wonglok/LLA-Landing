@@ -1,0 +1,16 @@
+{
+	"data": [
+		{
+			"_id": "_kj55a5rvc6",
+			"name": "Drawing Editor",
+			"type": "drawing",
+			"ready": false,
+			"path": "drawing/my-drawings",
+			"undo": [],
+			"lines": []
+		}
+	],
+	"time": "2018-07-27T01:05:40.982Z",
+	"slider": "59.210526",
+	"fafa": "fafafa"
+}

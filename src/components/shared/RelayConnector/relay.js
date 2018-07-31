@@ -67,4 +67,21 @@ if (process.env.NODE_ENV === 'development') {
     }
     root.$forceUpdate()
   })
+
+  SOC.p2p.on('drawboard-draw', (instruction) => {
+    let arr = provideArray()
+    let itemObj = arr.find(a => a._id === instruction.objID)
+    if (!itemObj) {
+      return
+    }
+    let nowLine = itemObj.lines.find(l => l.lineID === instruction.lineID)
+    if (nowLine) {
+      let x = instruction.x
+      let y = instruction.y
+      nowLine.points.push({
+        x, y
+      })
+      root.$forceUpdate()
+    }
+  })
 }

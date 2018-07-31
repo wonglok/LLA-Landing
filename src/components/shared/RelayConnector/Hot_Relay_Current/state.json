@@ -1,68 +1,16 @@
 {
 	"data": [
 		{
-			"_id": "_rs6y2z2qifm",
+			"_id": "_agvrg8k9yp",
 			"name": "Shader Editor",
 			"type": "vs-fs-shader",
 			"ready": false,
 			"path": "shader/my-first-shader",
-			"vs": "//fun fun fun fun fun?\nvoid main ( void ) {\n  vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n  vec4 outputPos = projectionMatrix * mvPosition;\n  gl_Position = outputPos;\n}",
-			"fs": "void main () {\n  gl_FragColor = vec4(vec3(0.5), 1.0);\n}\n"
-		},
-		{
-			"_id": "_md9rb0m1qdm",
-			"name": "Drawing Editor",
-			"type": "drawing",
-			"ready": false,
-			"path": "drawing/my-drawing"
-		},
-		{
-			"_id": "_jq9prmxsca",
-			"name": "Slider Editor",
-			"type": "sliders",
-			"ready": false,
-			"path": "slider/my-sliders",
-			"sliders": [
-				{
-					"id": "s10",
-					"value": 68.2,
-					"min": 0,
-					"max": 100
-				},
-				{
-					"id": "s2",
-					"value": 20.8,
-					"min": 0,
-					"max": 100
-				},
-				{
-					"id": "s3",
-					"value": 55.3,
-					"min": 0,
-					"max": 100
-				},
-				{
-					"id": "s4",
-					"value": 57.5,
-					"min": 0,
-					"max": 100
-				},
-				{
-					"id": "s5",
-					"value": 38.1,
-					"min": 0,
-					"max": 100
-				},
-				{
-					"id": "s6",
-					"value": 80.5,
-					"min": 0,
-					"max": 100
-				}
-			]
+			"vs": "void main ( void ) {\n  vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n  vec4 outputPos = projectionMatrix * mvPosition;\n  gl_Position = outputPos;\n}\n",
+			"fs": "void main () {\n  gl_FragColor = vec4(vec3(0.5), 1.0);\n}"
 		}
 	],
-	"time": "2018-07-24T05:39:57.407Z",
+	"time": "2018-07-27T02:18:02.628Z",
 	"slider": "59.210526",
 	"fafa": "fafafa"
 }

@@ -11,6 +11,8 @@ export default {
     }
   },
   props: {
+    activate: { default () { return () => {} } },
+    deactivate: { default () { return () => {} } },
     visible: { default: true },
     px: { default: 0 },
     py: { default: 0 },
@@ -23,6 +25,12 @@ export default {
     rx: { default: 0 },
     ry: { default: 0 },
     rz: { default: 0 }
+  },
+  activated () {
+    this.activate(this.object3d)
+  },
+  deactivated () {
+    this.deactivate(this.object3d)
   },
   watch: {
     visible () { this.object3d.setVisible(this.visible) },
