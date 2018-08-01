@@ -393,7 +393,8 @@ void main () {
         pongMat.uniforms.mouse.value.copy({ x, y, z })
       }, false)
     }
-    mouser()
+    this.mouser = mouser
+    // mouser()
 
     // sim part
     let procSim = () => {
