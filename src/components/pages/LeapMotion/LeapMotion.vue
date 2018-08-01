@@ -5,9 +5,11 @@
       <div class="full scroll-container" ref="scroll-container" @scroll="scl.onScroll" v-show="false">
         <div class="scroll-content" ref="scroll-content">
 
-          <pre :key="hand.id" v-for="hand in hands">{{ hand.handString }}</pre>
+          <pre v-if="false" :key="hand.id" v-for="hand in hands">{{ hand.string }}</pre>
+          <!-- <pre :key="pointable.id" v-for="pointable in pointables">{{ pointable.string }}</pre> -->
+
           <!--
-          <pre :key="pointable.id" v-for="pointable in pointables">{{ pointable }}</pre> -->
+           -->
 
           <!-- <pre class="white">{{ Relay }}</pre> -->
 
@@ -50,7 +52,7 @@
         :camera="camera"
       /> -->
 
-      <keep-alive
+      <!-- <keep-alive
         v-if="hand.activate"
         :key="ip" v-for="(hand, ip) in hands"
       >
@@ -66,7 +68,7 @@
           :py="hand.palm[1]"
           :pz="hand.palm[2]"
 
-          :rz="hand.palm[2] / 100 * 3.14"
+          :rz="(hand.palm[2] - 50) / 100 * 3.14"
 
           :d-rx="hand.dir[0]"
           :d-ry="hand.dir[1]"
@@ -76,10 +78,27 @@
           :sy="2.5"
           :sz="2.5"
         >
-          <Box
-          />
+          <Box />
         </Object3D>
-      </keep-alive>
+      </keep-alive> -->
+
+      <Object3D
+        :px="0.0"
+        :py="100.0"
+        :pz="150.0"
+      >
+        <Wave
+          v-if="renderer && hands[0]"
+          :mouse="{
+            x: hands[0].palm[0],
+            y: hands[0].palm[1] - 100.0,
+            z: hands[0].palm[2]
+          }"
+
+          :renderer="renderer"
+        />
+      </Object3D>
+
 
     </Scene>
 
@@ -118,6 +137,10 @@ import 'imports-loader?THREE=three!three/examples/js/postprocessing/UnrealBloomP
 
 import BoxesGroup from '@/components/pages/HelpingFriends/Box/BoxesGroup.vue'
 import Box from '@/components/pages/HelpingFriends/Box/Box.vue'
+
+// import VectorField from '@/components/pages/Hello/CustomAnimation/VectorField/VectorField.vue'
+import Wave from '@/components/pages/LeapMotion/Wave.vue'
+
 import * as Leap from 'leapjs'
 
 let vectorToString = (v) => {
@@ -132,6 +155,8 @@ export default {
   },
   components: {
     ...Bundle,
+    Wave,
+    // VectorField,
     BoxesGroup,
     Box
   },
@@ -192,7 +217,7 @@ export default {
   },
   methods: {
     setupComposer () {
-      var dpi = 0.5
+      var dpi = 1.5
 
       let composer = this.composer = new THREE.EffectComposer(this.renderer)
       composer.setSize(this.res.width * dpi, this.res.height * dpi)
@@ -216,9 +241,10 @@ export default {
       composer.addPass(bloomPass)
     },
     renderWebGL () {
-      let noHands = this.handCount === 0
+      // let noHands = this.handCount === 0
+      let useBloom = true
 
-      if (!noHands && this.scene && this.camera && this.renderer && this.composer) {
+      if (useBloom && this.scene && this.camera && this.renderer && this.composer) {
         this.composer.render()
       } else if (this.scene && this.camera && this.renderer) {
         this.renderer.render(this.scene, this.camera)
@@ -279,7 +305,7 @@ export default {
             activate: true,
             palm: hand.palmPosition,
             dir: hand.direction,
-            handString
+            string: handString
           }
           // this.hands[i] = handString || this.hands[i]
         }
@@ -288,16 +314,17 @@ export default {
       if (frame.pointables.length > 0) {
         for (let i = 0; i < frame.pointables.length; i++) {
           let pointable = frame.pointables[i]
-          // let pointableString = ''
-          // pointableString += 'Pointable ID: ' + pointable.id + '\n'
-          // pointableString += 'Belongs to hand with ID: ' + pointable.handId + '\n'
-          // pointableString += 'Length: ' + pointable.length.toFixed(1) + ' mm\n'
-          // pointableString += 'Width: ' + pointable.width.toFixed(1) + ' mm\n'
-          // pointableString += 'Direction: ' + vectorToString(pointable.direction, 2) + '\n'
-          // pointableString += 'Tip position: ' + vectorToString(pointable.tipPosition) + ' mm\n'
-          // pointableString += 'Tip velocity: ' + vectorToString(pointable.tipVelocity) + ' mm/s\n'
+          let pointableString = ''
+          pointableString += 'Pointable ID: ' + pointable.id + '\n'
+          pointableString += 'Belongs to hand with ID: ' + pointable.handId + '\n'
+          pointableString += 'Length: ' + pointable.length.toFixed(1) + ' mm\n'
+          pointableString += 'Width: ' + pointable.width.toFixed(1) + ' mm\n'
+          pointableString += 'Direction: ' + vectorToString(pointable.direction, 2) + '\n'
+          pointableString += 'Tip position: ' + vectorToString(pointable.tipPosition) + ' mm\n'
+          pointableString += 'Tip velocity: ' + vectorToString(pointable.tipVelocity) + ' mm/s\n'
 
           this.pointables[i] = {
+            string: pointableString,
             tipPos: pointable.tipPosition,
             dir: pointable.direction
           }
@@ -307,6 +334,46 @@ export default {
 
       this.$forceUpdate()
     })
+
+    // Ori
+
+    var ori = this.ori = {
+      sx: 0,
+      sy: 0,
+      dx: 0,
+      dy: 0,
+      x: 0,
+      y: 0,
+      xx: 0,
+      yy: 0
+    }
+
+    function handleOrientation (event) {
+      var x = event.beta - 45// In degree in the range [-180,180]
+      var y = event.gamma // In degree in the range [-90,90]
+
+      if (window.innerWidth > window.innerHeight) {
+        var t = x
+        x = y
+        y = t
+      }
+
+      if (!ori.sx) {
+        ori.sx = x
+        ori.sy = y
+      }
+
+      ori.dx = x - ori.sx
+      ori.dy = y - ori.sy
+
+      ori.sx = x
+      ori.sy = y
+
+      ori.xx = x / 180
+      ori.yy = y / 90
+    }
+
+    window.addEventListener('deviceorientation', handleOrientation, false)
   },
   beforeDestroy () {
     window.cancelAnimationFrame(this.rAFID)

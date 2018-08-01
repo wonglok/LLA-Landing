@@ -27,8 +27,10 @@ export default {
     scl: {}
   },
   data () {
+    let parNum = window.innerWidth < 500 ? 60 : 70
+    parNum *= 1.0
     return {
-      parNum: window.innerWidth < 500 ? 25 : 40,
+      parNum,
       box: false,
       THREE,
       simple: {
@@ -107,10 +109,10 @@ void main () {
   methods: {
     updateAnimatable () {
       this.animatable.time.value = window.performance.now() * 0.0001
-      // if (this.box) {
-      //   this.box.rotation.y = Math.PI * 0.25
-      //   this.box.rotation.z = this.scl.state.progress * Math.PI * 2.0
-      // }
+      if (this.box && this.scl) {
+        this.box.rotation.y = Math.PI * 0.25
+        this.box.rotation.z = this.scl.state.progress * Math.PI * 2.0
+      }
     }
   }
 }
