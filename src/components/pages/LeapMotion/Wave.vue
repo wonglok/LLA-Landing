@@ -309,7 +309,7 @@ void main () {
   vec3 m3 = mouse;
   // m3.y -= 100.0;
 
-  nextPos += getDiff(nextPos, m3) * 50.0;
+  nextPos += getDiff(nextPos, m3) * 45.0;
 
   // remix code end here//
   gl_FragColor = vec4(nextPos, 1.0);
