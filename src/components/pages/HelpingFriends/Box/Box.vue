@@ -24,13 +24,16 @@ export default {
     ...Bundle
   },
   props: {
+    parNum: {
+      default () {
+        let parNum = window.innerWidth < 500 ? 60 : 70
+        return parNum
+      }
+    },
     scl: {}
   },
   data () {
-    let parNum = window.innerWidth < 500 ? 60 : 70
-    parNum *= 1.0
     return {
-      parNum,
       box: false,
       THREE,
       simple: {

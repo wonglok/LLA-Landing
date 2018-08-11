@@ -12,11 +12,14 @@ export default {
     },
     color: {
       default () {
-        return new THREE.Color(Math.random() * 0xffffff)
+        return Math.random() * 0xffffff
       }
     }
   },
   watch: {
+    color () {
+      this.material.color = new THREE.Color(this.color)
+    },
     texture () {
       this.material.map = this.texture
     },
@@ -26,6 +29,7 @@ export default {
   },
   data () {
     return {
+      config: false,
       material: false
     }
   },
@@ -33,13 +37,17 @@ export default {
   },
   methods: {
     makeMaterial (options) {
-      var config = { color: this.color, transparent: true, opacity: this.opacity, ...options }
-      this.material = new THREE.MeshBasicMaterial(config)
+      this.config = { color: new THREE.Color(this.color), transparent: true, opacity: this.opacity, ...options }
+      this.material = new THREE.MeshBasicMaterial(this.config)
       this.$parent.$emit('material', this.material)
     }
   },
   mounted () {
-    this.makeMaterial({ map: this.texture })
+    let config = {}
+    if (this.texture) {
+      config.map = this.texture
+    }
+    this.makeMaterial({ ...config })
     this.$on('texture', ({ texture }) => {
       this.makeMaterial({ map: texture })
     })

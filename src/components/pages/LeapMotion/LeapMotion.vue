@@ -4,9 +4,13 @@
 
       <div class="full scroll-container" ref="scroll-container" @scroll="scl.onScroll" v-show="false">
         <div class="scroll-content" ref="scroll-content">
+          <!-- <pre>{{ pick }}</pre>
+          <pre>{{ circle }}</pre> -->
 
-          <pre v-if="false" :key="hand.id" v-for="hand in hands">{{ hand.string }}</pre>
-          <!-- <pre :key="pointable.id" v-for="pointable in pointables">{{ pointable.string }}</pre> -->
+          <!-- <pre>{{ circle }}</pre> -->
+          <!-- <pre :key="hand.id" v-for="hand in hands">{{ hand.string }}</pre> -->
+          <!--
+          <pre :key="pointable.id" v-for="pointable in pointables">{{ pointable.string }}</pre> -->
 
           <!--
            -->
@@ -34,16 +38,18 @@
 
     </div>
 
-    <PerspectiveCamera
-      :fov="75"
-      :aspect="size.aspect"
-      :near="1"
-      :far="1000"
-      :position="camPos"
-      @camera="(v) => { camera = v; }"
-    />
+
 
     <Scene @scene="(v) => { scene = v }">
+
+      <PerspectiveCamera
+        :fov="75"
+        :aspect="size.aspect"
+        :near="1"
+        :far="1000"
+        :position="camPos"
+        @camera="(v) => { camera = v; }"
+      />
 
       <!-- <BoxesGroup
         v-if="scl && scl.state && scene && camera"
@@ -52,37 +58,70 @@
         :camera="camera"
       /> -->
 
-      <!-- <keep-alive
-        v-if="hand.activate"
+
+      <Object3D
         :key="ip" v-for="(hand, ip) in hands"
+        :visible="hand.activate"
+
+        :px="hand.palm[0]"
+        :py="hand.palm[1]"
+        :pz="hand.palm[2]"
+
+        :rz="(hand.palm[2] - 50) / calibrate.y * 3.14"
+
+        :sx="0.3333 + 2.0 * (1.0 - hand.pinchStrength)"
+        :sy="0.3333 + 2.0 * (1.0 - hand.pinchStrength)"
+        :sz="0.3333 + 2.0 * (1.0 - hand.pinchStrength)"
+      >
+        <!-- <Box /> -->
+        <Mesh>
+          <BoxBufferGeometry></BoxBufferGeometry>
+          <MeshBasicMaterial :color="0xffffff"></MeshBasicMaterial>
+        </Mesh>
+      </Object3D>
+
+      <!-- <keep-alive
+        :key="ip" v-for="(pointable, ip) in pointables"
       >
         <Object3D
-          :activate="(o) => {
-            o.visible = true
-          }"
-          :deactivate="(o) => {
-            o.visible = false
-          }"
+          :visible="pointable.activate"
 
-          :px="hand.palm[0]"
-          :py="hand.palm[1]"
-          :pz="hand.palm[2]"
-
-          :rz="(hand.palm[2] - 50) / 100 * 3.14"
-
-          :d-rx="hand.dir[0]"
-          :d-ry="hand.dir[1]"
-          :d-rz="hand.dir[0]"
+          :px="pointable.tipPos[0]"
+          :py="pointable.tipPos[1]"
+          :pz="pointable.tipPos[2]"
 
           :sx="2.5"
           :sy="2.5"
           :sz="2.5"
         >
-          <Box />
+          <keep-alive>
+            <Mesh>
+              <keep-alive>
+                <BoxBufferGeometry></BoxBufferGeometry>
+              </keep-alive>
+              <keep-alive>
+                <MeshBasicMaterial :color="0xffffff"></MeshBasicMaterial>
+              </keep-alive>
+            </Mesh>
+          </keep-alive>
+
         </Object3D>
       </keep-alive> -->
 
       <Object3D
+      :px="pick.x * 0.0055555"
+      :py="calibrate.y + pick.y * 0.0055555"
+      :pz="pick.z * 0.0055555 + 140"
+      :rz="-circle.value"
+
+      :sx="0.4"
+      :sy="0.4"
+      :sz="0.4"
+      >
+        <Box :parNum="64" />
+      </Object3D>
+
+      <!-- <Object3D
         :px="0.0"
         :py="100.0"
         :pz="150.0"
@@ -97,7 +136,7 @@
 
           :renderer="renderer"
         />
-      </Object3D>
+      </Object3D> -->
 
 
     </Scene>
@@ -124,6 +163,7 @@ https://threejs.org/examples/js/shaders/ConvolutionShader.js
 https://threejs.org/examples/js/shaders/LuminosityHighPassShader.js
 https://threejs.org/examples/js/postprocessing/UnrealBloomPass.js
 */
+
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/RenderPass.js'
 import 'imports-loader?THREE=three!three/examples/js/postprocessing/MaskPass.js'
@@ -141,11 +181,9 @@ import Box from '@/components/pages/HelpingFriends/Box/Box.vue'
 // import VectorField from '@/components/pages/Hello/CustomAnimation/VectorField/VectorField.vue'
 import Wave from '@/components/pages/LeapMotion/Wave.vue'
 
-import * as Leap from 'leapjs'
+// import * as Leap from 'leapjs'
 
-let vectorToString = (v) => {
-  return v
-}
+import * as Leaper from './Leap.js'
 
 // DomToucher
 export default {
@@ -161,13 +199,25 @@ export default {
     Box
   },
   data () {
+    let leaperAPI = Leaper.setup({
+      $forceUpdate: () => {
+        this.$forceUpdate()
+      }
+    })
+
     Relay.internal.$forceUpdate = () => {
       this.$forceUpdate()
     }
+
+    let calibrate = { y: 120 }
     return {
-      handCount: 0,
-      hands: [],
-      pointables: [],
+      Math,
+      calibrate,
+      ...leaperAPI,
+
+      // handCount: leaperAPI.handCount,
+      // hands: leaperAPI.hands,
+      // pointables: leaperAPI.pointables,
 
       //
 
@@ -197,7 +247,7 @@ export default {
 
       THREE,
       scl: { onScroll () {} },
-      camPos: { x: 0, y: 100, z: 180 },
+      camPos: { x: 0, y: calibrate.y, z: 180 },
       ori: false,
       resizer () {},
       fullscreen: false,
@@ -217,7 +267,7 @@ export default {
   },
   methods: {
     setupComposer () {
-      var dpi = 1.5
+      var dpi = 1.0
 
       let composer = this.composer = new THREE.EffectComposer(this.renderer)
       composer.setSize(this.res.width * dpi, this.res.height * dpi)
@@ -275,65 +325,20 @@ export default {
     }
     self.rAFID = window.requestAnimationFrame(loop)
 
-    //
-
-    // leap
-    Leap.loop((frame) => {
-      this.handCount = frame.hands.length
-
-      this.hands.forEach((h) => { h.activate = false })
-
-      if (frame.hands.length > 0) {
-        for (let i = 0; i < frame.hands.length; i++) {
-          let handString = ''
-          let hand = frame.hands[i]
-
-          handString += 'Hand ID: ' + hand.id + '\n'
-          handString += 'Direction: ' + vectorToString(hand.direction, 2) + '\n'
-          handString += 'Palm normal: ' + vectorToString(hand.palmNormal, 2) + '\n'
-          handString += 'Palm position: ' + vectorToString(hand.palmPosition) + ' mm\n'
-          handString += 'Palm velocity: ' + vectorToString(hand.palmVelocity) + ' mm/s\n'
-          handString += 'Sphere center: ' + vectorToString(hand.sphereCenter) + ' mm\n'
-          handString += 'Sphere radius: ' + hand.sphereRadius.toFixed(1) + ' mm\n'
-
-          // this.camPos = {
-          //   x: hand.sphereCenter[0],
-          //   y: hand.sphereCenter[1],
-          //   z: this.camPos.z
-          // }
-          this.hands[i] = {
-            activate: true,
-            palm: hand.palmPosition,
-            dir: hand.direction,
-            string: handString
-          }
-          // this.hands[i] = handString || this.hands[i]
-        }
-      }
-
-      if (frame.pointables.length > 0) {
-        for (let i = 0; i < frame.pointables.length; i++) {
-          let pointable = frame.pointables[i]
-          let pointableString = ''
-          pointableString += 'Pointable ID: ' + pointable.id + '\n'
-          pointableString += 'Belongs to hand with ID: ' + pointable.handId + '\n'
-          pointableString += 'Length: ' + pointable.length.toFixed(1) + ' mm\n'
-          pointableString += 'Width: ' + pointable.width.toFixed(1) + ' mm\n'
-          pointableString += 'Direction: ' + vectorToString(pointable.direction, 2) + '\n'
-          pointableString += 'Tip position: ' + vectorToString(pointable.tipPosition) + ' mm\n'
-          pointableString += 'Tip velocity: ' + vectorToString(pointable.tipVelocity) + ' mm/s\n'
-
-          this.pointables[i] = {
-            string: pointableString,
-            tipPos: pointable.tipPosition,
-            dir: pointable.direction
-          }
-          // pointableString || this.pointables[i]
-        }
-      }
-
-      this.$forceUpdate()
-    })
+    // function findPinchingFingerType (hand) {
+    //   var pincher = false
+    //   var closest = 500
+    //   var current = false
+    //   for (var f = 1; f < 5; f++) {
+    //     current = hand.fingers[f]
+    //     let distance = Leap.vec3.distance(hand.thumb.tipPosition, current.tipPosition)
+    //     if (current !== hand.thumb && distance < closest) {
+    //       closest = distance
+    //       pincher = current
+    //     }
+    //   }
+    //   return pincher
+    // }
 
     // Ori
 

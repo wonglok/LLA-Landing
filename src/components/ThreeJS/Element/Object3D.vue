@@ -33,7 +33,7 @@ export default {
     this.deactivate(this.object3d)
   },
   watch: {
-    visible () { this.object3d.setVisible(this.visible) },
+    visible () { this.object3d.visible = (this.visible) },
     px () { this.updatePosition('x', this.px) },
     py () { this.updatePosition('y', this.py) },
     pz () { this.updatePosition('z', this.pz) },
@@ -48,6 +48,8 @@ export default {
   },
   created () {
     this.object3d = new THREE.Object3D()
+    this.object3d.visible = this.visible
+
     this.$emit('element', this.object3d)
     this.object3d.visible = true
     this.updatePosition()
