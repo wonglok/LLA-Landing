@@ -14,6 +14,8 @@ import LandingPage from '@/components/pages/LandingPage/LandingPage.vue'
 
 import LeapMotion from '@/components/pages/LeapMotion/LeapMotion.vue'
 
+import Gallery from '@/components/pages/Gallery/Gallery.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -44,6 +46,10 @@ export default new Router({
           component: LeapMotion
         }
       ]
+    },
+    {
+      path: '/gallery',
+      component: Gallery
     },
     {
       path: '/hello',

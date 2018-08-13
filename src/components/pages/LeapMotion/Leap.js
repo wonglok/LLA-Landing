@@ -1,9 +1,10 @@
 import * as Leap from 'leapjs'
 
-export const setup = ({ $forceUpdate }) => {
+export const setup = ({ $forceUpdate, calibrate }) => {
+  calibrate = calibrate || { x: 0, y: 120, z: 180 }
   let internals = {
     needsUpdate: false,
-    $forceUpdate: $forceUpdate() || (() => {}),
+    $forceUpdate: $forceUpdate || (() => {}),
     hands: [],
     pointables: [],
     pick: {
@@ -13,11 +14,13 @@ export const setup = ({ $forceUpdate }) => {
       _latestAccumulationX: 0,
       _latestAccumulationY: 0,
       _latestAccumulationZ: 0,
+
       //
       _momentumCurrentValueX: 0,
       _momentumCurrentValueY: 0,
       _momentumCurrentValueZ: 0,
 
+      _inertia: 0.0,
       _inertiaX: 0.0,
       _inertiaY: 0.0,
       _inertiaZ: 0.0,
@@ -25,6 +28,13 @@ export const setup = ({ $forceUpdate }) => {
       _deltaProgressX: 0.0,
       _deltaProgressY: 0.0,
       _deltaProgressZ: 0.0,
+
+      get in () {
+        return internals.pick._inertia
+      },
+      set in (v) {
+        internals.pick._inertia = v
+      },
       get x () {
         return internals.pick._momentumCurrentValueX
       },
@@ -33,6 +43,15 @@ export const setup = ({ $forceUpdate }) => {
       },
       get z () {
         return internals.pick._momentumCurrentValueZ
+      },
+      get dpx () {
+        return internals.pick._deltaProgressX
+      },
+      get dpy () {
+        return internals.pick._deltaProgressY
+      },
+      get dpz () {
+        return internals.pick._deltaProgressZ
       }
     },
     circle: {
@@ -83,13 +102,13 @@ export const setup = ({ $forceUpdate }) => {
 
     // inertia
     if (internals.pick._deltaProgressX > 0.001) {
-      internals.pick._deltaProgressX *= internals.pick.inertia
+      internals.pick._deltaProgressX *= internals.pick.inertiaX || 1.0
     }
     if (internals.pick._deltaProgressY > 0.001) {
-      internals.pick._deltaProgressY *= internals.pick.inertia
+      internals.pick._deltaProgressY *= internals.pick.inertiaY || 1.0
     }
     if (internals.pick._deltaProgressZ > 0.001) {
-      internals.pick._deltaProgressZ *= internals.pick.inertia
+      internals.pick._deltaProgressZ *= internals.pick.inertiaZ || 1.0
     }
 
     // internals.circle._inertia *= 0.98
@@ -106,7 +125,7 @@ export const setup = ({ $forceUpdate }) => {
   rAF(window.performance.now())
 
   // update request animation frame
-  let requestIdleCallback = window.requestIdleCallback || window.requestAnimationFrame
+  let requestIdleCallback = window.requestAnimationFrame // window.requestIdleCallback ||
   var uAF = () => {
     requestIdleCallback(uAF)
     if (internals.needsUpdate) {
@@ -136,6 +155,13 @@ export const setup = ({ $forceUpdate }) => {
     get pinchStrength () {
       let h = internals.hands[0]
       return h ? h.pinchStrength : 0
+    },
+    get hand0Pos () {
+      let h = internals.hands[0]
+      return h ? h.palm : [0, 0, 0]
+    },
+    clean () {
+      controller.disconnect()
     }
   }
   // let vectorToString = (v) => {
@@ -183,8 +209,14 @@ export const setup = ({ $forceUpdate }) => {
         iHand.activate = true
         iHand.pinchStrength = hand.pinchStrength
         iHand.palm = hand.palmPosition
+        iHand.palmPosCalibrated = [
+          hand.palmPosition[0] - calibrate.x,
+          hand.palmPosition[1] - calibrate.y,
+          hand.palmPosition[2] - calibrate.z
+        ]
         iHand.dir = hand.direction
         iHand.string = handString
+        internals.needsUpdate = true
       }
     }
   })
@@ -192,7 +224,7 @@ export const setup = ({ $forceUpdate }) => {
   controller.on('frame', (frame) => {
     internals.pointables.forEach(deactivate)
 
-    if (frame.pointables.length > 0) {
+    if (frame.pointables.length > 0.0) {
       for (let i = 0; i < frame.pointables.length; i++) {
         let pointable = frame.pointables[i]
         var interactionBox = frame.interactionBox
@@ -218,12 +250,13 @@ export const setup = ({ $forceUpdate }) => {
         iPointable.tipPos = pointable.tipPosition
         iPointable.tipVel = pointable.tipVelocity
         iPointable.dir = pointable.direction
+        internals.needsUpdate = true
       }
     }
   })
 
   controller.on('frame', (frame) => {
-    internals.needsUpdate = true
+    // internals.needsUpdate = true
   })
 
   controller.on('ready', () => {
@@ -291,6 +324,7 @@ export const setup = ({ $forceUpdate }) => {
       // internals.circle._sp = internals.circle.progress
       // console.log('clockwise', isClockwise, 'progress', gesture.progress, 'radius', gesture.radius, 'state', gesture.state)
       // console.log(internals.circle)
+      internals.needsUpdate = true
     }
 
     // console.log(gesture)
@@ -299,8 +333,8 @@ export const setup = ({ $forceUpdate }) => {
   controller.on('frame', (frame) => {
     let hand = frame.hands[0]
     internals.pick.ing = false
-    if (hand && internals.circle.state !== 'update') {
-      if (hand.pinchStrength > 0.75) {
+    if (hand) {
+      if (hand.pinchStrength > 0.85) {
         let pick = internals.pick
         pick.ing = true
         pick._deltaProgressX = hand.palmVelocity[0]
@@ -314,6 +348,8 @@ export const setup = ({ $forceUpdate }) => {
         pick._inertiaX = 1.0
         pick._inertiaY = 1.0
         pick._inertiaZ = 1.0
+        pick._inertia = 1.0
+        internals.needsUpdate = true
       }
     }
   })

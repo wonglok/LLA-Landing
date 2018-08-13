@@ -5,13 +5,19 @@
 <script>
 import * as THREE from 'three'
 export default {
+  props: {
+    num: {
+      default: 50
+    }
+  },
   data () {
     return {
       geometry: false
     }
   },
   mounted () {
-    let geometry = new THREE.BoxBufferGeometry(2, 2, 2, 50, 50, 50)
+    let n = this.num
+    let geometry = new THREE.BoxBufferGeometry(2, 2, 2, n, n, n)
     this.$parent.$emit('geometry', geometry)
   }
 }
