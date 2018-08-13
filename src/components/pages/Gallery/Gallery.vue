@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     setupComposer () {
-      var dpi = 1.0
+      var dpi = 1.25
 
       let composer = this.composer = new THREE.EffectComposer(this.renderer)
       composer.setSize(this.size.width * dpi, this.size.height * dpi)

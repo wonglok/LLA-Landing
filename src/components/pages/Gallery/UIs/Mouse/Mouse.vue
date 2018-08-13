@@ -91,7 +91,7 @@ uniform float time;
 uniform float intensity;
 
 void main () {
-  gl_FragColor = vec4(vec3(intensity, 1.0, 1.0), 0.5);
+  gl_FragColor = vec4(vec3(1.0, 1.0, 1.0) * (0.5 + intensity), 0.5);
 }
         `
       }

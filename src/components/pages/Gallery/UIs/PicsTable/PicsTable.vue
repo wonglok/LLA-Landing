@@ -8,12 +8,12 @@
       :py="getCurrent()"
     >
 
-      <Object3D :py="-getPY() * 0.0">
-        <PicsRow :mx="mx" :my="my" :pick="pick" :isCentered="isCentered(0)" />
+      <Object3D :py="getPY() * 0.0">
+        <PicsRow :mx="mx" :my="my" :pick="pick" :isActive="isActive(0)" />
       </Object3D>
 
-      <Object3D :py="-getPY() * 1.0">
-        <PicsRow :mx="mx" :my="my" :pick="pick" :isCentered="isCentered(1)" />
+      <Object3D :py="getPY() * 1.0">
+        <PicsRow :mx="mx" :my="my" :pick="pick" :isActive="isActive(1)" />
       </Object3D>
 
     </Object3D>
@@ -56,13 +56,13 @@ export default {
       return this.pp.y * 0.03
     },
     getPY () {
-      return (100.0 + 10.0)
+      return -(100.0 + 10.0)
     },
-    isCentered (i) {
-      let h = i * -this.getPY() + this.getCurrent()
+    isActive (i) {
+      let h = i * this.getPY() + this.getCurrent()
       let current = this.my
-      let max = h + 55.0
-      let min = h - 55.0
+      let max = h + 50.0
+      let min = h - 50.0
 
       if (current < max && current > min) {
         return true

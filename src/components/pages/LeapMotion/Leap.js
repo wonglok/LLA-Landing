@@ -209,6 +209,7 @@ export const setup = ({ $forceUpdate, calibrate }) => {
         iHand.activate = true
         iHand.pinchStrength = hand.pinchStrength
         iHand.palm = hand.palmPosition
+        iHand.palmVel = hand.palmVelocity
         iHand.palmPosCalibrated = [
           hand.palmPosition[0] - calibrate.x,
           hand.palmPosition[1] - calibrate.y,

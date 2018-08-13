@@ -16,21 +16,21 @@
       >
         <Object3D>
           <Points>
-            <PlaneBufferGeometry :nx="192" :ny="192" />
+            <PlaneBufferGeometry :nx="pNum" :ny="pNum" />
             <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
           </Points>
         </Object3D>
 
         <Object3D :px="5.0 + 1.0">
           <Points>
-            <PlaneBufferGeometry :nx="192" :ny="192" />
+            <PlaneBufferGeometry :nx="pNum" :ny="pNum" />
             <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
           </Points>
         </Object3D>
 
         <Object3D :px="(5.0 + 1.0) * 2.0">
           <Points>
-            <PlaneBufferGeometry :nx="192" :ny="192" />
+            <PlaneBufferGeometry :nx="pNum" :ny="pNum" />
             <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
           </Points>
         </Object3D>
@@ -49,7 +49,7 @@ import * as THREE from 'three'
 
 export default {
   props: {
-    isCentered: {
+    isActive: {
       default: true
     },
     pick: {}
@@ -58,9 +58,11 @@ export default {
     ...Bundle
   },
   data () {
-    var _ = this
+    var _this = this
+    var dpi = window.devicePixelRatio || 1.0
     return {
-      _,
+      _this,
+      pNum: window.innerHeight / 100.0 * 8.0,
       pp: {
         x: 0,
         y: 0,
@@ -69,9 +71,9 @@ export default {
       THREE,
       animatable: {
         time: { value: 0 },
-        isCentered: {
+        isActive: {
           get value () {
-            return _.isCentered
+            return _this.isActive
           }
         }
       },
@@ -118,10 +120,10 @@ void main (void) {
     rand(position.xy + 0.1),
     rand(position.xy + 0.2),
     rand(position.xy + 0.3)
-  ) * 0.05;
+  ) * 0.06;
 
   // newPos = rotateZ(time + newPos.z * 1.5) * newPos;
-  newPos.z += 0.3 * sin(newPos.y + time);
+  newPos.z += 0.05 * sin(newPos.y + time);
 
   // newPos = rotateX(3.14159265 * 0.5) * newPos;
 
@@ -130,16 +132,16 @@ void main (void) {
   vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
   vec4 outputPos = projectionMatrix * mvPosition;
   gl_Position = outputPos;
-  gl_PointSize = 1.0;
+  gl_PointSize = 1.0 / ${dpi.toFixed(1.0)};
 }
         `,
         fs: `
 varying vec3 vPos;
 uniform float time;
-uniform bool isCentered;
+uniform bool isActive;
 
 void main () {
-  if (isCentered) {
+  if (isActive) {
     gl_FragColor = vec4(vec3(1.0, 1.0, 1.0), 1.0);
   } else {
     gl_FragColor = vec4(vec3(0.1, 0.1, 0.1), 0.1);
@@ -154,8 +156,8 @@ void main () {
       var time = window.performance.now() * 0.001
       this.animatable.time.value = time
 
-      if (this.isCentered) {
-        this.pp.x += this.pick.dpx * this.pick.in
+      if (this.isActive) {
+        this.pp.x += this.pick.dpx * 1.5 * this.pick.in
       }
 
       // this.pp.y += this.pick.dpy * this.pick.in
