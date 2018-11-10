@@ -123,7 +123,8 @@ export default {
       }
     },
     updateEachLine (time, i, n, vtx, p, layerIdx, layerCount) {
-      var dt = layerIdx
+      var dt = time * (layerIdx / layerCount)
+
       var twoPI = 2 * Math.PI
 
       var i0 = i + 0
@@ -201,7 +202,7 @@ export default {
     },
     renderWebGL () {
       this.updateUniforms()
-      // this.updateGeo()
+      this.updateGeo()
       this.renderer.render(this.scene, this.camera)
       // if (this.scene && this.camera && this.renderer && this.composer) {
       //   this.composer.render()
