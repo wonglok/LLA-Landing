@@ -86,7 +86,7 @@ export default {
       ],
       THREE,
       scl: { onScroll () {} },
-      camPos: { x: 0, y: 0, z: 75 },
+      camPos: { x: 0, y: 0, z: 120 },
       ori: false,
       resizer () {},
       fullscreen: false,
@@ -230,13 +230,14 @@ void main () {
       this.scene.remove(v)
     })
 
-    let n = 36
+    let n = 100
     for (var i = 0; i < n; i++) {
       this.plots.push(this.makePlots(i, n, i / n))
     }
     this.updateGeo()
   },
   mounted () {
+    this.$refs['touch-surface'].addEventListener('touchstart', (e) => { e.preventDefault() })
     this.setupComposer()
     // this.setupDomScroller()
     this.controls = new THREE.OrbitControls(this.camera)
