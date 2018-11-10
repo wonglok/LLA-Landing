@@ -9,11 +9,15 @@
     >
 
       <Object3D :py="getPY() * 0.0">
-        <PicsRow :mx="mx" :my="my" :pick="pick" :isActive="isActive(0)" />
+        <PicsRow :mx="mx" :my="my" :circle="circle" :pinch="pinch" :pick="pick" :isActive="isActive(0)" />
       </Object3D>
 
       <Object3D :py="getPY() * 1.0">
-        <PicsRow :mx="mx" :my="my" :pick="pick" :isActive="isActive(1)" />
+        <PicsRow :mx="mx" :my="my" :circle="circle" :pinch="pinch" :pick="pick" :isActive="isActive(1)" />
+      </Object3D>
+
+      <Object3D :py="getPY() * 2.0">
+        <PicsRow :mx="mx" :my="my" :circle="circle" :pinch="pinch" :pick="pick" :isActive="isActive(2)" />
       </Object3D>
 
     </Object3D>
@@ -30,11 +34,13 @@ import * as THREE from 'three'
 
 export default {
   props: {
+    circle: {},
     mx: { default: 0 },
     my: { default: 0 },
     isPicking: {
       default: true
     },
+    pinch: { default: 1.0 },
     pick: {}
   },
   components: {
@@ -53,7 +59,7 @@ export default {
   },
   methods: {
     getCurrent () {
-      return this.pp.y * 0.03
+      return this.pp.y * 0.03 * 1.5
     },
     getPY () {
       return -(100.0 + 10.0)
@@ -74,7 +80,7 @@ export default {
       // var time = window.performance.now() * 0.001
       if (this.isPicking) {
         // this.pp.x += this.pick.dpx * this.pick.in
-        this.pp.y += this.pick.dpy * 1.5 * this.pick.in
+        this.pp.y += this.pick.dpy * this.pick.in
         // this.pp.z += this.pick.dpz * this.pick.in
       }
 

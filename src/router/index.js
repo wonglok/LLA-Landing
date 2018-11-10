@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import HelpingFriends from '@/components/pages/HelpingFriends/HelpingFriends'
+import Dimension from '@/components/pages/Dimension/Dimension'
 
 import Hello from '@/components/pages/Hello/Hello'
 import HelloLayout from '@/components/pages/Hello/HelloLayout'
@@ -27,6 +28,10 @@ export default new Router({
       children: [
         {
           path: '',
+          component: Dimension
+        },
+        {
+          path: 'helping',
           component: HelpingFriends
         },
         {

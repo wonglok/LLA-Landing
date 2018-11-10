@@ -30,10 +30,12 @@
       -->
 
       <PicsTable
+        :circle="circle"
         :pick="pick"
-        :isPicking="hands[0] ? hands[0].pinchStrength > 0.85 : false"
+        :isPicking="hands[0] ? hands[0].pinchStrength > 0.88 : false"
         :mx="hands[0] ? hands[0].palmPosCalibrated[0] * 2.5 : 0.0"
         :my="hands[0] ? hands[0].palmPosCalibrated[1] * 2.5 : 0.0"
+        :pinch="hands[0] ? hands[0].pinchStrength : 0.0"
       >
       </PicsTable>
 
@@ -50,15 +52,15 @@
         :sy="2.5"
         :sz="2.5"
 
-        :px="hands[0].palmPosCalibrated[0] * 2.5"
-        :py="hands[0].palmPosCalibrated[1] * 2.5"
-        :pz="hands[0].palmPosCalibrated[2] * 0.0"
+        :px="hands[0] ? hands[0].palmPosCalibrated[0] * 2.5 : 0"
+        :py="hands[0] ? hands[0].palmPosCalibrated[1] * 2.5: 0"
+        :pz="hands[0] ? hands[0].palmPosCalibrated[2] * 0.0 : 0"
 
         v-if="hands && hands[0]"
-        :visible="hands[0].activate"
+        :visible="hands[0] ? hands[0].activate : false"
       >
         <Mouse
-          :intensity="hands[0].pinchStrength - 0.25"
+          :intensity="hands[0] ? hands[0].pinchStrength - 0.25 : 0"
         />
       </Object3D>
 
@@ -111,7 +113,7 @@ export default {
   },
   methods: {
     setupComposer () {
-      var dpi = 1.25
+      var dpi = 1.0
 
       let composer = this.composer = new THREE.EffectComposer(this.renderer)
       composer.setSize(this.size.width * dpi, this.size.height * dpi)

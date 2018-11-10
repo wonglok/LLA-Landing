@@ -14,8 +14,8 @@ export const getByPath = (path) => {
   var arr = provideArray()
   return arr.find(a => a.path === path)
 }
-
-if (process.env.NODE_ENV === 'development') {
+var vava = false
+if (vava && process.env.NODE_ENV === 'development') {
   console.log('dev mode')
   let SOC = require('./socket.js')
   let hydrate = () => {

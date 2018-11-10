@@ -1,0 +1,282 @@
+<template>
+  <div class="full">
+    <div class="full toucher" ref="touch-surface">
+
+      <div class="full scroll-container" ref="scroll-container">
+        <div class="scroll-content" ref="scroll-content">
+
+          <!-- <pre class="white">{{ Relay }}</pre> -->
+          123
+          <!-- <pre>{{ plots[0] }}</pre> -->
+        </div>
+      </div>
+
+    </div>
+
+    <PerspectiveCamera
+      :fov="75"
+      :aspect="size.aspect"
+      :near="1"
+      :far="1000"
+      :position="camPos"
+      @camera="(v) => { camera = v; }"
+    />
+
+    <Scene @scene="(v) => { scene = v }">
+
+      <LineSegments :key="ip" v-for="(plot, ip) in plots">
+        <BufferGeometry :array3f="plot.a3f"></BufferGeometry>
+        <ShaderMaterial :vs="plot.vs" :fs="plot.fs" :uniforms="plot.uniforms"></ShaderMaterial>
+      </LineSegments>
+
+    </Scene>
+
+  </div>
+</template>
+
+<script>
+import Bundle from '@/components/ThreeJS/Bundle.js'
+import * as THREE from 'three'
+// import * as Scroller from '@/components/shared/DomScroller/DomScroller.js'
+
+// import * as Relay from '@/components/shared/RelayConnector/relay.js'
+
+/* eslint-disable */
+/*
+https://threejs.org/examples/js/postprocessing/EffectComposer.js
+https://threejs.org/examples/js/postprocessing/RenderPass.js
+https://threejs.org/examples/js/postprocessing/MaskPass.js
+https://threejs.org/examples/js/postprocessing/ShaderPass.js
+https://threejs.org/examples/js/shaders/CopyShader.js
+https://threejs.org/examples/js/shaders/FXAAShader.js
+https://threejs.org/examples/js/shaders/ConvolutionShader.js
+https://threejs.org/examples/js/shaders/LuminosityHighPassShader.js
+https://threejs.org/examples/js/postprocessing/UnrealBloomPass.js
+*/
+import 'imports-loader?THREE=three!three/examples/js/controls/OrbitControls.js'
+
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/EffectComposer.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/RenderPass.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/MaskPass.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/ShaderPass.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/CopyShader.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/FXAAShader.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/ConvolutionShader.js'
+import 'imports-loader?THREE=three!three/examples/js/shaders/LuminosityHighPassShader.js'
+import 'imports-loader?THREE=three!three/examples/js/postprocessing/UnrealBloomPass.js'
+/* eslint-enable */
+
+// import BoxesGroup from './Box/BoxesGroup.vue'
+// DomToucher
+export default {
+  props: {
+    size: {},
+    renderer: {}
+  },
+  components: {
+    ...Bundle
+    // BoxesGroup
+  },
+  data () {
+    // Relay.internal.$forceUpdate = () => {
+    //   this.$forceUpdate()
+    // }
+    return {
+      plots: [
+      ],
+      THREE,
+      scl: { onScroll () {} },
+      camPos: { x: 0, y: 0, z: 45 },
+      ori: false,
+      resizer () {},
+      fullscreen: false,
+      scene: false,
+      camera: false
+    }
+  },
+  watch: {
+    size () {
+      this.composerResizer && this.composerResizer()
+    }
+  },
+  computed: {
+    res () {
+      return this.size
+    }
+  },
+  methods: {
+    makePlots () {
+      return {
+        a3f: [
+        ],
+        vs: `void main ( void ) {
+  vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+  vec4 outputPos = projectionMatrix * mvPosition;
+  gl_Position = outputPos;
+}`,
+        fs: `void main () {
+  gl_FragColor = vec4(vec3(1.0, 0.0, 0.0), 0.7);
+}`,
+        uniforms: {
+          time: { value: 0 }
+        }
+      }
+    },
+    updateEachLine (time, i, n, vtx, p, layerIdx, layerCount) {
+      var dt = layerIdx
+      var twoPI = 2 * Math.PI
+
+      var i0 = i + 0
+      var i1 = i + 1
+      var i2 = i + 2
+
+      var i3 = i + 3
+      var i4 = i + 4
+      var i5 = i + 5
+
+      var startAngle = (i0 / n) * twoPI
+      var endAngle = (i3 / n) * twoPI
+
+      var ballRadius = 20.0
+
+      // var numOfWaves = 5
+      // var waveHeight = 5
+      // var wavyRadius = ballRadius + waveHeight * Math.sin((endAngle + dt * 0.25) * numOfWaves)
+
+      var x1 = ballRadius * Math.cos(startAngle)
+      var y1 = ballRadius * Math.sin(startAngle)
+
+      var x2 = ballRadius * Math.cos(endAngle * dt)
+      var y2 = ballRadius * Math.sin(endAngle * dt)
+
+      // start point
+      vtx[i0] = x1
+      vtx[i1] = y1
+      vtx[i2] = layerIdx
+
+      // end
+      vtx[i3] = x2
+      vtx[i4] = y2
+      vtx[i5] = layerIdx
+    },
+    updateGeo () {
+      this.plots.forEach((p, pi) => {
+        let time = window.performance.now() * 0.001
+        let n = 400 * 2
+        p.a3f = []
+        for (var i = 0; i < n; i += 6) {
+          this.updateEachLine(time, i, n, p.a3f, p, pi, this.plots.length)
+        }
+      })
+    },
+    updateUniforms () {
+      this.plots.forEach((p) => {
+        let time = window.performance.now() * 0.001
+        p.uniforms.time.value = time
+      })
+    },
+    setupComposer () {
+      var dpi = 1.0
+
+      let composer = this.composer = new THREE.EffectComposer(this.renderer)
+      composer.setSize(this.res.width * dpi, this.res.height * dpi)
+      window.addEventListener('resize', () => {
+        this.composerResizer()
+      }, false)
+      this.composerResizer = () => {
+        composer.setSize(this.res.width * dpi, this.res.height * dpi)
+      }
+      this.$nextTick(this.composerResizer)
+
+      let renderBG = new THREE.RenderPass(this.scene, this.camera)
+      let bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(this.res.width * dpi, this.res.height * dpi), 1.5, 0.4, 0.85)
+      bloomPass.renderToScreen = true
+
+      // bloomPass.threshold = Number(0.0001)
+      // bloomPass.strength = Number(3.5)
+      // bloomPass.radius = Number(1.0)
+
+      composer.addPass(renderBG)
+      composer.addPass(bloomPass)
+    },
+    renderWebGL () {
+      this.updateUniforms()
+      // this.updateGeo()
+      this.renderer.render(this.scene, this.camera)
+      // if (this.scene && this.camera && this.renderer && this.composer) {
+      //   this.composer.render()
+      // } else if (this.scene && this.camera && this.renderer) {
+      //   this.renderer.render(this.scene, this.camera)
+      // }
+    },
+    setupDomScroller () {
+      // this.scl = Scroller.make({ scroller: this.$refs['scroll-container'], content: this.$refs['scroll-content'] })
+    }
+  },
+  created () {
+    this.$on('add', (v) => {
+      this.scene.add(v)
+    })
+    this.$on('remove', (v) => {
+      this.scene.remove(v)
+    })
+
+    let n = 20
+    for (var i = 0; i < n; i++) {
+      this.plots.push(this.makePlots())
+    }
+    this.updateGeo()
+  },
+  mounted () {
+    this.setupComposer()
+    // this.setupDomScroller()
+    this.controls = new THREE.OrbitControls(this.camera)
+
+    this.scene.background = new THREE.Color('#000000')
+
+    // this.scene.background = new THREE.Color('#99c5c7')
+
+    var self = this
+    function loop () {
+      self.rAFID = window.requestAnimationFrame(loop)
+      self.controls.update()
+      self.renderWebGL()
+    }
+    self.rAFID = window.requestAnimationFrame(loop)
+  },
+  beforeDestroy () {
+    window.cancelAnimationFrame(this.rAFID)
+  }
+}
+</script>
+
+<style scoped>
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.full{
+  width: 100%;
+  height: 100%;
+}
+
+.toucher{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.tall{
+  height: 30vh;
+}
+
+.scroll-container{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.white{
+  color: white;
+}
+
+</style>

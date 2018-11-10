@@ -5,6 +5,7 @@
       @attach="(v) => { $parent.$emit('add', v) }"
       @detach="(v) => { $parent.$emit('remove', v) }"
     >
+
       <Object3D
         :sx="20.0"
         :sy="20.0"
@@ -49,17 +50,22 @@ import * as THREE from 'three'
 
 export default {
   props: {
+    circle: {},
+    intensity: {
+      default: 1.0
+    },
     isActive: {
       default: true
     },
-    pick: {}
+    pick: {},
+    pinch: { default: 1.0 }
   },
   components: {
     ...Bundle
   },
   data () {
     var _this = this
-    var dpi = window.devicePixelRatio || 1.0
+    // var dpi = window.devicePixelRatio || 1.0
     return {
       _this,
       pNum: window.innerHeight / 100.0 * 8.0,
@@ -71,6 +77,11 @@ export default {
       THREE,
       animatable: {
         time: { value: 0 },
+        pinch: {
+          get value () {
+            return _this.pinch
+          }
+        },
         isActive: {
           get value () {
             return _this.isActive
@@ -115,6 +126,9 @@ mat3 rotateZ(float rad) {
 uniform float time;
 varying vec3 vPos;
 
+uniform float pinch;
+uniform bool isActive;
+
 void main (void) {
   vec3 newPos = position + vec3(
     rand(position.xy + 0.1),
@@ -122,29 +136,33 @@ void main (void) {
     rand(position.xy + 0.3)
   ) * 0.06;
 
-  // newPos = rotateZ(time + newPos.z * 1.5) * newPos;
   newPos.z += 0.05 * sin(newPos.y + time);
 
-  // newPos = rotateX(3.14159265 * 0.5) * newPos;
+  if (isActive) {
+    newPos = rotateZ(sin(time * 30.0) * (pinch * 0.5) * 0.05) * newPos;
+    newPos = rotateX(sin(time * 30.0) * (pinch * 0.5) * 0.05) * newPos;
+    newPos = rotateY(sin(time * 30.0) * (pinch * 0.5) * 0.05) * newPos;
+  }
 
   vPos = position;
 
   vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
   vec4 outputPos = projectionMatrix * mvPosition;
   gl_Position = outputPos;
-  gl_PointSize = 1.0 / ${dpi.toFixed(1.0)};
+  gl_PointSize = 1.0;
 }
         `,
         fs: `
 varying vec3 vPos;
 uniform float time;
 uniform bool isActive;
+uniform float pinch;
 
 void main () {
   if (isActive) {
     gl_FragColor = vec4(vec3(1.0, 1.0, 1.0), 1.0);
   } else {
-    gl_FragColor = vec4(vec3(0.1, 0.1, 0.1), 0.1);
+    gl_FragColor = vec4(vec3(0.0, 0.0, 0.0), 0.5);
   }
 }
         `

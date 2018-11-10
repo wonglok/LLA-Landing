@@ -26,11 +26,13 @@ export default {
   MeshBasicMaterial: require('./Material/MeshBasicMaterial.vue').default,
   PointsMaterial: require('./Material/PointsMaterial.vue').default,
 
+  BufferGeometry: require('./Geo/BufferGeometry.vue').default,
   CircleBufferGeometry: require('./Geo/CircleBufferGeometry.vue').default,
   TorusKnotBufferGeometry: require('./Geo/TorusKnotBufferGeometry.vue').default,
   SphereBufferGeometry: require('./Geo/SphereBufferGeometry.vue').default,
   BoxBufferGeometry: require('./Geo/BoxBufferGeometry.vue').default,
   PlaneBufferGeometry: require('./Geo/PlaneBufferGeometry.vue').default,
+  TorusBufferGeometry: require('./Geo/TorusBufferGeometry.vue').default,
 
   dummy: {}
 }

@@ -5,7 +5,8 @@
       @detach="(v) => { $parent.$emit('remove', v) }"
     >
       <Mesh>
-        <CircleBufferGeometry :n="64" :r="1" />
+        <!-- <CircleBufferGeometry :n="64" :r="1" /> -->
+        <TorusBufferGeometry :radius="1.5" :tube="0.1" :nRadial="30" :nTube="192" />
         <ShaderMaterial :vs="simple.vs" :fs="simple.fs" :uniforms="animatable" />
       </Mesh>
     </Object3D>
@@ -66,14 +67,17 @@ mat3 rotateZ(float rad) {
     );
 }
 
-uniform vec3 hand0;
 uniform float time;
 varying vec3 vPos;
+uniform float intensity;
 
 void main (void) {
   vec3 newPos = position;
-  // newPos = rotateZ(time + newPos.z * 1.5) * newPos;
-  // newPos.z *= sin(newPos.z + time);
+  newPos = rotateX(time * 3.0) * newPos;
+  newPos = rotateY(time * 3.0) * newPos;
+  newPos = rotateZ(time * 3.0) * newPos;
+
+// newPos.z *= sin(newPos.z + time);
 
   // newPos = rotateX(3.14159265 * 0.5) * newPos;
 
@@ -91,7 +95,7 @@ uniform float time;
 uniform float intensity;
 
 void main () {
-  gl_FragColor = vec4(vec3(1.0, 1.0, 1.0) * (0.5 + intensity), 0.5);
+  gl_FragColor = vec4(vec3(1.0, 1.0, 1.0) * (0.85 + intensity * 0.1), 1.0);
 }
         `
       }
