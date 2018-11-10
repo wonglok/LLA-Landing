@@ -222,7 +222,7 @@ export default {
       this.scene.remove(v)
     })
 
-    let n = 20
+    let n = 5
     for (var i = 0; i < n; i++) {
       this.plots.push(this.makePlots())
     }
