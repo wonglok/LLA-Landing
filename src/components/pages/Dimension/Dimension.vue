@@ -86,7 +86,7 @@ export default {
       ],
       THREE,
       scl: { onScroll () {} },
-      camPos: { x: 0, y: 0, z: 45 },
+      camPos: { x: 0, y: 0, z: 75 },
       ori: false,
       resizer () {},
       fullscreen: false,
@@ -105,8 +105,11 @@ export default {
     }
   },
   methods: {
-    makePlots () {
+    makePlots (i, n, e) {
       return {
+        i,
+        n,
+        e,
         a3f: [
         ],
         vs: `void main ( void ) {
@@ -114,16 +117,19 @@ export default {
   vec4 outputPos = projectionMatrix * mvPosition;
   gl_Position = outputPos;
 }`,
-        fs: `void main () {
-  gl_FragColor = vec4(vec3(1.0, 0.0, 0.0), 0.7);
+        fs: `
+uniform vec3 color;
+void main () {
+  gl_FragColor = vec4(color, 0.75);
 }`,
         uniforms: {
+          color: { value: new THREE.Color(`hsl(${Number(360 * e).toFixed(3)}, 100%, 50%)`) },
           time: { value: 0 }
         }
       }
     },
-    updateEachLine (time, i, n, vtx, p, layerIdx, layerCount) {
-      var dt = time * (layerIdx / layerCount)
+    updateEachLine (time, i, n, vtx, plot) {
+      var dt = plot.e * time * 0.05
 
       var twoPI = 2 * Math.PI
 
@@ -137,6 +143,8 @@ export default {
 
       var startAngle = (i0 / n) * twoPI
       var endAngle = (i3 / n) * twoPI
+
+      endAngle = startAngle + Math.PI
 
       var ballRadius = 20.0
 
@@ -153,20 +161,20 @@ export default {
       // start point
       vtx[i0] = x1
       vtx[i1] = y1
-      vtx[i2] = layerIdx
+      vtx[i2] = plot.i
 
       // end
       vtx[i3] = x2
       vtx[i4] = y2
-      vtx[i5] = layerIdx
+      vtx[i5] = plot.i
     },
     updateGeo () {
       this.plots.forEach((p, pi) => {
         let time = window.performance.now() * 0.001
-        let n = 400 * 2
+        let n = 360 * 2
         p.a3f = []
         for (var i = 0; i < n; i += 6) {
-          this.updateEachLine(time, i, n, p.a3f, p, pi, this.plots.length)
+          this.updateEachLine(time, i, n, p.a3f, p)
         }
       })
     },
@@ -222,9 +230,9 @@ export default {
       this.scene.remove(v)
     })
 
-    let n = 5
+    let n = 50
     for (var i = 0; i < n; i++) {
-      this.plots.push(this.makePlots())
+      this.plots.push(this.makePlots(i, n, i / n))
     }
     this.updateGeo()
   },
