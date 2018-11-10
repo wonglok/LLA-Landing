@@ -1,16 +1,11 @@
 <template>
   <div class="full">
+
     <div class="full toucher" ref="touch-surface">
-
-      <div class="full scroll-container" ref="scroll-container">
-        <div class="scroll-content" ref="scroll-content">
-
-          <!-- <pre class="white">{{ Relay }}</pre> -->
-          123
-          <!-- <pre>{{ plots[0] }}</pre> -->
-        </div>
-      </div>
-
+    </div>
+    <div class="ui toucher">
+      <input type="number" v-model="numOfPlots" @keyup.enter="genPlots()" />
+      <button @click="genPlots()">plot</button>
     </div>
 
     <PerspectiveCamera
@@ -82,6 +77,7 @@ export default {
     //   this.$forceUpdate()
     // }
     return {
+      numOfPlots: 100,
       plots: [
       ],
       THREE,
@@ -220,6 +216,14 @@ void main () {
     },
     setupDomScroller () {
       // this.scl = Scroller.make({ scroller: this.$refs['scroll-container'], content: this.$refs['scroll-content'] })
+    },
+    genPlots () {
+      this.plots = []
+      let n = this.numOfPlots
+      for (var i = 0; i < n; i++) {
+        this.plots.push(this.makePlots(i, n, i / n))
+      }
+      this.updateGeo()
     }
   },
   created () {
@@ -230,17 +234,14 @@ void main () {
       this.scene.remove(v)
     })
 
-    let n = 100
-    for (var i = 0; i < n; i++) {
-      this.plots.push(this.makePlots(i, n, i / n))
-    }
-    this.updateGeo()
+    this.genPlots()
   },
   mounted () {
     this.$refs['touch-surface'].addEventListener('touchstart', (e) => { e.preventDefault() })
+
     this.setupComposer()
     // this.setupDomScroller()
-    this.controls = new THREE.OrbitControls(this.camera)
+    this.controls = new THREE.OrbitControls(this.camera, this.$refs['touch-surface'])
 
     this.scene.background = new THREE.Color('#000000')
 
