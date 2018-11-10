@@ -230,7 +230,7 @@ void main () {
       this.scene.remove(v)
     })
 
-    let n = 50
+    let n = 36
     for (var i = 0; i < n; i++) {
       this.plots.push(this.makePlots(i, n, i / n))
     }
