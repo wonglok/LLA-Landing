@@ -19,10 +19,12 @@
 
     <Scene @scene="(v) => { scene = v }">
 
-      <LineSegments :key="ip" v-for="(plot, ip) in plots">
-        <BufferGeometry :array3f="plot.a3f"></BufferGeometry>
-        <ShaderMaterial :vs="plot.vs" :fs="plot.fs" :uniforms="plot.uniforms"></ShaderMaterial>
-      </LineSegments>
+      <Object3D :ry="3.1415 * 0.5" @attach="(v) => { roller = v }">
+        <LineSegments :key="ip" v-for="(plot, ip) in plots">
+          <BufferGeometry :array3f="plot.a3f"></BufferGeometry>
+          <ShaderMaterial :vs="plot.vs" :fs="plot.fs" :uniforms="plot.uniforms"></ShaderMaterial>
+        </LineSegments>
+      </Object3D>
 
     </Scene>
 
@@ -76,8 +78,10 @@ export default {
     // Relay.internal.$forceUpdate = () => {
     //   this.$forceUpdate()
     // }
+
     return {
-      numOfPlots: 100,
+      roller: false,
+      numOfPlots: 70,
       plots: [
       ],
       THREE,
@@ -125,7 +129,7 @@ void main () {
       }
     },
     updateEachLine (time, i, n, vtx, plot) {
-      var dt = plot.e * time * 0.05
+      var dt = plot.e
 
       var twoPI = 2 * Math.PI
 
@@ -157,12 +161,12 @@ void main () {
       // start point
       vtx[i0] = x1
       vtx[i1] = y1
-      vtx[i2] = plot.i
+      vtx[i2] = (plot.n * 0.5 - plot.i) * 2.0
 
       // end
       vtx[i3] = x2
       vtx[i4] = y2
-      vtx[i5] = plot.i
+      vtx[i5] = (plot.n * 0.5 - plot.i) * 2.0
     },
     updateGeo () {
       this.plots.forEach((p, pi) => {
@@ -204,9 +208,15 @@ void main () {
       composer.addPass(renderBG)
       composer.addPass(bloomPass)
     },
+    updateRoller () {
+      if (this.roller) {
+        this.roller.rotation.x += 0.01
+      }
+    },
     renderWebGL () {
+      this.updateRoller()
       this.updateUniforms()
-      this.updateGeo()
+      // this.updateGeo()
       this.renderer.render(this.scene, this.camera)
       // if (this.scene && this.camera && this.renderer && this.composer) {
       //   this.composer.render()
