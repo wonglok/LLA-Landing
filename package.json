@@ -44,6 +44,7 @@
     "uglify-js": "^3.3.10",
     "uglifyjs-browser": "^1.0.0",
     "vue": "^2.5.2",
+    "vue-draggable-resizable": "^1.7.5",
     "vue-router": "^3.0.1",
     "vue2-ace-editor": "0.0.9",
     "worker-loader": "^1.1.1"

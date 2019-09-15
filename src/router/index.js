@@ -17,6 +17,8 @@ import LeapMotion from '@/components/pages/LeapMotion/LeapMotion.vue'
 
 import Gallery from '@/components/pages/Gallery/Gallery.vue'
 
+import Landing from '@/pages/Landing'
+
 Vue.use(Router)
 
 export default new Router({
@@ -24,6 +26,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      component: Landing
+    },
+    {
+      path: '/r',
       component: WinRenderer,
       children: [
         {
@@ -43,7 +49,7 @@ export default new Router({
           component: WinLayout
         },
         {
-          path: 'box',
+          path: '≈≈',
           component: InfinityBox
         },
         {

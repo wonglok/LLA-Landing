@@ -217,6 +217,7 @@ void main () {
       this.updateRoller()
       this.updateUniforms()
       // this.updateGeo()
+
       this.renderer.render(this.scene, this.camera)
       // if (this.scene && this.camera && this.renderer && this.composer) {
       //   this.composer.render()
